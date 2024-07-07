@@ -21,6 +21,7 @@ module.exports = {
   ignorePatterns: ['dist', '.*rc.js', '*.config.js', '*.config.ts'],
   rules: {
     'no-unused-vars': 'warn',
+    '@typescript-eslint/unbound-method': 'off',
     'react-hooks/exhaustive-deps': ['warn', {
       additionalHooks: '(useAtom|useSetAtom|useEffectEvent)',
     }],
