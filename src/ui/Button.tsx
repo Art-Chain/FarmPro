@@ -2,7 +2,10 @@ import { StyleSheet, TextProps } from 'react-native';
 
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+
 import { useTheme } from '@/features/theme';
+
+
 
 export interface ButtonProps extends TextProps {
   variant: 'primary' | 'secondary';
@@ -24,7 +27,8 @@ export const Button = ({
     });
 
   const animatedStyle = useAnimatedStyle(() => ({
-    backgroundColor: theme.colors.black,
+    backgroundColor: theme.colors.black.background,
+    color: theme.colors.black.content,
     opacity: withTiming(pressed.value ? 0.5 : 1),
   }));
 
