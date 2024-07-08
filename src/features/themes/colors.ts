@@ -15,8 +15,8 @@ export interface ColorPalette {
   gray: ColorLevel;
 }
 export interface ColorToken {
-  content: string;
-  background: string;
+  text: string;
+  main: string;
   surface: string;
 }
 export interface Colors {

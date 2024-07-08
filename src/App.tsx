@@ -5,7 +5,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { HomePage } from '@/pages/HomePage';
-import { ThemeProvider } from '@/features/theme';
+import { ThemeProvider } from '@/features/themes';
 
 const Stack = createNativeStackNavigator();
 

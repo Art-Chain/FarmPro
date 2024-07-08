@@ -1,4 +1,4 @@
-import type { Colors, ColorPalette } from './colors';
+import type { ColorPalette, Colors } from './colors';
 import type { Theme } from './theme';
 
 const palette = {
@@ -21,18 +21,18 @@ export const LightColors = {
   palette,
 
   black: {
-    content: palette.gray[950],
-    background: palette.gray[50],
+    text: palette.gray[50],
+    main: palette.gray[950],
     surface: palette.gray[100],
   },
   white: {
-    content: palette.gray[50],
-    background: palette.gray[950],
+    text: palette.gray[950],
+    main: palette.gray[50],
     surface: palette.gray[900],
   },
   primary: {
-    content: '#2B6CB0',
-    background: '#EBF8FF',
+    text: '#EBF8FF',
+    main: '#2B6CB0',
     surface: '#90CDF4',
   },
 } satisfies Colors;

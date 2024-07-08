@@ -1,22 +1,40 @@
-import { StyleSheet, TextProps } from 'react-native';
+import { TextProps } from 'react-native';
 
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 
-import { useTheme } from '@/features/theme';
+import { createStyle, useTextStyle, useViewStyle } from '@/features/utils';
 
+const baseButtonStyle = createStyle({
+  padding: 16,
+  borderRadius: 16,
+  fontSize: 16,
+  textAlign: 'center',
+});
+const useButtonStyle = createStyle(baseButtonStyle, (theme, variant: 'primary' | 'secondary') => {
+  if (variant === 'secondary') {
+    return {
+      backgroundColor: theme.colors.white.main,
+      color: theme.colors.white.text,
+    };
+  }
 
+  return {
+    backgroundColor: theme.colors.black.main,
+    color: theme.colors.black.text,
+  };
+});
 
 export interface ButtonProps extends TextProps {
-  variant: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary';
 }
 
 export const Button = ({
   style,
+  variant = 'primary',
   ...props
 }: ButtonProps) => {
-  const theme = useTheme();
-  const pressed = useSharedValue<boolean>(false);
+  const pressed = useSharedValue(false);
 
   const tap = Gesture.Tap()
     .onBegin(() => {
@@ -27,17 +45,18 @@ export const Button = ({
     });
 
   const animatedStyle = useAnimatedStyle(() => ({
-    backgroundColor: theme.colors.black.background,
-    color: theme.colors.black.content,
     opacity: withTiming(pressed.value ? 0.5 : 1),
   }));
+  const buttonStyle = useButtonStyle(variant);
 
   return (
     <GestureDetector gesture={tap}>
-      <Animated.Text
-        style={StyleSheet.compose(style, animatedStyle)}
-        {...props}
-      />
+      <Animated.View style={[useViewStyle([buttonStyle, style]), animatedStyle]}>
+        <Animated.Text
+          style={useTextStyle([buttonStyle, style])}
+          {...props}
+        />
+      </Animated.View>
     </GestureDetector>
   );
 };
