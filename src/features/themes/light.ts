@@ -3,16 +3,16 @@ import type { Theme } from './theme';
 
 const palette = {
   gray: {
-    50: '#F9FAFB',
-    100: '#F7FAFC',
-    200: '#EDF2F7',
-    300: '#E2E8F0',
-    400: '#CBD5E0',
-    500: '#A0AEC0',
-    600: '#718096',
-    700: '#4A5568',
-    800: '#2D3748',
-    900: '#1A202C',
+    50: '#FFFFFF',
+    100: '#F2F2F2',
+    200: '#E5E5E5',
+    300: '#E0E0E0',
+    400: '#BDBDBD',
+    500: '#9E9E9E',
+    600: '#757575',
+    700: '#616161',
+    800: '#424242',
+    900: '#212121',
     950: '#070707',
   },
 } satisfies ColorPalette;
@@ -23,12 +23,12 @@ export const LightColors = {
   black: {
     text: palette.gray[50],
     main: palette.gray[950],
-    surface: palette.gray[100],
+    surface: palette.gray[900],
   },
   white: {
     text: palette.gray[950],
     main: palette.gray[50],
-    surface: palette.gray[900],
+    surface: palette.gray[300],
   },
   primary: {
     text: '#EBF8FF',

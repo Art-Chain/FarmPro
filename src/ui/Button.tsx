@@ -14,13 +14,13 @@ const baseButtonStyle = createStyle({
 const useButtonStyle = createStyle(baseButtonStyle, (theme, variant: 'primary' | 'secondary') => {
   if (variant === 'secondary') {
     return {
-      backgroundColor: theme.colors.white.main,
+      backgroundColor: theme.colors.white.surface,
       color: theme.colors.white.text,
     };
   }
 
   return {
-    backgroundColor: theme.colors.black.main,
+    backgroundColor: theme.colors.black.surface,
     color: theme.colors.black.text,
   };
 });
