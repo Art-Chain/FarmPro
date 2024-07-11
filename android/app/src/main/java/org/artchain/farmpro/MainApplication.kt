@@ -1,4 +1,4 @@
-package com.artchain
+package org.artchain.farmpro
 
 import android.app.Application
 import com.facebook.react.PackageList

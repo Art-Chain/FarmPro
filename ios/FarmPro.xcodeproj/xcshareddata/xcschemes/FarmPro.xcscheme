@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "artchain.app"
-               BlueprintName = "artchain"
-               ReferencedContainer = "container:artchain.xcodeproj">
+               BuildableName = "FarmPro.app"
+               BlueprintName = "FarmPro"
+               ReferencedContainer = "container:FarmPro.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "artchainTests.xctest"
-               BlueprintName = "artchainTests"
-               ReferencedContainer = "container:artchain.xcodeproj">
+               BuildableName = "FarmProTests.xctest"
+               BlueprintName = "FarmProTests"
+               ReferencedContainer = "container:FarmPro.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "artchain.app"
-            BlueprintName = "artchain"
-            ReferencedContainer = "container:artchain.xcodeproj">
+            BuildableName = "FarmPro.app"
+            BlueprintName = "FarmPro"
+            ReferencedContainer = "container:FarmPro.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "artchain.app"
-            BlueprintName = "artchain"
-            ReferencedContainer = "container:artchain.xcodeproj">
+            BuildableName = "FarmPro.app"
+            BlueprintName = "FarmPro"
+            ReferencedContainer = "container:FarmPro.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
