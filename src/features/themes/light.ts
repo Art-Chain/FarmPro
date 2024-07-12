@@ -1,4 +1,5 @@
 import type { ColorPalette, Colors } from './colors';
+import type { TypographySheet } from './typography';
 import type { Theme } from './theme';
 
 const palette = {
@@ -37,6 +38,63 @@ export const LightColors = {
   },
 } satisfies Colors;
 
+export const LightTypography = {
+  head1: {
+    fontSize: 32,
+    fontWeight: 600,
+    lineHeight: 32 * 1.167,
+    letterSpacing: -1.5,
+  },
+  head2: {
+    fontSize: 24,
+    fontWeight: 600,
+    lineHeight: 24 * 1.2,
+    letterSpacing: -0.5,
+  },
+  head3: {
+    fontSize: 18,
+    fontWeight: 600,
+    lineHeight: 18 * 1.167,
+  },
+  subtitle1: {
+    fontSize: 16,
+    fontWeight: 600,
+    lineHeight: 16 * 1.75,
+    letterSpacing: 0.15,
+  },
+  subtitle2: {
+    fontSize: 14,
+    fontWeight: 600,
+    lineHeight: 14 * 1.57,
+    letterSpacing: 0.1,
+  },
+  body1: {
+    fontSize: 16,
+    fontWeight: 400,
+    lineHeight: 16 * 1.5,
+    letterSpacing: 0.5,
+  },
+  body2: {
+    fontSize: 14,
+    fontWeight: 400,
+    lineHeight: 14 * 1.43,
+    letterSpacing: 0.25,
+  },
+  caption: {
+    fontSize: 12,
+    fontWeight: 400,
+    lineHeight: 12 * 1.33,
+    letterSpacing: 0.4,
+  },
+  button: {
+    fontSize: 14,
+    fontWeight: 500,
+    lineHeight: 14 * 1.75,
+    letterSpacing: 1.25,
+  },
+} satisfies TypographySheet;
+
 export const LightTheme = {
   colors: LightColors,
+  typography: LightTypography
 } satisfies Theme;
