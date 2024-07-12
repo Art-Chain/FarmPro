@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import { useMemo } from 'react';
 
 import { Theme, useTheme } from '@/features/themes';
 
@@ -18,18 +17,28 @@ type CreateStyleResult<Styles extends (ReactNativeStyle | StyleFactory)[]> = Sty
 
 export const createStyle = <Styles extends (ReactNativeStyle | StyleFactory)[]>(...styles: Styles): CreateStyleResult<Styles> => {
   const baseStyle = StyleSheet.flatten(styles.filter((it) => typeof it !== 'function'));
-  const factories = styles.filter((it) => typeof it === 'function') as StyleFactory[];
+  const factories = styles.filter((it) => typeof it === 'function');
 
   if (factories.length === 0) return baseStyle as CreateStyleResult<Styles>;
 
   return ((...args: StyleFactoryArguments<ExtractStyle<Styles>[number] extends StyleFactory ? ExtractStyle<Styles>[number] : never>) => {
     const theme = useTheme();
 
-    return useMemo(() => {
+    return customMemo(() => {
       const factoryStyles = factories.map((factory) => factory(theme, ...args));
 
       return StyleSheet.flatten([baseStyle, ...factoryStyles]);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [theme, args]);
+    }, [theme, ...args]);
   }) as CreateStyleResult<Styles>;
+};
+
+const memoData = new WeakMap<object, unknown>();
+const customMemo = <ReturnType>(fn: () => ReturnType, args: unknown[] = []) => {
+  const data = memoData.get(args);
+  if (data) return data;
+
+  const result = fn();
+  memoData.set(args, result);
+
+  return result;
 };
