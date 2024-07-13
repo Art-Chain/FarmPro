@@ -1,10 +1,6 @@
-export interface Typography {
-  fontFamily?: string;
-  fontSize?: number;
-  fontWeight?: number;
-  lineHeight?: number;
-  letterSpacing?: number;
-}
+import { TextStyle } from 'react-native';
+
+export type Typography = Pick<TextStyle, 'fontFamily' | 'fontSize' | 'fontWeight' | 'lineHeight' | 'letterSpacing'>;
 
 export interface TypographySheet {
   head1: Typography;
