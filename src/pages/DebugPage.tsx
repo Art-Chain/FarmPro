@@ -1,6 +1,7 @@
 import { View } from 'react-native';
+import Icon from 'react-native-vector-icons/Octicons';
 
-import { Button, Typography } from '@/ui';
+import { Button, TextInput, Typography } from '@/ui';
 
 export const DebugPage = () => {
   return (
@@ -23,6 +24,10 @@ export const DebugPage = () => {
       <Button variant={'secondary'}>
         Secondary
       </Button>
+
+      <Typography variant={'head1'}>TextInput</Typography>
+      <TextInput />
+      <TextInput icon={<Icon name={'search'} size={18} />} />
     </View>
   );
 };
