@@ -32,9 +32,9 @@ export const LightColors = {
     surface: palette.gray[300],
   },
   primary: {
-    text: '#EBF8FF',
-    main: '#2B6CB0',
-    surface: '#90CDF4',
+    text: palette.gray[50],
+    main: '#3FC685',
+    surface: '#3FC685',
   },
 } satisfies Colors;
 

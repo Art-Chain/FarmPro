@@ -1,16 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
+import BootSplash from 'react-native-bootsplash';
 import { NavigationContainer } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 
 import { ThemeProvider } from '@/features/themes';
-import { HomePage, DebugPage } from '@/pages';
+import { DebugPage, HomePage } from '@/pages';
 
 const Stack = createNativeStackNavigator();
 
 export const App = () => {
+  useEffect(() => {
+    void BootSplash.hide({ fade: true });
+  }, []);
+
   return (
     <ThemeProvider>
       <NavigationContainer>
