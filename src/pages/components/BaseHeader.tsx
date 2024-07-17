@@ -3,8 +3,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import React from 'react';
 import { createStyle } from '@/features/utils';
 import { View } from 'react-native';
-import { BottomTabHeaderProps } from '@react-navigation/bottom-tabs/src/types.tsx';
+
 import { Space, Typography } from '@/ui/common';
+import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 
 const useHeaderStyle = createStyle((theme, top = 0) => ({
   width: '100%',
@@ -20,7 +21,7 @@ const useHeaderStyle = createStyle((theme, top = 0) => ({
   borderBottomWidth: 1,
   borderColor: theme.colors.palette.gray[200],
 }));
-export const BaseHeader = ({ route, options }: BottomTabHeaderProps) => {
+export const BaseHeader = ({ route, options }: NativeStackHeaderProps) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const headerStyle = useHeaderStyle(insets.top);
@@ -29,17 +30,15 @@ export const BaseHeader = ({ route, options }: BottomTabHeaderProps) => {
     <View style={headerStyle}>
       {options.headerLeft?.({
         tintColor: theme.colors.palette.gray[950],
-        pressColor: theme.colors.palette.gray[500],
-        pressOpacity: 0.5,
-        labelVisible: true,
+        canGoBack: true,
+        label: '',
       }) ?? <Space size={24} />}
       <Typography variant={'subtitle1'}>
         {options.title ?? route.name}
       </Typography>
       {options.headerRight?.({
         tintColor: theme.colors.primary.main,
-        pressColor: theme.colors.palette.gray[500],
-        pressOpacity: 0.5,
+        canGoBack: true,
       }) ?? <Space size={24} />}
     </View>
   );

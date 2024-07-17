@@ -23,13 +23,14 @@ export const useTypographyStyle = createStyle((theme, { variant, align, color, w
 });
 
 export type TypographyProps = TextProps & Partial<TypographyOptions>;
-export const Typography = ({ variant = 'body1', color, align, weight, ...props }: TypographyProps) => {
+export const Typography = React.forwardRef<Text, TypographyProps>(({ variant = 'body1', color, align, weight, ...props }, fRef) => {
   const style = useTypographyStyle({ variant, color, align, weight });
 
   return (
     <Text
+      ref={fRef}
       {...props}
       style={StyleSheet.compose(props.style, style)}
     />
   );
-};
+});

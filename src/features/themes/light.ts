@@ -27,9 +27,9 @@ export const LightColors = {
     surface: palette.gray[900],
   },
   white: {
-    text: palette.gray[950],
+    text: palette.gray[500],
     main: palette.gray[50],
-    surface: palette.gray[300],
+    surface: palette.gray[100],
   },
   primary: {
     text: palette.gray[50],

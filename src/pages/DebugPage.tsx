@@ -18,6 +18,9 @@ export const DebugPage = () => {
         <Button onPress={() => navigation.navigate('onBoarding')}>
           go OnBoardPage
         </Button>
+        <Button onPress={() => navigation.navigate('contentCreate')}>
+          go ContentCreatePage
+        </Button>
 
         <Typography variant={'head1'}>Typography</Typography>
         <Typography variant={'head1'}>head1</Typography>

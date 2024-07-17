@@ -1,7 +1,9 @@
 export type RootStackParamList = {
+  main: undefined;
   home: undefined;
   debug: undefined;
   onBoarding: undefined;
+  contentCreate: undefined;
 };
 
 declare global {
