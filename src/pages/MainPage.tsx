@@ -8,16 +8,25 @@ import ArticleIcon from '@/assets/images/article.svg';
 import UserIcon from '@/assets/images/user.svg';
 
 import { Header } from './components';
+import { useMemo } from 'react';
 
 const Tab = createBottomTabNavigator();
 
 export const MainPage = () => {
   const theme = useTheme();
+  const header = useMemo(() => <Header />, []);
 
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        header: Header,
+        header: () => header,
+        tabBarStyle: {
+          height: 62,
+          padding: 8,
+        },
+        tabBarItemStyle: {
+          height: 44,
+        },
         tabBarIcon: ({ color, size }) => {
           if (route.name === 'home') return <HomeIcon width={size} height={size} color={color}/>;
           else if (route.name === 'article') return <ArticleIcon width={size} height={size} color={color}/>;

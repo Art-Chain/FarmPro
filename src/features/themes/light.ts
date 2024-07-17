@@ -82,7 +82,7 @@ export const LightTypography = {
   button: {
     fontSize: 14,
     fontWeight: '500',
-    lineHeight: 14 * 1.2,
+    lineHeight: 14 * 1.4,
   },
 } satisfies TypographySheet;
 

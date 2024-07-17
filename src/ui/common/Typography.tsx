@@ -1,15 +1,23 @@
-import { Text, TextProps } from 'react-native';
 import React from 'react';
+import { Text, TextProps } from 'react-native';
+
 import { createStyle } from '@/features/utils';
-import { TypographySheet } from '@/features/themes';
+import { Colors, TypographySheet } from '@/features/themes';
 
-export const useTypographyStyle = createStyle((theme, variant: keyof TypographySheet) => theme.typography[variant]);
-
-export interface TypographyProps extends TextProps {
-  variant?: keyof TypographySheet;
+interface TypographyOptions {
+  variant: keyof TypographySheet;
+  color?: (color: Colors) => string;
+  align?: 'left' | 'center' | 'right';
 }
-export const Typography = ({ variant = 'body1', ...props }: TypographyProps) => {
-  const style = useTypographyStyle(variant);
+export const useTypographyStyle = createStyle((theme, { variant, align, color }: TypographyOptions) => ({
+  ...theme.typography[variant],
+  color: color?.(theme.colors),
+  textAlign: align,
+}));
+
+export type TypographyProps = TextProps & Partial<TypographyOptions>;
+export const Typography = ({ variant = 'body1', color, align, ...props }: TypographyProps) => {
+  const style = useTypographyStyle({ variant, color, align });
 
   return (
     <Text
