@@ -2,7 +2,7 @@ import { View } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import Icon from 'react-native-vector-icons/Octicons';
 
-import { Button, TextInput, Typography } from '@/ui';
+import { Button, TextInput, Typography } from '@/ui/common';
 
 export const DebugPage = () => {
   return (

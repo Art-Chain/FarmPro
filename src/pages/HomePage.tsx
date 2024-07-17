@@ -1,5 +1,5 @@
 import { Text, View } from 'react-native';
-import { Button } from '@/ui';
+import { Button } from '@/ui/common';
 import { useNavigation } from '@react-navigation/native';
 
 export const HomePage = () => {
@@ -12,6 +12,11 @@ export const HomePage = () => {
         navigation.navigate('debug');
       }}>
         Go to DebugPage
+      </Button>
+      <Button variant={'primary'} onPress={() => {
+        navigation.navigate('onBoarding');
+      }}>
+        Go to OnBoardingPage
       </Button>
     </View>
   );
