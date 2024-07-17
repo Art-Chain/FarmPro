@@ -6,7 +6,7 @@ import PagerView from 'react-native-pager-view';
 import Animated, { useSharedValue } from 'react-native-reanimated';
 
 import { Space, Typography } from '@/ui/common';
-import { Pagination } from '@/ui/Pagination';
+import { Pagination } from '@/pages/components/Pagination.tsx';
 
 import { useTheme } from '@/features/themes';
 import { createStyle } from '@/features/utils';
