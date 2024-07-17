@@ -1,11 +1,9 @@
-import { useMemo } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ArticlePage, HomePage } from '@/pages/main';
 import { useTheme } from '@/features/themes';
 
-import { BaseHeader, Header } from './components';
 import { DebugPage } from './DebugPage';
 
 import HomeIcon from '@/assets/images/home.svg';
@@ -18,12 +16,10 @@ const Tab = createBottomTabNavigator();
 export const MainPage = () => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const header = useMemo(() => <Header />, []);
 
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        header: (props) => route.name === 'home' ? header : <BaseHeader {...props}/>,
         tabBarStyle: {
           height: 62 + insets.bottom,
           padding: 8,
@@ -41,6 +37,7 @@ export const MainPage = () => {
         tabBarInactiveTintColor: 'gray',
         tabBarLabel: route.name === 'home' ? '홈' : route.name === 'article' ? '기록' : '마이팜프로',
         headerLeft: () => <BackIcon />,
+        headerShown: false,
       })}
     >
       <Tab.Screen name={'home'} component={HomePage}/>
