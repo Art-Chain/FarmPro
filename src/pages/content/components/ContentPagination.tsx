@@ -1,6 +1,15 @@
-import React from 'react';
-import { View } from 'react-native';
-import Animated, { interpolateColor, SharedValue, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import React, { useEffect } from 'react';
+import Animated, {
+  Easing,
+  FadeInDown,
+  FadeOutDown,
+  interpolateColor,
+  LinearTransition,
+  SharedValue,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming
+} from 'react-native-reanimated';
 
 import { createStyle } from '@/features/utils';
 import { useTheme } from '@/features/themes';
@@ -37,13 +46,22 @@ export const ContentPagination = ({ length, current, value: propValue }: Content
 
   const containerStyle = useContainerStyle();
 
+  useEffect(() => {
+    value.value = withTiming(current ?? 0, {
+      easing: Easing.elastic(0.5),
+    });
+  }, [current, value]);
+
   return (
-    <View style={containerStyle}>
-      {Array.from({ length }).map((_, i) => <>
-        {i > 0 && <Space size={4} />}
-        <Dot key={i} current={value} position={i}/>
-      </>)}
-    </View>
+    <Animated.View
+      layout={LinearTransition.duration(300).easing(Easing.elastic(0.5))}
+      style={containerStyle}
+    >
+      {Array.from({ length }).map((_, i) => <React.Fragment key={i}>
+        {i > 0 && <Space size={4}/>}
+        <Dot current={value} position={i}/>
+      </React.Fragment>)}
+    </Animated.View>
   );
 };
 
@@ -64,6 +82,6 @@ const Dot = React.memo(({ position, current }: DotProps) => {
   }), [theme]);
 
   return (
-    <Animated.View style={[dotStyle, animatedDotStyle]}/>
+    <Animated.View entering={FadeInDown} exiting={FadeOutDown} style={[dotStyle, animatedDotStyle]}/>
   );
 });
