@@ -40,46 +40,55 @@ export const LightColors = {
 
 export const LightTypography = {
   head1: {
+    fontFamily: 'Pretendard-SemiBold',
     fontSize: 32,
     fontWeight: '600',
     lineHeight: 32 * 1.4,
   },
   head2: {
+    fontFamily: 'Pretendard-SemiBold',
     fontSize: 24,
     fontWeight: '600',
     lineHeight: 24 * 1.4,
   },
   head3: {
+    fontFamily: 'Pretendard-SemiBold',
     fontSize: 20,
     fontWeight: '600',
     lineHeight: 20 * 1.4,
   },
   subtitle1: {
+    fontFamily: 'Pretendard-SemiBold',
     fontSize: 18,
     fontWeight: '600',
     lineHeight: 18 * 1.4,
   },
   subtitle2: {
+    fontFamily: 'Pretendard-Medium',
     fontSize: 16,
     fontWeight: '500',
     lineHeight: 16 * 1.4,
   },
   body1: {
+    fontFamily: 'Pretendard-Regular',
     fontSize: 16,
     fontWeight: '400',
     lineHeight: 16 * 1.5,
     letterSpacing: 0.5,
   },
   body2: {
+    fontFamily: 'Pretendard-Regular',
     fontSize: 14,
     fontWeight: '400',
     lineHeight: 14 * 1.4,
   },
   caption: {
+    fontFamily: 'Pretendard-Regular',
     fontSize: 12,
     lineHeight: 12 * 1.4,
   },
   button: {
+    fontFamily: 'Pretendard-Medium',
     fontSize: 14,
     fontWeight: '500',
     lineHeight: 14 * 1.4,

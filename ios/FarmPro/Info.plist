@@ -33,20 +33,6 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
-	<key>UILaunchStoryboardName</key>
-	<string>BootSplash</string>
-	<key>UIRequiredDeviceCapabilities</key>
-	<array>
-		<string>arm64</string>
-	</array>
-	<key>UISupportedInterfaceOrientations</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
@@ -68,6 +54,21 @@
 		<string>Octicons.ttf</string>
 		<string>Zocial.ttf</string>
 		<string>Fontisto.ttf</string>
+		<string>PretendardVariable.ttf</string>
 	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>BootSplash</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>arm64</string>
+	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 </dict>
 </plist>
