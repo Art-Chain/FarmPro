@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { ArticlePage, HomePage, UserPage } from '@/pages/main';
+import { ArticlePage, HomePage } from '@/pages/main';
 import { useTheme } from '@/features/themes';
 
 import HomeIcon from '@/assets/images/home.svg';
@@ -9,11 +9,14 @@ import UserIcon from '@/assets/images/user.svg';
 
 import { Header } from './components';
 import { useMemo } from 'react';
+import { DebugPage } from '@/pages/DebugPage.tsx';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Tab = createBottomTabNavigator();
 
 export const MainPage = () => {
   const theme = useTheme();
+  const insets = useSafeAreaInsets();
   const header = useMemo(() => <Header />, []);
 
   return (
@@ -21,8 +24,9 @@ export const MainPage = () => {
       screenOptions={({ route }) => ({
         header: () => header,
         tabBarStyle: {
-          height: 62,
+          height: 62 + insets.bottom,
           padding: 8,
+          paddingBottom: 8 + insets.bottom,
         },
         tabBarItemStyle: {
           height: 44,
@@ -39,7 +43,7 @@ export const MainPage = () => {
     >
       <Tab.Screen name={'home'} component={HomePage}/>
       <Tab.Screen name={'article'} component={ArticlePage}/>
-      <Tab.Screen name={'user'} component={UserPage}/>
+      <Tab.Screen name={'user'} component={DebugPage}/>
     </Tab.Navigator>
   );
 };

@@ -13,12 +13,14 @@ import { createStyle } from '@/features/utils';
 import { usePageScrollHandler } from '@/features/hooks';
 
 import img from '@/assets/images/on_boarding_1.png';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const AnimatedPagerView = Animated.createAnimatedComponent(PagerView);
 
-const useButtonStyle = createStyle((theme) => ({
+const useButtonStyle = createStyle((theme, inset = 0) => ({
   padding: 28,
   backgroundColor: theme.colors.primary.main,
+  paddingBottom: 28 + inset,
 }));
 const useButtonTextStyle = createStyle((theme) => ({
   color: theme.colors.primary.text,
@@ -37,9 +39,10 @@ const textStyle = createStyle({
 export const OnBoardingPage = () => {
   const theme = useTheme();
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
 
   const page = useSharedValue(0);
-  const buttonStyle = useButtonStyle();
+  const buttonStyle = useButtonStyle(insets.bottom);
   const buttonTextStyle = useButtonTextStyle();
 
   const onStart = useCallback(() => {
@@ -53,11 +56,11 @@ export const OnBoardingPage = () => {
   });
 
   return (
-    <View style={{ width: '100%', height: '100%' }}>
+    <View style={{ width: '100%', height: '100%', paddingTop: insets.top }}>
       <View key={0} style={{ width: '100%', height: '100%' }}>
         <Space size={24}/>
         <Pagination length={2} value={page}/>
-        <AnimatedPagerView useNext style={{ flex: 1 }} initialPage={0} onPageScroll={handler}>
+        <AnimatedPagerView useNext={false} style={{ flex: 1 }} scrollEnabled initialPage={0} onPageScroll={handler}>
           <View key={0} style={{ flex: 1 }}>
             <Typography variant={'head2'} style={textStyle}>
               <Typography variant={'head2'} style={{ color: theme.colors.primary.main }}>AI로</Typography> 자동 생성되는{'\n'}

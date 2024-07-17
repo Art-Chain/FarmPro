@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TextProps } from 'react-native';
+import { StyleSheet, Text, TextProps } from 'react-native';
 
 import { createStyle } from '@/features/utils';
 import { Colors, TypographySheet } from '@/features/themes';
@@ -22,7 +22,7 @@ export const Typography = ({ variant = 'body1', color, align, ...props }: Typogr
   return (
     <Text
       {...props}
-      style={[props.style, style]}
+      style={StyleSheet.flatten([style, props.style])}
     />
   );
 };

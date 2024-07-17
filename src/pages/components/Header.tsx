@@ -9,10 +9,11 @@ import { createStyle } from '@/features/utils';
 import LogoIcon from '@/assets/logo.svg';
 import SearchIcon from '@/assets/images/search.svg';
 import BellIcon from '@/assets/images/bell.svg';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const headerStyle = createStyle({
+const useHeaderStyle = createStyle((_, top = 0) => ({
   width: '100%',
-  height: 56,
+  height: 56 + top,
 
   flexDirection: 'row',
   justifyContent: 'flex-start',
@@ -20,7 +21,8 @@ const headerStyle = createStyle({
 
   paddingVertical: 16,
   paddingHorizontal: 20,
-});
+  paddingTop: 16 + top,
+}));
 const useTitleStyle = createStyle((theme) => ({
   ...theme.typography.subtitle1,
   textAlignVertical: 'center',
@@ -30,6 +32,8 @@ const useTitleStyle = createStyle((theme) => ({
 
 export const Header = () => {
   const theme = useTheme();
+  const insets = useSafeAreaInsets();
+  const headerStyle = useHeaderStyle(insets.top);
   const textStyle = useTitleStyle();
 
   return (
