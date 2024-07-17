@@ -1,6 +1,6 @@
 import { Text, TextProps } from 'react-native';
 
-import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, { Easing, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import {
   Gesture,
   GestureDetector,
@@ -9,13 +9,17 @@ import {
 } from 'react-native-gesture-handler';
 
 import { createStyle, useTextStyle, useViewStyle } from '@/features/utils';
+import React from 'react';
 
 const baseButtonStyle = createStyle((theme) => ({
   ...theme.typography.button,
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+  textAlign: 'center',
   padding: 16,
   borderRadius: 16,
   fontSize: 16,
-  textAlign: 'center',
 }));
 const useButtonStyle = createStyle(baseButtonStyle, (theme, variant: 'primary' | 'secondary') => {
   if (variant === 'secondary') {
@@ -26,8 +30,8 @@ const useButtonStyle = createStyle(baseButtonStyle, (theme, variant: 'primary' |
   }
 
   return {
-    backgroundColor: theme.colors.black.surface,
-    color: theme.colors.black.text,
+    backgroundColor: theme.colors.primary.surface,
+    color: theme.colors.primary.text,
   };
 });
 
@@ -36,6 +40,7 @@ export interface ButtonProps extends Omit<TextProps, 'onPress' | 'onPressIn' | '
   onPress?: (event: GestureStateChangeEvent<TapGestureHandlerEventPayload>) => void;
   onPressIn?: (event: GestureStateChangeEvent<TapGestureHandlerEventPayload>) => void;
   onPressOut?: (event: GestureStateChangeEvent<TapGestureHandlerEventPayload>) => void;
+  icon?: React.ReactNode;
 }
 
 export const Button = ({
@@ -45,6 +50,7 @@ export const Button = ({
   onPress,
   onPressIn,
   onPressOut,
+  icon,
   ...props
 }: ButtonProps) => {
   const pressed = useSharedValue(false);
@@ -63,7 +69,16 @@ export const Button = ({
     });
 
   const animatedStyle = useAnimatedStyle(() => ({
-    opacity: withTiming(pressed.value ? 0.5 : 1),
+    opacity: withTiming(pressed.value ? 0.5 : 1, {
+      easing: Easing.elastic(1),
+    }),
+    transform: [
+      {
+        scale: withTiming(pressed.value ? 0.95 : 1, {
+          easing: Easing.elastic(1),
+        }),
+      }
+    ]
   }));
   const buttonStyle = useButtonStyle(variant);
 
@@ -77,6 +92,7 @@ export const Button = ({
         <Text style={useTextStyle([buttonStyle, style])}>
           {children}
         </Text>
+        {icon}
       </Animated.View>
     </GestureDetector>
   );
