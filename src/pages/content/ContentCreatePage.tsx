@@ -8,7 +8,7 @@ import PagerView from 'react-native-pager-view';
 import { Button, Space } from '@/ui/common';
 import { createStyle } from '@/features/utils';
 
-import { ContentCreateFragment, ContentCreateInfoFragment } from './Fragment';
+import { ContentCreateFragment, ContentCreateInfoFragment } from './fragments';
 
 import type { OnPageSelectedEventData } from 'react-native-pager-view/src/specs/PagerViewNativeComponent';
 
@@ -51,13 +51,12 @@ export const ContentCreatePage = () => {
         onPageSelected={useCallback((event: NativeSyntheticEvent<OnPageSelectedEventData>) => setPosition(event.nativeEvent.position), [])}
         style={{ flex: 1 }}
       >
-        <ScrollView key={0} style={{ paddingHorizontal: 20, paddingVertical: 24, flex: 1, }}>
+        <ScrollView key={0} style={{ paddingHorizontal: 20, paddingTop: 24, flex: 1, }}>
           <ContentCreateInfoFragment/>
         </ScrollView>
-
-        <ScrollView key={1} style={{ paddingHorizontal: 20, paddingVertical: 24, flex: 1, }}>
+        <View key={1} style={{ paddingHorizontal: 20, paddingTop: 24, flex: 1 }}>
           <ContentCreateFragment/>
-        </ScrollView>
+        </View>
       </PagerView>
       <View style={buttonContainerStyle}>
         <Button variant={'secondary'} style={{ flex: 1 }} onPress={onPrev}>

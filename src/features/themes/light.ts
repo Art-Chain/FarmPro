@@ -88,10 +88,10 @@ export const LightTypography = {
     lineHeight: 12 * 1.4,
   },
   button: {
-    fontFamily: 'Pretendard-Medium',
-    fontSize: 14,
-    fontWeight: '500',
-    lineHeight: 14 * 1.4,
+    fontFamily: 'Pretendard-SemiBold',
+    fontSize: 16,
+    fontWeight: '600',
+    lineHeight: 16 * 1.4,
   },
 } satisfies TypographySheet;
 

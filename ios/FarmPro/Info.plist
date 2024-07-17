@@ -70,5 +70,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>사진을 업로드 하기 위해서는 사진 접근 권한이 필요합니다.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>이 앱은 마이크 권한을 요구하지 않습니다.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>이 앱은 카메라 권한을 요구하지 않습니다.</string>
 </dict>
 </plist>
