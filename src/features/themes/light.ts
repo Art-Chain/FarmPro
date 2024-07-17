@@ -42,31 +42,27 @@ export const LightTypography = {
   head1: {
     fontSize: 32,
     fontWeight: '600',
-    lineHeight: 32 * 1.167,
-    letterSpacing: -1.5,
+    lineHeight: 32 * 1.4,
   },
   head2: {
     fontSize: 24,
     fontWeight: '600',
-    lineHeight: 24 * 1.2,
-    letterSpacing: -0.5,
+    lineHeight: 24 * 1.4,
   },
   head3: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: '600',
-    lineHeight: 18 * 1.167,
+    lineHeight: 20 * 1.4,
   },
   subtitle1: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '600',
-    lineHeight: 16 * 1.75,
-    letterSpacing: 0.15,
+    lineHeight: 18 * 1.4,
   },
   subtitle2: {
-    fontSize: 14,
-    fontWeight: '600',
-    lineHeight: 14 * 1.57,
-    letterSpacing: 0.1,
+    fontSize: 16,
+    fontWeight: '500',
+    lineHeight: 16 * 1.4,
   },
   body1: {
     fontSize: 16,
@@ -77,20 +73,16 @@ export const LightTypography = {
   body2: {
     fontSize: 14,
     fontWeight: '400',
-    lineHeight: 14 * 1.43,
-    letterSpacing: 0.25,
+    lineHeight: 14 * 1.4,
   },
   caption: {
     fontSize: 12,
-    fontWeight: '400',
-    lineHeight: 12 * 1.33,
-    letterSpacing: 0.4,
+    lineHeight: 12 * 1.4,
   },
   button: {
     fontSize: 14,
     fontWeight: '500',
-    lineHeight: 14 * 1.75,
-    letterSpacing: 1.25,
+    lineHeight: 14 * 1.2,
   },
 } satisfies TypographySheet;
 

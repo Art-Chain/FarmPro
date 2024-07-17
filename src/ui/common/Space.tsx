@@ -6,5 +6,5 @@ export interface SpaceProps {
 }
 
 export const Space = React.memo(({ size }: SpaceProps) => (
-  <View style={{ height: size, width: size }}/>
+  <View style={size ? { height: size, width: size } : { flex: 1 }}/>
 ));

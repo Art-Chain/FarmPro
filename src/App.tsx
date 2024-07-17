@@ -7,7 +7,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 
 import { ThemeProvider } from '@/features/themes';
-import { DebugPage, HomePage, OnBoardingPage } from '@/pages';
+import { DebugPage, MainPage, OnBoardingPage } from '@/pages';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,7 +29,7 @@ export const App = () => {
                 // navigationBarColor: '#3FC685',
               }}
             >
-              <Stack.Screen name={'home'} component={HomePage}/>
+              <Stack.Screen name={'main'} component={MainPage}/>
               <Stack.Screen
                 name={'onBoarding'}
                 component={OnBoardingPage}
