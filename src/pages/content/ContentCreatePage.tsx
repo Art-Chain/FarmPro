@@ -1,16 +1,19 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { NativeSyntheticEvent, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PagerView from 'react-native-pager-view';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
 import { Button, Space } from '@/ui/common';
 import { createStyle } from '@/features/utils';
 
-import { ContentCreateFragment, ContentCreateInfoFragment } from './fragments';
+import { AIConfigFragment, ContentCreateFragment, ContentCreateInfoFragment } from './fragments';
 
 import type { OnPageSelectedEventData } from 'react-native-pager-view/src/specs/PagerViewNativeComponent';
+import { Shadow } from '@/ui/Shadow';
+import { useTheme } from '@/features/themes';
 
 const useButtonContainerStyle = createStyle((_, bottom = 0) => ({
   flexDirection: 'row',
@@ -20,11 +23,17 @@ const useButtonContainerStyle = createStyle((_, bottom = 0) => ({
 }));
 
 export const ContentCreatePage = () => {
+  const theme = useTheme();
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
 
   const pager = useRef<PagerView>(null);
+  const configRef = useRef<BottomSheetModal>(null);
   const [position, setPosition] = useState(0);
+  const [aiConfig, setAiConfig] = useState({
+    articleType: 'info',
+    imageStyle: 'fancy',
+  });
 
   const buttonContainerStyle = useButtonContainerStyle(insets.bottom);
 
@@ -51,11 +60,11 @@ export const ContentCreatePage = () => {
         onPageSelected={useCallback((event: NativeSyntheticEvent<OnPageSelectedEventData>) => setPosition(event.nativeEvent.position), [])}
         style={{ flex: 1 }}
       >
-        <ScrollView key={0} style={{ paddingHorizontal: 20, paddingTop: 24, flex: 1, }}>
+        <ScrollView key={0} collapsable={false} style={{ paddingHorizontal: 20, paddingTop: 24, flex: 1 }}>
           <ContentCreateInfoFragment/>
         </ScrollView>
-        <View key={1} style={{ paddingHorizontal: 20, paddingTop: 24, flex: 1 }}>
-          <ContentCreateFragment/>
+        <View key={1} collapsable={false} style={{ paddingHorizontal: 20, paddingTop: 24, flex: 1 }}>
+          <ContentCreateFragment onConfigPress={configRef.current?.present} />
         </View>
       </PagerView>
       <View style={buttonContainerStyle}>
@@ -67,6 +76,33 @@ export const ContentCreatePage = () => {
           다음
         </Button>
       </View>
+      <BottomSheetModal
+        ref={configRef}
+        index={0}
+        snapPoints={['80%']}
+        backgroundComponent={({ style, ...props }) => (
+          <Shadow
+            key={0}
+            {...props}
+            shadowRadius={128}
+            shadowColor={'rgba(0, 0, 0, 0.4)'}
+            borderTopLeftRadius={16}
+            borderTopRightRadius={16}
+            style={[style, { backgroundColor: theme.colors.white.main }]}
+          />
+        )}
+      >
+        <AIConfigFragment
+          key={0}
+          defaultArticleType={aiConfig.articleType}
+          defaultImageStyle={aiConfig.imageStyle}
+          onCancel={configRef.current?.close}
+          onSubmit={useCallback((articleType: string, imageStyle: string) => {
+            setAiConfig({ articleType, imageStyle });
+            configRef.current?.close();
+          }, [])}
+        />
+      </BottomSheetModal>
     </View>
   );
 };
