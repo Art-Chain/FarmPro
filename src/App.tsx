@@ -10,6 +10,7 @@ import { ThemeProvider, useTheme } from '@/features/themes';
 import { DebugPage, MainPage, OnBoardingPage } from '@/pages';
 import { ContentCreatePage } from '@/pages/content';
 import { BaseHeader, Header } from '@/pages/components';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,7 +23,9 @@ export const App = () => {
     <ThemeProvider>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <KeyboardProvider>
-          <Route />
+          <BottomSheetModalProvider>
+            <Route/>
+          </BottomSheetModalProvider>
         </KeyboardProvider>
       </GestureHandlerRootView>
     </ThemeProvider>
@@ -31,7 +34,7 @@ export const App = () => {
 
 export const Route = () => {
   const theme = useTheme();
-  const appHeader = useMemo(() => <Header />, []);
+  const appHeader = useMemo(() => <Header/>, []);
 
   return (
     <NavigationContainer
@@ -51,7 +54,7 @@ export const Route = () => {
           // navigationBarColor: '#3FC685',
         })}
       >
-        <Stack.Screen name={'main'} component={MainPage} />
+        <Stack.Screen name={'main'} component={MainPage}/>
         <Stack.Screen
           name={'contentCreate'}
           component={ContentCreatePage}

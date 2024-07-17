@@ -11,6 +11,8 @@ import AddIcon from '@/assets/images/add.svg';
 import StrawberryImage from '@/assets/images/strawberry.png';
 import CucumberImage from '@/assets/images/cucumber.png';
 import PaprikaImage from '@/assets/images/paprika.png';
+import { useCallback } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 const gradientStyle = createStyle({
   position: 'absolute',
@@ -18,6 +20,7 @@ const gradientStyle = createStyle({
 
 export const HomePage = () => {
   const theme = useTheme();
+  const navigation = useNavigation();
 
   return (
     <ScrollView contentContainerStyle={{ paddingVertical: 16, paddingHorizontal: 20 }}>
@@ -69,7 +72,13 @@ export const HomePage = () => {
           />
         </ScrollView>
         <Space size={24}/>
-        <Button icon={<AddIcon width={16} height={16} color={theme.colors.primary.text}/>} style={{ margin: 16 }}>
+        <Button
+          style={{ margin: 16 }}
+          icon={<AddIcon width={16} height={16} color={theme.colors.primary.text}/>}
+          onPress={useCallback(() => {
+            navigation.navigate('contentCreate');
+          }, [navigation])}
+        >
           콘텐츠 만들기
         </Button>
       </Card>

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import Carousel from 'react-native-reanimated-carousel';
 import { Dimensions, View } from 'react-native';
 
@@ -33,8 +33,10 @@ const useAddCardStyle = createStyle((theme) => ({
   borderColor: theme.colors.palette.gray[300],
   backgroundColor: theme.colors.palette.gray[200],
 }));
-
-export const ContentCreateFragment = () => {
+interface ContentCreateFragmentProps {
+  onConfigPress?: () => void;
+}
+export const ContentCreateFragment = ({ onConfigPress }: ContentCreateFragmentProps) => {
   const theme = useTheme();
   const size = useMemo(() => Dimensions.get('window').width, []);
 
@@ -49,6 +51,10 @@ export const ContentCreateFragment = () => {
     .onEnd(() => {
       runOnJS(onAdd)();
     });
+  const tapConfig = Gesture.Tap()
+    .onEnd(() => {
+      if (onConfigPress) runOnJS(onConfigPress)();
+    });
 
   const addCardStyle = useAddCardStyle();
 
@@ -58,7 +64,9 @@ export const ContentCreateFragment = () => {
         <Typography variant={'subtitle1'}>
           카드뉴스 이미지 생성
         </Typography>
-        <AIIcon color={theme.colors.primary.main}/>
+        <GestureDetector gesture={tapConfig}>
+          <AIIcon color={theme.colors.primary.main}/>
+        </GestureDetector>
       </View>
       <Space size={16}/>
       <View style={{ margin: -20, height: size }}>

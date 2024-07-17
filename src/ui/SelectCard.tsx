@@ -13,7 +13,7 @@ import {
   GestureStateChangeEvent,
   TapGestureHandlerEventPayload
 } from 'react-native-gesture-handler';
-import { ViewProps } from 'react-native';
+import { StyleSheet, ViewProps } from 'react-native';
 import { useEffect } from 'react';
 
 const baseCardStyle = createStyle({
@@ -28,6 +28,7 @@ export interface SelectCardProps extends ViewProps {
   onPressIn?: (event: GestureStateChangeEvent<TapGestureHandlerEventPayload>) => void;
   onPressOut?: (event: GestureStateChangeEvent<TapGestureHandlerEventPayload>) => void;
 }
+
 export const SelectCard = ({ selected, onPress, onPressIn, onPressOut, children, ...props }: SelectCardProps) => {
   const theme = useTheme();
 
@@ -72,9 +73,9 @@ export const SelectCard = ({ selected, onPress, onPressIn, onPressOut, children,
     margin: 1 - activeValue.value,
   }));
 
-  return  (
+  return (
     <GestureDetector gesture={tap}>
-      <Animated.View {...props} style={[baseCardStyle, animatedCardStyle, props.style]}>
+      <Animated.View {...props} style={StyleSheet.compose([baseCardStyle, animatedCardStyle], props.style)}>
         {children}
       </Animated.View>
     </GestureDetector>
