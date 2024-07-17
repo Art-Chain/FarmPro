@@ -10,12 +10,17 @@ interface TypographyOptions {
   align?: 'left' | 'center' | 'right';
   weight?: TextStyle['fontWeight'];
 }
-export const useTypographyStyle = createStyle((theme, { variant, align, color, weight }: TypographyOptions) => ({
-  ...theme.typography[variant],
-  color: color?.(theme.colors),
-  textAlign: align,
-  fontWeight: weight,
-}));
+export const useTypographyStyle = createStyle((theme, { variant, align, color, weight }: TypographyOptions) => {
+  const style: TextStyle = {};
+  if (color) style.color = color(theme.colors);
+  if (align) style.textAlign = align;
+  if (weight) style.fontWeight = weight;
+
+  return {
+    ...theme.typography[variant],
+    ...style,
+  };
+});
 
 export type TypographyProps = TextProps & Partial<TypographyOptions>;
 export const Typography = ({ variant = 'body1', color, align, weight, ...props }: TypographyProps) => {
@@ -24,7 +29,7 @@ export const Typography = ({ variant = 'body1', color, align, weight, ...props }
   return (
     <Text
       {...props}
-      style={StyleSheet.flatten([style, props.style])}
+      style={StyleSheet.compose(props.style, style)}
     />
   );
 };
