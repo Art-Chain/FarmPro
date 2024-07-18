@@ -1,6 +1,13 @@
-import { Text, TextProps } from 'react-native';
+import { Text, TextProps, ViewProps } from 'react-native';
 
-import Animated, { Easing, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, {
+  Easing,
+  runOnJS,
+  StyleProps,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming
+} from 'react-native-reanimated';
 import {
   Gesture,
   GestureDetector,
@@ -10,6 +17,7 @@ import {
 
 import { createStyle, useTextStyle, useViewStyle } from '@/features/utils';
 import React from 'react';
+import { AnimatedProps } from 'react-native-reanimated/src/helperTypes.ts';
 
 const baseButtonStyle = createStyle((theme) => ({
   ...theme.typography.button,
@@ -35,12 +43,14 @@ const useButtonStyle = createStyle(baseButtonStyle, (theme, variant: 'primary' |
   };
 });
 
-export interface ButtonProps extends Omit<TextProps, 'onPress' | 'onPressIn' | 'onPressOut'> {
+export interface ButtonProps extends Omit<TextProps & AnimatedProps<ViewProps>, 'onPress' | 'onPressIn' | 'onPressOut' | 'sharedTransitionStyle' | 'animatedProps'> {
   variant?: 'primary' | 'secondary';
   onPress?: (event: GestureStateChangeEvent<TapGestureHandlerEventPayload>) => void;
   onPressIn?: (event: GestureStateChangeEvent<TapGestureHandlerEventPayload>) => void;
   onPressOut?: (event: GestureStateChangeEvent<TapGestureHandlerEventPayload>) => void;
   icon?: React.ReactNode;
+  children?: React.ReactNode;
+  style?: StyleProps;
 }
 
 export const Button = ({

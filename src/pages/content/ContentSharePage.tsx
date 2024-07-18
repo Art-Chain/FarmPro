@@ -1,6 +1,6 @@
 import { Dimensions, Image, View } from 'react-native';
 import { Button, Space, Typography } from '@/ui/common';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
@@ -22,8 +22,10 @@ import Strawberry from '@/assets/images/strawberry.png';
 import Cucumber from '@/assets/images/cucumber.png';
 import Paprika from '@/assets/images/paprika.png';
 import { ContentPagination } from '@/pages/content/components';
-import { useSharedValue } from 'react-native-reanimated';
+import { Easing, useSharedValue } from 'react-native-reanimated';
 import { Shadow } from '@/ui/Shadow.tsx';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { ExportConfigFragment } from '@/pages/content/fragments';
 
 const useButtonContainerStyle = createStyle((_, bottom = 0) => ({
   flexDirection: 'row',
@@ -77,6 +79,7 @@ export const ContentSharePage = () => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const size = useMemo(() => Dimensions.get('window').width - 64, []);
+  const configRef = useRef<BottomSheetModal>(null);
 
   const position = useSharedValue(0);
 
@@ -124,7 +127,7 @@ export const ContentSharePage = () => {
           />
           <View style={rowStyle}>
             <View style={paginationStyle}>
-              <ContentPagination length={3} value={position} />
+              <ContentPagination length={3} value={position}/>
             </View>
             <HeartIcon color={theme.colors.black.main} width={18} height={18}/>
             <Space size={12}/>
@@ -163,12 +166,35 @@ export const ContentSharePage = () => {
           이미지 다운로드
         </Button>
         <Space size={10}/>
-        <Button style={{ flex: 1 }}>
+        <Button style={{ flex: 1 }} onPress={() => configRef.current?.present()}>
           공유하기
           <Space size={10}/>
           <ShareIcon color={theme.colors.white.main}/>
         </Button>
       </View>
+      <BottomSheetModal
+        ref={configRef}
+        index={0}
+        snapPoints={[224 + insets.bottom, '80%']}
+        backgroundComponent={({ style, ...props }) => (
+          <Shadow
+            key={0}
+            {...props}
+            shadowRadius={128}
+            shadowColor={'rgba(0, 0, 0, 0.4)'}
+            borderTopLeftRadius={16}
+            borderTopRightRadius={16}
+            style={[style, { backgroundColor: theme.colors.white.main }]}
+          />
+        )}
+      >
+        <ExportConfigFragment
+          data={imageList}
+          onExpand={(expand) => {
+            configRef.current?.snapToIndex(expand ? 1 : 0, { easing: Easing.elastic(0.5) });
+          }}
+        />
+      </BottomSheetModal>
     </View>
   );
 };

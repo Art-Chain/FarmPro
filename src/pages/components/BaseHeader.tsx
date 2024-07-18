@@ -19,8 +19,8 @@ const useHeaderStyle = createStyle((theme, top = 0) => ({
   justifyContent: 'space-between',
   alignItems: 'center',
 
-  padding: 18,
-  paddingTop: 18 + top,
+  padding: 16,
+  paddingTop: 16 + top,
 
   borderBottomWidth: 1,
   borderColor: theme.colors.palette.gray[200],

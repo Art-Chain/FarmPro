@@ -11,6 +11,7 @@ import { DebugPage, MainPage, OnBoardingPage } from '@/pages';
 import { ContentCreatePage, ContentLoadingPage, ContentSharePage } from '@/pages/content';
 import { BaseHeader, Header } from '@/pages/components';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,15 +21,17 @@ export const App = () => {
   }, []);
 
   return (
-    <ThemeProvider>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <KeyboardProvider>
-          <BottomSheetModalProvider>
-            <Route/>
-          </BottomSheetModalProvider>
-        </KeyboardProvider>
-      </GestureHandlerRootView>
-    </ThemeProvider>
+    <SafeAreaProvider>
+      <ThemeProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <KeyboardProvider>
+            <BottomSheetModalProvider>
+              <Route/>
+            </BottomSheetModalProvider>
+          </KeyboardProvider>
+        </GestureHandlerRootView>
+      </ThemeProvider>
+    </SafeAreaProvider>
   );
 };
 
