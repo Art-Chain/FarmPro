@@ -4,6 +4,8 @@ export type RootStackParamList = {
   debug: undefined;
   onBoarding: undefined;
   contentCreate: undefined;
+  contentLoading: undefined;
+  contentShare: undefined;
 };
 
 declare global {

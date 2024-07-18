@@ -8,7 +8,7 @@ import { KeyboardProvider } from 'react-native-keyboard-controller';
 
 import { ThemeProvider, useTheme } from '@/features/themes';
 import { DebugPage, MainPage, OnBoardingPage } from '@/pages';
-import { ContentCreatePage } from '@/pages/content';
+import { ContentCreatePage, ContentLoadingPage, ContentSharePage } from '@/pages/content';
 import { BaseHeader, Header } from '@/pages/components';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
@@ -59,12 +59,24 @@ export const Route = () => {
           name={'contentCreate'}
           component={ContentCreatePage}
           options={{
-            title: '콘텐츠 만들기'
+            title: '콘텐츠 만들기',
+            headerBackVisible: true
           }}
+        />
+        <Stack.Screen
+          name={'contentLoading'}
+          component={ContentLoadingPage}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={'contentShare'}
+          component={ContentSharePage}
+          options={{ title: '콘텐츠 생성 완료', headerBackVisible: false }}
         />
         <Stack.Screen
           name={'onBoarding'}
           component={OnBoardingPage}
+          options={{ headerShown: false }}
         />
         <Stack.Screen name={'debug'} component={DebugPage}/>
       </Stack.Navigator>

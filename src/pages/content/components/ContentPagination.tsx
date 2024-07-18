@@ -47,7 +47,7 @@ export const ContentPagination = ({ length, current, value: propValue }: Content
   const containerStyle = useContainerStyle();
 
   useEffect(() => {
-    value.value = withTiming(current ?? 0, {
+    value.value = current ?? 0;withTiming(current ?? 0, {
       easing: Easing.elastic(0.5),
     });
   }, [current, value]);
@@ -73,15 +73,24 @@ interface DotProps {
 const Dot = React.memo(({ position, current }: DotProps) => {
   const theme = useTheme();
 
-  const animatedDotStyle = useAnimatedStyle(() => ({
-    backgroundColor: interpolateColor(
-      Math.min(1, Math.abs(position - current.value)),
-      [0, 1],
-      [theme.colors.palette.gray[700], theme.colors.palette.gray[300]],
-    ),
-  }), [theme]);
+  const animatedDotStyle = useAnimatedStyle(() => {
+    const offset = Math.min(1, Math.abs(position - current.value));
+    return {
+      backgroundColor: interpolateColor(
+        offset,
+        [0, 1],
+        [theme.colors.palette.gray[700], theme.colors.palette.gray[300]],
+      ),
+      transform: [
+        {
+          scale: 1 - 0.25 * offset,
+        },
+      ],
+    };
+  }, [theme]);
 
   return (
     <Animated.View entering={FadeInDown} exiting={FadeOutDown} style={[dotStyle, animatedDotStyle]}/>
   );
-});
+})
+  ;;
