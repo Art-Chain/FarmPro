@@ -14,6 +14,7 @@ import type { OnPageSelectedEventData } from 'react-native-pager-view/src/specs/
 import { Shadow } from '@/ui/Shadow';
 import { useTheme } from '@/features/themes';
 import { BaseHeader } from '@/pages/components';
+import { useNavigation } from '@react-navigation/native';
 
 const useButtonContainerStyle = createStyle((_, bottom = 0) => ({
   flexDirection: 'row',
@@ -25,6 +26,7 @@ const useButtonContainerStyle = createStyle((_, bottom = 0) => ({
 export const ContentCreatePage = () => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation();
 
   const pager = useRef<PagerView>(null);
   const configRef = useRef<BottomSheetModal>(null);
@@ -37,8 +39,10 @@ export const ContentCreatePage = () => {
   const buttonContainerStyle = useButtonContainerStyle(insets.bottom);
 
   const onNext = useCallback(() => {
-    pager.current?.setPage(1);
-  }, []);
+    if (position === 0) pager.current?.setPage(1);
+    else navigation.navigate('contentLoading');
+
+  }, [navigation, position]);
   const onPrev = useCallback(() => {
     pager.current?.setPage(0);
   }, []);

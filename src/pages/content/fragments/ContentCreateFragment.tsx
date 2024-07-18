@@ -33,9 +33,11 @@ const useAddCardStyle = createStyle((theme) => ({
   borderColor: theme.colors.palette.gray[300],
   backgroundColor: theme.colors.palette.gray[200],
 }));
+
 interface ContentCreateFragmentProps {
   onConfigPress?: () => void;
 }
+
 export const ContentCreateFragment = ({ onConfigPress }: ContentCreateFragmentProps) => {
   const theme = useTheme();
   const size = useMemo(() => Dimensions.get('window').width, []);
@@ -86,7 +88,10 @@ export const ContentCreateFragment = ({ onConfigPress }: ContentCreateFragmentPr
               );
             }
 
-            return <ContentPromptCard/>;
+            return <ContentPromptCard
+              showTitle={data.index === 0}
+              onRemove={() => setLength((it) => it > 1 ? it - 1 : it)}
+            />;
           }}
           mode={'parallax'}
           modeConfig={{

@@ -5,7 +5,14 @@ import { useSafeAreaFrame } from 'react-native-safe-area-context';
 import { BlurView } from '@react-native-community/blur';
 import { Asset, launchImageLibrary } from 'react-native-image-picker';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { Easing, FadeInDown, FadeOutDown, LinearTransition, runOnJS } from 'react-native-reanimated';
+import Animated, {
+  Easing,
+  FadeInDown,
+  FadeOutDown,
+  LinearTransition,
+  runOnJS, useAnimatedStyle,
+  useSharedValue, withTiming, ZoomIn, ZoomOut
+} from 'react-native-reanimated';
 
 import { createStyle } from '@/features/utils';
 import { useTheme } from '@/features/themes';
@@ -77,20 +84,33 @@ const captionStyle = createStyle({
   right: 8,
   bottom: 8,
 });
+const useRemoveButtonStyle = createStyle((theme) => ({
+  width: 42,
+  height: 42,
+  borderRadius: 21,
+  backgroundColor: theme.colors.black.main,
+  justifyContent: 'center',
+  alignItems: 'center',
+  alignSelf: 'flex-end',
+}));
 
 export interface PromptData {
-  title: string;
+  title?: string;
   keywords: string[];
   image?: Asset;
 }
 
 export interface ContentPromptCardProps {
+  showTitle?: boolean;
   onChange?: (data: PromptData) => void;
+  onRemove?: () => void;
 }
 
-export const ContentPromptCard = ({ onChange }: ContentPromptCardProps) => {
+export const ContentPromptCard = ({ showTitle, onChange, onRemove }: ContentPromptCardProps) => {
   const theme = useTheme();
   const frames = useSafeAreaFrame();
+
+  const pressed = useSharedValue(0);
 
   const [title, setTitle] = useState('');
   const [keywords, setKeywords] = useState('');
@@ -100,6 +120,7 @@ export const ContentPromptCard = ({ onChange }: ContentPromptCardProps) => {
   const checkPatternStyle = useCheckPatternStyle(frames.width);
   const containerStyle = useContainerStyle();
   const imageContainerStyle = useImageContainerStyle(menuOpen);
+  const removeButtonStyle = useRemoveButtonStyle();
 
   const notifyChange = useCallback(() => {
     setTimeout(() => {
@@ -149,10 +170,33 @@ export const ContentPromptCard = ({ onChange }: ContentPromptCardProps) => {
       runOnJS(setMenuOpen)(false);
       runOnJS(notifyChange)();
     });
+  const removeTap = Gesture.Tap()
+    .onBegin(() => {
+      pressed.value = withTiming(1, { easing: Easing.elastic(1) });
+    })
+    .onEnd(() => {
+      if (onRemove) runOnJS(onRemove)();
+    })
+    .onFinalize(() => {
+      pressed.value = withTiming(0, { easing: Easing.elastic(1) });
+    });
+
+  const animatedRemoveButtonStyle = useAnimatedStyle(() => ({
+    transform: [
+      {
+        scale: 1 - pressed.value * 0.1,
+      },
+    ],
+  }));
 
   return (
     <GestureDetector gesture={outsideTap}>
-      <View style={containerStyle}>
+      <Animated.View
+        entering={ZoomIn}
+        exiting={ZoomOut}
+        layout={LinearTransition.duration(300).easing(Easing.elastic(0.5))}
+        style={containerStyle}
+      >
         <Svg style={checkPatternStyle}>
           <Defs>
             <Pattern
@@ -177,25 +221,34 @@ export const ContentPromptCard = ({ onChange }: ContentPromptCardProps) => {
             <Image source={image} style={imageStyle as ImageStyle}/>
           </View>
         )}
-        <TextInput
-          value={title}
-          onChangeText={setTitle}
-          placeholder={'제목의 키워드나 문장을 입력하세요.'}
-          variant={'body1'}
-          textStyle={titleStyle}
-          onBlur={notifyChange}
-        >
-          <BlurView
-            style={blurStyle}
-            overlayColor={'white'}
-            blurType={'xlight'}
-            blurAmount={24}
-            reducedTransparencyFallbackColor={'white'}
-          />
-          <Typography variant={'caption'} color={(colors) => colors.palette.gray[400]} style={captionStyle}>
-            {title.length} / 50
-          </Typography>
-        </TextInput>
+        {showTitle && (
+          <TextInput
+            value={title}
+            onChangeText={setTitle}
+            placeholder={'제목의 키워드나 문장을 입력하세요.'}
+            variant={'body1'}
+            textStyle={titleStyle}
+            onBlur={notifyChange}
+          >
+            <BlurView
+              style={blurStyle}
+              overlayColor={'white'}
+              blurType={'xlight'}
+              blurAmount={24}
+              reducedTransparencyFallbackColor={'white'}
+            />
+            <Typography variant={'caption'} color={(colors) => colors.palette.gray[400]} style={captionStyle}>
+              {title.length} / 50
+            </Typography>
+          </TextInput>
+        )}
+        {!showTitle && (
+          <GestureDetector gesture={removeTap}>
+            <Animated.View style={[removeButtonStyle, animatedRemoveButtonStyle]}>
+              <DeleteIcon color={theme.colors.black.text}/>
+            </Animated.View>
+          </GestureDetector>
+        )}
         <Space/>
         <GestureDetector gesture={tap}>
           <Animated.View
@@ -263,7 +316,7 @@ export const ContentPromptCard = ({ onChange }: ContentPromptCardProps) => {
             {keywords.length} / 200
           </Typography>
         </TextInput>
-      </View>
+      </Animated.View>
     </GestureDetector>
   );
 };

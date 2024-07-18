@@ -1,4 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <queries>
+        <package android:name="com.example.store" />
+        <package android:name="com.example.services" />
+
+        <package android:name="com.instagram.android" />
+    </queries>
+
 
     <uses-permission android:name="android.permission.INTERNET" />
 

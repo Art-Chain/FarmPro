@@ -76,5 +76,10 @@
 	<string>이 앱은 마이크 권한을 요구하지 않습니다.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>이 앱은 카메라 권한을 요구하지 않습니다.</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>instagram</string>
+        <string>instagram-stories</string>
+    </array>
 </dict>
 </plist>

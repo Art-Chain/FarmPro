@@ -10,7 +10,6 @@ import ShareIcon from '@/assets/images/share.svg';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Image, ImageStyle } from 'react-native';
-import { ImageSourcePropType } from 'react-native/Libraries/Image/Image';
 import Animated, {
   Easing, FadeInUp, FadeOutUp,
   LinearTransition,
@@ -18,6 +17,8 @@ import Animated, {
   useSharedValue,
   withTiming
 } from 'react-native-reanimated';
+import Share, { Social } from 'react-native-share';
+import RNFetchBlob from 'rn-fetch-blob';
 
 const useContainerStyle = createStyle((_, expand = false, bottom = 0) => ({
   width: '100%',
@@ -45,7 +46,7 @@ const itemStyle = createStyle({
 });
 
 interface ExportConfigFragmentProps {
-  data?: ImageSourcePropType[];
+  data?: string[];
   onExpand?: (expand?: boolean) => void;
 }
 
@@ -71,6 +72,36 @@ export const ExportConfigFragment = ({ data = [], onExpand }: ExportConfigFragme
     value.value = withTiming(expand ? 1 : 0, { easing: Easing.elastic(0.5) });
     onExpand?.(expand);
   }, [expand, onExpand, value]);
+
+  const onShare = async () => {
+    const targets = data.filter((_, index) => selected[index]);
+    const urls = await Promise.all(targets.map(convertToBase64));
+
+    if (targets.length === 1) {
+      await Share.shareSingle({
+        title: '콘텐츠 공유하기',
+        // type: 'image/*',
+        url: urls[0],
+        social: Social.Instagram,
+      }).catch(() => null);
+    } else {
+      await Share.open({
+        title: '콘텐츠 공유하기',
+        message: 'AI가 생성한 카드뉴스를 공유합니다.',
+        urls,
+      }).catch(() => null);
+    }
+  };
+
+  const convertToBase64 = async (uri: string) => {
+    const response = await RNFetchBlob.config({ fileCache: true }).fetch('GET', uri);
+    const path = response.path();
+    const data = await response.readFile('base64') as string;
+
+    await RNFetchBlob.fs.unlink(path);
+
+    return `data:image/png;base64,${data}`;
+  };
 
   return (
     <BottomSheetView style={containerStyle}>
@@ -104,7 +135,7 @@ export const ExportConfigFragment = ({ data = [], onExpand }: ExportConfigFragme
                 모든 페이지
               </Typography>
             </CheckBox>
-            {data.map((source, index) => (
+            {data.map((uri, index) => (
               <React.Fragment key={index}>
                 <Space size={16}/>
                 <CheckBox
@@ -113,7 +144,7 @@ export const ExportConfigFragment = ({ data = [], onExpand }: ExportConfigFragme
                   onValueChange={(value) => setSelected((it) => it.map((it, i) => i === index ? value : it))}
                 >
                   <Animated.View style={itemStyle}>
-                    <Image source={source} style={imageStyle as ImageStyle}/>
+                    <Image source={{ uri }} style={imageStyle as ImageStyle}/>
                     <Space size={16}/>
                     <Typography>
                       {index + 1}페이지
@@ -126,7 +157,7 @@ export const ExportConfigFragment = ({ data = [], onExpand }: ExportConfigFragme
         </Animated.View>
         <Space/>
       </>}
-      <Button layout={LinearTransition.duration(300).easing(Easing.elastic(0.5))}>
+      <Button layout={LinearTransition.duration(300).easing(Easing.elastic(0.5))} onPress={onShare}>
         공유하기
         <Space size={10}/>
         <ShareIcon color={theme.colors.white.main}/>

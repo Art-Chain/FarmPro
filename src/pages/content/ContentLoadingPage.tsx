@@ -5,6 +5,8 @@ import { createStyle } from '@/features/utils';
 import { Space, Typography } from '@/ui/common';
 
 import LoadingAnimation from '@/assets/animations/loading.json';
+import { useEffect } from 'react';
+import { StackActions, useNavigation } from '@react-navigation/native';
 
 const containerStyle = createStyle({
   width: '100%',
@@ -16,6 +18,14 @@ const containerStyle = createStyle({
 });
 
 export const ContentLoadingPage = () => {
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    setTimeout(() => {
+      navigation.dispatch(StackActions.replace('contentShare'));
+    }, (5 + 10 * Math.random()) * 1000);
+  }, [navigation]);
+
   return (
     <View style={containerStyle}>
       <Typography variant={'head2'}>
