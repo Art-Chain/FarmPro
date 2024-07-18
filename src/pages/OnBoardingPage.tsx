@@ -14,6 +14,7 @@ import { usePageScrollHandler } from '@/features/hooks';
 
 import img from '@/assets/images/on_boarding_1.png';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AnimatedPagerView = Animated.createAnimatedComponent(PagerView);
 
@@ -46,7 +47,8 @@ export const OnBoardingPage = () => {
   const buttonTextStyle = useButtonTextStyle();
 
   const onStart = useCallback(() => {
-    navigation.navigate('home');
+    navigation.navigate('main');
+    void AsyncStorage.setItem('onBoarding', 'true');
   }, [navigation]);
   const handler = usePageScrollHandler({
     onPageScroll: (event) => {

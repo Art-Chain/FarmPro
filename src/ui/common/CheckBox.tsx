@@ -39,7 +39,7 @@ export interface CheckBoxProps {
   children?: React.ReactNode;
 }
 
-const CheckBox = React.memo(({
+export const CheckBox = React.memo(({
   align,
   value,
   onValueChange,
@@ -120,5 +120,3 @@ const CheckBox = React.memo(({
     </GestureDetector>
   );
 });
-
-export default CheckBox;

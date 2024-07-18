@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import React, { useCallback, useRef, useState } from 'react';
 import { NativeSyntheticEvent, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -14,6 +13,7 @@ import { AIConfigFragment, ContentCreateFragment, ContentCreateInfoFragment } fr
 import type { OnPageSelectedEventData } from 'react-native-pager-view/src/specs/PagerViewNativeComponent';
 import { Shadow } from '@/ui/Shadow';
 import { useTheme } from '@/features/themes';
+import { BaseHeader } from '@/pages/components';
 
 const useButtonContainerStyle = createStyle((_, bottom = 0) => ({
   flexDirection: 'row',
@@ -24,7 +24,6 @@ const useButtonContainerStyle = createStyle((_, bottom = 0) => ({
 
 export const ContentCreatePage = () => {
   const theme = useTheme();
-  const navigation = useNavigation();
   const insets = useSafeAreaInsets();
 
   const pager = useRef<PagerView>(null);
@@ -37,12 +36,6 @@ export const ContentCreatePage = () => {
 
   const buttonContainerStyle = useButtonContainerStyle(insets.bottom);
 
-  useEffect(() => {
-    navigation.setOptions({
-      title: `콘텐츠 만들기(${position + 1}/2)`
-    });
-  }, [navigation, position]);
-
   const onNext = useCallback(() => {
     pager.current?.setPage(1);
   }, []);
@@ -52,6 +45,7 @@ export const ContentCreatePage = () => {
 
   return (
     <View style={{ width: '100%', flex: 1 }}>
+      <BaseHeader title={`콘텐츠 만들기 (${position + 1}/2)`}/>
       <PagerView
         ref={pager}
         useNext={false}
@@ -64,7 +58,7 @@ export const ContentCreatePage = () => {
           <ContentCreateInfoFragment/>
         </ScrollView>
         <View key={1} collapsable={false} style={{ paddingHorizontal: 20, paddingTop: 24, flex: 1 }}>
-          <ContentCreateFragment onConfigPress={configRef.current?.present} />
+          <ContentCreateFragment onConfigPress={configRef.current?.present}/>
         </View>
       </PagerView>
       <View style={buttonContainerStyle}>
@@ -73,7 +67,7 @@ export const ContentCreatePage = () => {
         </Button>
         <Space size={10}/>
         <Button style={{ flex: 1 }} onPress={onNext}>
-          다음
+          {position ? '생성' : '다음'}
         </Button>
       </View>
       <BottomSheetModal

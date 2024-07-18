@@ -1,6 +1,6 @@
 import { BottomSheetView } from '@gorhom/bottom-sheet';
 
-import { Button, Card, Space, Typography } from '@/ui/common';
+import { Button, Card, Space, Typography, CheckBox } from '@/ui/common';
 import { SelectCard } from '@/ui/SelectCard';
 
 import ExpandMore from '@/assets/images/expand_more.svg';
@@ -9,7 +9,6 @@ import { useTheme } from '@/features/themes';
 import ShareIcon from '@/assets/images/share.svg';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import CheckBox from '@/ui/common/CheckBox.tsx';
 import { Image, ImageStyle } from 'react-native';
 import { ImageSourcePropType } from 'react-native/Libraries/Image/Image';
 import Animated, {

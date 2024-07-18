@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import BootSplash from 'react-native-bootsplash';
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, NavigationContainerRef, StackActions } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
@@ -9,17 +9,14 @@ import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { ThemeProvider, useTheme } from '@/features/themes';
 import { DebugPage, MainPage, OnBoardingPage } from '@/pages';
 import { ContentCreatePage, ContentLoadingPage, ContentSharePage } from '@/pages/content';
-import { BaseHeader, Header } from '@/pages/components';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const Stack = createNativeStackNavigator();
 
 export const App = () => {
-  useEffect(() => {
-    void BootSplash.hide({ fade: true });
-  }, []);
-
   return (
     <SafeAreaProvider>
       <ThemeProvider>
@@ -37,10 +34,24 @@ export const App = () => {
 
 export const Route = () => {
   const theme = useTheme();
-  const appHeader = useMemo(() => <Header/>, []);
+  const navigation = useRef<NavigationContainerRef<ReactNavigation.RootParamList>>(null);
+
+  useEffect(() => {
+    void AsyncStorage.getItem('onBoarding')
+      .then((data) => {
+        if (data === null) {
+          navigation.current?.dispatch(StackActions.replace('onBoarding'));
+        }
+      }).finally(() => {
+        setTimeout(() => {
+          void BootSplash.hide({ fade: true });
+        }, 500);
+      });
+  }, []);
 
   return (
     <NavigationContainer
+      ref={navigation}
       theme={{
         ...DefaultTheme,
         colors: {
@@ -51,11 +62,7 @@ export const Route = () => {
     >
       <Stack.Navigator
         initialRouteName={'home'}
-        screenOptions={({ route }) => ({
-          header: (props) => route.name === 'main' ? appHeader : <BaseHeader {...props} />,
-          statusBarTranslucent: true,
-          // navigationBarColor: '#3FC685',
-        })}
+        screenOptions={{ headerShown: false, gestureEnabled: true, fullScreenGestureEnabled: true }}
       >
         <Stack.Screen name={'main'} component={MainPage}/>
         <Stack.Screen
@@ -69,17 +76,15 @@ export const Route = () => {
         <Stack.Screen
           name={'contentLoading'}
           component={ContentLoadingPage}
-          options={{ headerShown: false }}
+          options={{ gestureEnabled: false }}
         />
         <Stack.Screen
           name={'contentShare'}
           component={ContentSharePage}
-          options={{ title: '콘텐츠 생성 완료', headerBackVisible: false }}
         />
         <Stack.Screen
           name={'onBoarding'}
           component={OnBoardingPage}
-          options={{ headerShown: false }}
         />
         <Stack.Screen name={'debug'} component={DebugPage}/>
       </Stack.Navigator>

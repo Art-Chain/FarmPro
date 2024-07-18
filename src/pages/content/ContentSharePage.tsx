@@ -26,6 +26,7 @@ import { Easing, useSharedValue } from 'react-native-reanimated';
 import { Shadow } from '@/ui/Shadow.tsx';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { ExportConfigFragment } from '@/pages/content/fragments';
+import { BaseHeader } from '@/pages/components';
 
 const useButtonContainerStyle = createStyle((_, bottom = 0) => ({
   flexDirection: 'row',
@@ -89,6 +90,7 @@ export const ContentSharePage = () => {
 
   return (
     <View style={{ width: '100%', height: '100%' }}>
+      <BaseHeader title={'콘텐츠 생성 완료'} canBack={false} />
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingTop: 16, paddingHorizontal: 32 }}>
         <View style={commentContainerStyle}>
           <View style={commentStyle}>
