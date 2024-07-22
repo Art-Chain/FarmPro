@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Header } from '@/pages/components';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const DebugPage = () => {
   const navigation = useNavigation();
@@ -74,6 +75,12 @@ export const DebugPage = () => {
           <CheckBox align={'right'}>
             <Typography>align right</Typography>
           </CheckBox>
+
+          <Space size={16} />
+          <Typography variant={'head1'}>Reset Config</Typography>
+          <Button onPress={() => void AsyncStorage.removeItem('onBoarding')}>
+            Reset All Config
+          </Button>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

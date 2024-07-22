@@ -12,7 +12,8 @@ import { useTheme } from '@/features/themes';
 import { createStyle } from '@/features/utils';
 import { usePageScrollHandler } from '@/features/hooks';
 
-import img from '@/assets/images/on_boarding_1.png';
+import img1 from '@/assets/images/on_boarding_1.png';
+import img2 from '@/assets/images/on_boarding_2.png';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -68,14 +69,14 @@ export const OnBoardingPage = () => {
               <Typography variant={'head2'} style={{ color: theme.colors.primary.main }}>AI로</Typography> 자동 생성되는{'\n'}
               마케팅 콘텐츠
             </Typography>
-            <Image source={img} style={imageStyle as ImageStyle}/>
+            <Image source={img1} style={imageStyle as ImageStyle}/>
           </View>
           <View key={1} style={{ flex: 1 }}>
             <Typography variant={'head2'} style={textStyle}>
               <Typography variant={'head2'} style={{ color: theme.colors.primary.main }}>지속적인</Typography>{'\n'}
-              마케팅 콘텐츠
+              마케팅 관리 도우미
             </Typography>
-            <Image source={img} style={imageStyle as ImageStyle}/>
+            <Image source={img2} style={imageStyle as ImageStyle}/>
           </View>
         </AnimatedPagerView>
         <RectButton style={buttonStyle} onPress={onStart}>
