@@ -13,9 +13,9 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { LogBox } from 'react-native';
-LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
-LogBox.ignoreAllLogs();//Ignore all log notifications
+// import { LogBox } from 'react-native';
+// LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+// LogBox.ignoreAllLogs();//Ignore all log notifications
 
 const Stack = createNativeStackNavigator();
 
@@ -65,9 +65,12 @@ export const Route = () => {
     >
       <Stack.Navigator
         initialRouteName={'home'}
-        screenOptions={{ headerShown: false, gestureEnabled: true, fullScreenGestureEnabled: true }}
+        screenOptions={{ headerShown: false, gestureEnabled: true, fullScreenGestureEnabled: false }}
       >
-        <Stack.Screen name={'main'} component={MainPage}/>
+        <Stack.Screen
+          name={'main'}
+          component={MainPage}
+        />
         <Stack.Screen
           name={'contentCreate'}
           component={ContentCreatePage}
@@ -89,7 +92,10 @@ export const Route = () => {
           name={'onBoarding'}
           component={OnBoardingPage}
         />
-        <Stack.Screen name={'debug'} component={DebugPage}/>
+        <Stack.Screen
+          name={'debug'}
+          component={DebugPage}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

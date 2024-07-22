@@ -1,6 +1,6 @@
 import { Space, Typography } from '@/ui/common';
-import { RectButton, ScrollView } from 'react-native-gesture-handler';
-import { Header } from '@/pages/components';
+import { RectButton } from 'react-native-gesture-handler';
+import { AppShell } from '@/pages/components';
 import { View } from 'react-native';
 import { createStyle } from '@/features/utils';
 
@@ -21,8 +21,7 @@ export const UserPage = () => {
   const navigation = useNavigation();
 
   return (
-    <ScrollView stickyHeaderIndices={[0]}>
-      <Header/>
+    <AppShell>
       <View>
         <Space size={32}/>
         <Typography variant={'subtitle1'} style={{ paddingHorizontal: 20 }}>고객 지원</Typography>
@@ -42,6 +41,6 @@ export const UserPage = () => {
           </View>
         </RectButton>
       </View>
-    </ScrollView>
+    </AppShell>
   );
 };

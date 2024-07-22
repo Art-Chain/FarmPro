@@ -33,7 +33,7 @@ const useButtonStyle = createStyle(baseButtonStyle, (theme, variant: 'primary' |
   if (variant === 'secondary') {
     return {
       backgroundColor: theme.colors.white.surface,
-      color: theme.colors.white.text,
+      color: theme.colors.palette.gray[500],
     };
   }
 

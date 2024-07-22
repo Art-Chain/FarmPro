@@ -16,7 +16,7 @@ export const ContentCreateInfoFragment = () => {
         농작물 종류 선택
       </Typography>
       <Space size={12}/>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginHorizontal: -16 }} contentContainerStyle={{ paddingHorizontal: 16 }}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginHorizontal: -16, flexGrow: 0 }} contentContainerStyle={{ paddingHorizontal: 16 }}>
         <Chip
           active={selectedCrop === 'strawberry'}
           onPress={() => setSelectedCrop('strawberry')}

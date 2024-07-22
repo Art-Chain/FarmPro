@@ -1,0 +1,86 @@
+diff --git a/node_modules/@react-native-community/blur/ios/BlurView.mm b/node_modules/@react-native-community/blur/ios/BlurView.mm
+index 3d35d8f..6451085 100644
+--- a/node_modules/@react-native-community/blur/ios/BlurView.mm
++++ b/node_modules/@react-native-community/blur/ios/BlurView.mm
+@@ -131,6 +131,7 @@ - (void)setReducedTransparencyFallbackColor:(nullable UIColor *)reducedTranspare
+ 
+ - (UIBlurEffectStyle)blurEffectStyle
+ {
++  if ([self.blurType isEqual: @"transparent"]) return UIBlurEffectStyleDark;
+   if ([self.blurType isEqual: @"xlight"]) return UIBlurEffectStyleExtraLight;
+   if ([self.blurType isEqual: @"light"]) return UIBlurEffectStyleLight;
+   if ([self.blurType isEqual: @"dark"]) return UIBlurEffectStyleDark;
+@@ -183,6 +184,12 @@ - (void)updateBlurEffect
+   UIBlurEffectStyle style = [self blurEffectStyle];
+   self.blurEffect = [BlurEffectWithAmount effectWithStyle:style andBlurAmount:self.blurAmount];
+   self.blurEffectView.effect = self.blurEffect;
++
++  if ([self.blurType isEqual: @"transparent"]) {
++    for (UIView *subview in self.blurEffectView.subviews) {
++      subview.backgroundColor = [UIColor clearColor];
++    }
++  }
+ }
+ 
+ - (void)updateFallbackView
+diff --git a/node_modules/@react-native-community/blur/lib/typescript/components/BlurView.ios.d.ts b/node_modules/@react-native-community/blur/lib/typescript/components/BlurView.ios.d.ts
+index 47cbe75..2eda9aa 100644
+--- a/node_modules/@react-native-community/blur/lib/typescript/components/BlurView.ios.d.ts
++++ b/node_modules/@react-native-community/blur/lib/typescript/components/BlurView.ios.d.ts
+@@ -1,6 +1,6 @@
+ import React from 'react';
+ import { ViewProps, View } from 'react-native';
+-declare type BlurType = 'dark' | 'light' | 'xlight' | 'prominent' | 'regular' | 'extraDark' | 'chromeMaterial' | 'material' | 'thickMaterial' | 'thinMaterial' | 'ultraThinMaterial' | 'chromeMaterialDark' | 'materialDark' | 'thickMaterialDark' | 'thinMaterialDark' | 'ultraThinMaterialDark' | 'chromeMaterialLight' | 'materialLight' | 'thickMaterialLight' | 'thinMaterialLight' | 'ultraThinMaterialLight';
++declare type BlurType = 'dark' | 'light' | 'xlight' | 'prominent' | 'transparent' | 'regular' | 'extraDark' | 'chromeMaterial' | 'material' | 'thickMaterial' | 'thinMaterial' | 'ultraThinMaterial' | 'chromeMaterialDark' | 'materialDark' | 'thickMaterialDark' | 'thinMaterialDark' | 'ultraThinMaterialDark' | 'chromeMaterialLight' | 'materialLight' | 'thickMaterialLight' | 'thinMaterialLight' | 'ultraThinMaterialLight';
+ export declare type BlurViewProps = ViewProps & {
+     blurType?: BlurType;
+     blurAmount?: number;
+diff --git a/node_modules/@react-native-community/blur/lib/typescript/fabric/BlurViewNativeComponent.d.ts b/node_modules/@react-native-community/blur/lib/typescript/fabric/BlurViewNativeComponent.d.ts
+index 6bba43e..843baf6 100644
+--- a/node_modules/@react-native-community/blur/lib/typescript/fabric/BlurViewNativeComponent.d.ts
++++ b/node_modules/@react-native-community/blur/lib/typescript/fabric/BlurViewNativeComponent.d.ts
+@@ -1,7 +1,7 @@
+ import type { ViewProps, HostComponent, ColorValue } from 'react-native';
+ import type { WithDefault, Int32 } from 'react-native/Libraries/Types/CodegenTypes';
+ interface NativeProps extends ViewProps {
+-    blurType?: WithDefault<'dark' | 'light' | 'xlight' | 'prominent' | 'regular' | 'extraDark' | 'chromeMaterial' | 'material' | 'thickMaterial' | 'thinMaterial' | 'ultraThinMaterial' | 'chromeMaterialDark' | 'materialDark' | 'thickMaterialDark' | 'thinMaterialDark' | 'ultraThinMaterialDark' | 'chromeMaterialLight' | 'materialLight' | 'thickMaterialLight' | 'thinMaterialLight' | 'ultraThinMaterialLight', 'dark'>;
++    blurType?: WithDefault<'dark' | 'light' | 'xlight' | 'prominent' | 'transparent' | 'regular' | 'extraDark' | 'chromeMaterial' | 'material' | 'thickMaterial' | 'thinMaterial' | 'ultraThinMaterial' | 'chromeMaterialDark' | 'materialDark' | 'thickMaterialDark' | 'thinMaterialDark' | 'ultraThinMaterialDark' | 'chromeMaterialLight' | 'materialLight' | 'thickMaterialLight' | 'thinMaterialLight' | 'ultraThinMaterialLight', 'dark'>;
+     blurAmount?: WithDefault<Int32, 10>;
+     reducedTransparencyFallbackColor?: ColorValue;
+ }
+diff --git a/node_modules/@react-native-community/blur/src/components/BlurView.ios.tsx b/node_modules/@react-native-community/blur/src/components/BlurView.ios.tsx
+index 62d05ec..d413001 100644
+--- a/node_modules/@react-native-community/blur/src/components/BlurView.ios.tsx
++++ b/node_modules/@react-native-community/blur/src/components/BlurView.ios.tsx
+@@ -6,6 +6,7 @@ type BlurType =
+   | 'dark'
+   | 'light'
+   | 'xlight'
++  | 'transparent'
+   | 'prominent'
+   | 'regular'
+   | 'extraDark'
+diff --git a/node_modules/@react-native-community/blur/src/fabric/BlurViewNativeComponent.ts b/node_modules/@react-native-community/blur/src/fabric/BlurViewNativeComponent.ts
+index f7a8749..daa3f83 100644
+--- a/node_modules/@react-native-community/blur/src/fabric/BlurViewNativeComponent.ts
++++ b/node_modules/@react-native-community/blur/src/fabric/BlurViewNativeComponent.ts
+@@ -10,6 +10,7 @@ interface NativeProps extends ViewProps {
+     | 'dark'
+     | 'light'
+     | 'xlight'
++    | 'transparent'
+     | 'prominent'
+     | 'regular'
+     | 'extraDark'
+diff --git a/node_modules/@react-native-community/blur/src/fabric/VibrancyViewNativeComponent.ts b/node_modules/@react-native-community/blur/src/fabric/VibrancyViewNativeComponent.ts
+index fff6f20..82370dc 100644
+--- a/node_modules/@react-native-community/blur/src/fabric/VibrancyViewNativeComponent.ts
++++ b/node_modules/@react-native-community/blur/src/fabric/VibrancyViewNativeComponent.ts
+@@ -11,6 +11,7 @@ interface NativeProps extends ViewProps {
+     | 'light'
+     | 'xlight'
+     | 'prominent'
++    | 'transparent'
+     | 'regular'
+     | 'extraDark'
+     | 'chromeMaterial'

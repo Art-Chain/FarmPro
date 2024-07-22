@@ -1,7 +1,6 @@
 import { Dimensions, Image, ImageStyle, View } from 'react-native';
 import { Button, Space, Typography } from '@/ui/common';
 import React, { useCallback, useMemo, useRef } from 'react';
-import { ScrollView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
 import Carousel from 'react-native-reanimated-carousel';
@@ -28,7 +27,7 @@ import { Easing, useSharedValue } from 'react-native-reanimated';
 import { Shadow } from '@/ui/Shadow.tsx';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { ExportConfigFragment } from '@/pages/content/fragments';
-import { BaseHeader } from '@/pages/components';
+import { AppShell } from '@/pages/components';
 
 const useButtonContainerStyle = createStyle((_, bottom = 0) => ({
   flexDirection: 'row',
@@ -92,81 +91,98 @@ export const ContentSharePage = () => {
 
   const position = useSharedValue(0);
 
-  const buttonContainerStyle = useButtonContainerStyle(insets.bottom);
+  const buttonContainerStyle = useButtonContainerStyle(0);
   const commentStyle = useCommentStyle();
   const containerStyle = useContainerStyle();
 
   return (
-    <View style={{ width: '100%', height: '100%' }}>
-      <BaseHeader title={'콘텐츠 생성 완료'} canBack={false} />
-      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingTop: 16, paddingHorizontal: 32 }}>
-        <View style={commentContainerStyle}>
-          <View style={commentStyle}>
-            <StarEffect color={theme.colors.primary.text}/>
-            <Space size={4}/>
-            <Typography color={(colors) => colors.primary.text}>
-              공유하여 홍보해보세요!
-            </Typography>
-            <Svg width={12} height={6} viewBox={'0 0 20 10'} style={commentTailStyle}>
-              <Path d={'M0 0 L20 0 L10 10 Z'} fill={theme.colors.primary.main}/>
-            </Svg>
+    <AppShell
+      showBorder
+      showLogo={false}
+      align={'center'}
+      title={'콘텐츠 생성 완료'}
+      footer={
+        <View style={buttonContainerStyle}>
+          <Button variant={'secondary'} style={{ flex: 1 }}>
+            이미지 다운로드
+          </Button>
+          <Space size={10}/>
+          <Button style={{ flex: 1 }} onPress={() => configRef.current?.present()}>
+            공유하기
+            <Space size={10}/>
+            <ShareIcon color={theme.colors.white.main}/>
+          </Button>
+        </View>
+      }
+      contentContainerStyle={{ paddingTop: 16, paddingHorizontal: 32 }}
+    >
+      <View style={commentContainerStyle}>
+        <View style={commentStyle}>
+          <StarEffect color={theme.colors.primary.text}/>
+          <Space size={4}/>
+          <Typography color={(colors) => colors.primary.text}>
+            공유하여 홍보해보세요!
+          </Typography>
+          <Svg width={12} height={6} viewBox={'0 0 20 10'} style={commentTailStyle}>
+            <Path d={'M0 0 L20 0 L10 10 Z'} fill={theme.colors.primary.main}/>
+          </Svg>
+        </View>
+      </View>
+      <Space size={16}/>
+      <Shadow
+        style={containerStyle}
+        offsetY={4}
+        spreadRadius={16}
+        shadowColor={'rgba(0, 0, 0, 0.2)'}
+      >
+        <View style={rowStyle}>
+          <Image source={imageList[0]} style={profileStyle as ImageStyle}/>
+          <Space size={8}/>
+          <Typography variant={'subtitle2'}>
+            FarmPro
+          </Typography>
+        </View>
+        <Carousel
+          loop={false}
+          width={size}
+          height={size}
+          style={{ width: size, height: size }}
+          data={imageList}
+          renderItem={({ item }) => (
+            <Image
+              source={item}
+              resizeMode={'cover'}
+              style={{ width: '100%', height: '100%' }}
+            />
+          )}
+          onProgressChange={useCallback((_: number, progress: number) => position.value = progress, [])}
+        />
+        <View style={rowStyle}>
+          <View style={paginationStyle}>
+            <ContentPagination length={imageList.length} value={position}/>
           </View>
+          <HeartIcon color={theme.colors.black.main} width={18} height={18}/>
+          <Space size={12}/>
+          <CommentIcon color={theme.colors.black.main} width={18} height={18}/>
+          <Space size={12}/>
+          <AirplaneIcon color={theme.colors.black.main} width={18} height={18}/>
+          <Space/>
+          <BookmarkIcon color={theme.colors.black.main} width={18} height={18}/>
         </View>
         <Space size={16}/>
-        <Shadow
-          style={containerStyle}
-          offsetY={4}
-          spreadRadius={16}
-          shadowColor={'rgba(0, 0, 0, 0.2)'}
-        >
-          <View style={rowStyle}>
-            <Image source={imageList[0]} style={profileStyle as ImageStyle} />
-            <Space size={8} />
-            <Typography variant={'subtitle2'}>
-              FarmPro
-            </Typography>
-          </View>
-          <Carousel
-            loop={false}
-            width={size}
-            height={size}
-            style={{ width: size, height: size }}
-            data={imageList}
-            renderItem={({ item }) => (
-              <Image
-                source={item}
-                resizeMode={'cover'}
-                style={{ width: '100%', height: '100%' }}
-              />
-            )}
-            onProgressChange={useCallback((_: number, progress: number) => position.value = progress, [])}
-          />
-          <View style={rowStyle}>
-            <View style={paginationStyle}>
-              <ContentPagination length={imageList.length} value={position}/>
-            </View>
-            <HeartIcon color={theme.colors.black.main} width={18} height={18}/>
-            <Space size={12}/>
-            <CommentIcon color={theme.colors.black.main} width={18} height={18}/>
-            <Space size={12}/>
-            <AirplaneIcon color={theme.colors.black.main} width={18} height={18}/>
-            <Space/>
-            <BookmarkIcon color={theme.colors.black.main} width={18} height={18}/>
-          </View>
-          <Space size={16}/>
-          <View style={{ paddingHorizontal: 16 }}>
-            <ReadMore
-              animate
-              expandOnly
-              numberOfLines={3}
-              seeMoreText={'더보기'}
-              seeMoreStyle={{
-                color: theme.colors.palette.gray[500],
-              }}
-              seeMoreOverlapCount={3}
-              customTextComponent={Typography as unknown as React.ReactNode}
-            >
-              {`제주 감귤의 상큼함을 팜프로농장에서 직접 느껴보세요! 🍊 저희 농장에서 자란 고당도의 제주 감귤은 오렌지 품종 중에서도 특히 맛있답니다. 여러분의 입맛을 사로잡을 감귤, 지금 만나보세요!
+        <View style={{ paddingHorizontal: 16 }}>
+          <ReadMore
+            animate
+            expandOnly
+            numberOfLines={3}
+            seeMoreText={'더보기'}
+            seeMoreStyle={{
+              color: theme.colors.palette.gray[500],
+            }}
+            seeMoreOverlapCount={3}
+            customTextComponent={Typography as unknown as React.ReactNode}
+          >
+            {`제주 감귤의 상큼함을 팜프로농장에서 직접 느껴보세요! 🍊 저희 농장에서 자란 고당도의 제주 감귤은 오렌지 품종 중에서도 특히 맛있답니다. 여러분의 입맛을 사로잡을 감귤, 지금 만나보세요!
 
 팜프로농장에서는 직배송 서비스를 제공하고 있어요. 신선한 감귤을 집 앞까지 빠르게 배송해 드립니다. 🍊📦 또한, 처음 구매하시는 분들을 위해 맛보기 서비스도 준비했답니다. 감귤의 풍미를 직접 경험해보세요!
 
@@ -178,27 +194,15 @@ export const ContentSharePage = () => {
 - 평일 09:00 ~ 19:00 (주말, 공휴일 휴무)
 
 이 게시글은 FarmPro의 AI 지원으로 작성되었어요. `}
-            </ReadMore>
-          </View>
-          <Space size={8}/>
-          <Button variant={'secondary'} style={{ margin: 'auto', paddingVertical: 10, paddingHorizontal: 16 }}>
-            본문 복사하기
-            <DocumentIcon color={theme.colors.white.text}/>
-          </Button>
-          <Space size={20}/>
-        </Shadow>
-      </ScrollView>
-      <View style={buttonContainerStyle}>
-        <Button variant={'secondary'} style={{ flex: 1 }}>
-          이미지 다운로드
+          </ReadMore>
+        </View>
+        <Space size={8}/>
+        <Button variant={'secondary'} style={{ margin: 'auto', paddingVertical: 10, paddingHorizontal: 16 }}>
+          본문 복사하기
+          <DocumentIcon color={theme.colors.white.text}/>
         </Button>
-        <Space size={10}/>
-        <Button style={{ flex: 1 }} onPress={() => configRef.current?.present()}>
-          공유하기
-          <Space size={10}/>
-          <ShareIcon color={theme.colors.white.main}/>
-        </Button>
-      </View>
+        <Space size={20}/>
+      </Shadow>
       <BottomSheetModal
         ref={configRef}
         index={0}
@@ -222,6 +226,6 @@ export const ContentSharePage = () => {
           }}
         />
       </BottomSheetModal>
-    </View>
+    </AppShell>
   );
 };

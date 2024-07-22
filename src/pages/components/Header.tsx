@@ -11,6 +11,7 @@ import SearchIcon from '@/assets/images/search.svg';
 import BellIcon from '@/assets/images/bell.svg';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurView } from '@react-native-community/blur';
+import React from 'react';
 
 const useHeaderSizeStyle = createStyle((_, top = 0) => ({
   width: '100%',
@@ -42,7 +43,10 @@ interface HeaderProps {
   children?: React.ReactNode;
 }
 
-export const Header = ({ showLogo = true, children }: HeaderProps) => {
+export const Header = React.forwardRef<View, HeaderProps>(({
+  showLogo = true,
+  children,
+}, fRef) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const headerStyle = useHeaderStyle(insets.top);
@@ -53,7 +57,7 @@ export const Header = ({ showLogo = true, children }: HeaderProps) => {
     <>
       <View style={headerSizeStyle}/>
       <BlurView style={headerStyle} blurType={'xlight'}/>
-      <View style={headerStyle}>
+      <View ref={fRef} style={headerStyle}>
         {showLogo && (
           <>
             <LogoIcon width={32} height={32} color={theme.colors.primary.main}/>
@@ -77,4 +81,4 @@ export const Header = ({ showLogo = true, children }: HeaderProps) => {
       </View>
     </>
   );
-};
+});

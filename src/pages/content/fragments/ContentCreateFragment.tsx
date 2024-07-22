@@ -13,7 +13,6 @@ import AddIcon from '@/assets/images/add.svg';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { runOnJS } from 'react-native-reanimated';
 import {
-  KeyboardAwareScrollView,
   KeyboardController,
 } from 'react-native-keyboard-controller';
 
@@ -70,7 +69,7 @@ export const ContentCreateFragment = ({ onConfigPress }: ContentCreateFragmentPr
 
   return (
     <GestureDetector gesture={outside}>
-      <KeyboardAwareScrollView style={{ width: '100%', height: '100%', overflow: 'visible' }}>
+      <View style={{ width: '100%', flex: 1, overflow: 'visible' }}>
         <View style={titleContainer}>
           <Typography variant={'subtitle1'}>
             카드뉴스 이미지 생성
@@ -131,7 +130,7 @@ export const ContentCreateFragment = ({ onConfigPress }: ContentCreateFragmentPr
           multiline
           style={{ flex: 1, minHeight: 60 }}
         />
-      </KeyboardAwareScrollView>
+      </View>
     </GestureDetector>
   );
 };

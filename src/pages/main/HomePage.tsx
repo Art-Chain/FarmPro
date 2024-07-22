@@ -13,7 +13,7 @@ import CucumberImage from '@/assets/images/cucumber.png';
 import PaprikaImage from '@/assets/images/paprika.png';
 import { useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Header } from '@/pages/components';
+import { AppShell } from '@/pages/components';
 import { View } from 'react-native';
 
 const gradientStyle = createStyle({
@@ -25,8 +25,7 @@ export const HomePage = () => {
   const navigation = useNavigation();
 
   return (
-    <ScrollView stickyHeaderIndices={[0]}>
-      <Header/>
+    <AppShell>
       <View style={{ paddingVertical: 16, paddingHorizontal: 20 }}>
         <Card round={16} padding={0}>
           <Svg width={'100%'} height={'100%'} style={gradientStyle}>
@@ -102,7 +101,55 @@ export const HomePage = () => {
           title={'내가 친환경 유기농 농사를 짓는다면?'}
           description={'제목: "자연의 맛 그대로, 무농약 스마트팜 딸기! 지금 바로 OOO팜에서 만나보세요, 50% 세일 진행 중"'}
         />
+        <Space size={12}/>
+        <ContentCard
+          tags={['딸기', '판매목적']}
+          title={'내가 친환경 유기농 농사를 짓는다면?'}
+          description={'제목: "자연의 맛 그대로, 무농약 스마트팜 딸기! 지금 바로 OOO팜에서 만나보세요, 50% 세일 진행 중"'}
+        />
+        <Space size={12}/>
+        <ContentCard
+          tags={['딸기', '판매목적']}
+          title={'내가 친환경 유기농 농사를 짓는다면?'}
+          description={'제목: "자연의 맛 그대로, 무농약 스마트팜 딸기! 지금 바로 OOO팜에서 만나보세요, 50% 세일 진행 중"'}
+        />
+        <Space size={12}/>
+        <ContentCard
+          tags={['딸기', '판매목적']}
+          title={'내가 친환경 유기농 농사를 짓는다면?'}
+          description={'제목: "자연의 맛 그대로, 무농약 스마트팜 딸기! 지금 바로 OOO팜에서 만나보세요, 50% 세일 진행 중"'}
+        />
+        <Space size={12}/>
+        <ContentCard
+          tags={['딸기', '판매목적']}
+          title={'내가 친환경 유기농 농사를 짓는다면?'}
+          description={'제목: "자연의 맛 그대로, 무농약 스마트팜 딸기! 지금 바로 OOO팜에서 만나보세요, 50% 세일 진행 중"'}
+        />
+        <Space size={12}/>
+        <ContentCard
+          tags={['딸기', '판매목적']}
+          title={'내가 친환경 유기농 농사를 짓는다면?'}
+          description={'제목: "자연의 맛 그대로, 무농약 스마트팜 딸기! 지금 바로 OOO팜에서 만나보세요, 50% 세일 진행 중"'}
+        />
+        <Space size={12}/>
+        <ContentCard
+          tags={['딸기', '판매목적']}
+          title={'내가 친환경 유기농 농사를 짓는다면?'}
+          description={'제목: "자연의 맛 그대로, 무농약 스마트팜 딸기! 지금 바로 OOO팜에서 만나보세요, 50% 세일 진행 중"'}
+        />
+        <Space size={12}/>
+        <ContentCard
+          tags={['딸기', '판매목적']}
+          title={'내가 친환경 유기농 농사를 짓는다면?'}
+          description={'제목: "자연의 맛 그대로, 무농약 스마트팜 딸기! 지금 바로 OOO팜에서 만나보세요, 50% 세일 진행 중"'}
+        />
+        <Space size={12}/>
+        <ContentCard
+          tags={['딸기', '판매목적']}
+          title={'내가 친환경 유기농 농사를 짓는다면?'}
+          description={'제목: "자연의 맛 그대로, 무농약 스마트팜 딸기! 지금 바로 OOO팜에서 만나보세요, 50% 세일 진행 중"'}
+        />
       </View>
-    </ScrollView>
+    </AppShell>
   );
 };
