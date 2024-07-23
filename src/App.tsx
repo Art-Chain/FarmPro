@@ -65,7 +65,13 @@ export const Route = () => {
     >
       <Stack.Navigator
         initialRouteName={'home'}
-        screenOptions={{ headerShown: false, gestureEnabled: true, fullScreenGestureEnabled: false }}
+        screenOptions={{
+          headerShown: false,
+          gestureEnabled: true,
+          fullScreenGestureEnabled: false,
+          animation: 'none',
+          statusBarStyle: 'auto'
+        }}
       >
         <Stack.Screen
           name={'main'}
