@@ -7,8 +7,8 @@ import { Space, Typography } from '@/ui/common';
 
 export const ContentCreateInfoFragment = () => {
   const [selectedCrop, setSelectedCrop] = useState<string | null>(null);
-  const [contentType, setContentType] = useState<string | null>(null);
-  const [contentPurpose, setContentPurpose] = useState<string | null>(null);
+  const [contentType, setContentType] = useState('instagram');
+  const [contentPurpose, setContentPurpose] = useState('advertise');
 
   return (
     <>

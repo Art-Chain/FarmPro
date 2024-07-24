@@ -67,7 +67,7 @@ export const SelectCard = ({ selected, onPress, onPressIn, onPressOut, children,
     borderColor: interpolateColor(
       pressed.value || activeValue.value,
       [0, 1],
-      [theme.colors.palette.gray[500], theme.colors.primary.main],
+      [theme.colors.palette.gray[300], theme.colors.primary.main],
     ),
     borderWidth: 1 + activeValue.value,
     margin: 1 - activeValue.value,

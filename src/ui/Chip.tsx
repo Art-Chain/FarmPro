@@ -79,7 +79,7 @@ export const Chip = React.forwardRef<Animated.View, ChipProps>(({
     borderColor: interpolateColor(
       activeValue.value,
       [0, 1],
-      [theme.colors.palette.gray[500], theme.colors.primary.main],
+      [theme.colors.palette.gray[300], theme.colors.primary.main],
     ),
   }));
   const animatedTextStyle = useAnimatedStyle(() => ({

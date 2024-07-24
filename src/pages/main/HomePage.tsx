@@ -18,6 +18,10 @@ import { View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import { fetchContents } from '@/api/content.ts';
 
+import ProjectFullIcon from '@/assets/images/project_full.svg';
+import ArrowRightIcon from '@/assets/images/arrow_right.svg';
+import { Tap } from '@/ui/Tap.tsx';
+
 const gradientStyle = createStyle({
   position: 'absolute',
 });
@@ -35,6 +39,7 @@ export const HomePage = () => {
     <AppShell footer={<Space size={62}/>}>
       <View style={{ paddingVertical: 16, paddingHorizontal: 20 }}>
         <Card round={16} padding={0}>
+          <Space size={8}/>
           <Svg width={'100%'} height={'100%'} style={gradientStyle}>
             <Defs>
               <LinearGradient id={'gradient'} x1={'0'} y1={'0'} x2={'0'} y2={'1'}>
@@ -44,7 +49,7 @@ export const HomePage = () => {
             </Defs>
             <Rect x={'0'} y={'0'} width={'100%'} height={'100%'} fill={'url(#gradient)'}/>
           </Svg>
-          <Space size={16}/>
+          <Space size={20}/>
           <Typography variant={'head3'} align={'center'}>
             1분 만에 만드는{'\n'}
             SNS 마케팅 콘텐츠
@@ -54,7 +59,7 @@ export const HomePage = () => {
             어려웠던 콘텐츠 제작, 이제는 AI가 글과 이미지를{'\n'}
             원하는 대로 만들어드립니다!
           </Typography>
-          <Space size={24}/>
+          <Space size={20}/>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -81,9 +86,9 @@ export const HomePage = () => {
               color={'#AB90F8'}
             />
           </ScrollView>
-          <Space size={24}/>
+          <Space size={4}/>
           <Button
-            style={{ margin: 16 }}
+            style={{ margin: 16, borderRadius: 12 }}
             icon={<AddIcon width={16} height={16} color={theme.colors.primary.text}/>}
             onPress={useCallback(() => {
               navigation.navigate('contentCreate');
@@ -92,6 +97,26 @@ export const HomePage = () => {
             콘텐츠 만들기
           </Button>
         </Card>
+        <Space size={16}/>
+        <Tap>
+          <Card style={{ flexDirection: 'row' }}>
+            <ProjectFullIcon color={theme.colors.primary.main}/>
+            <Space size={12}/>
+            <View style={{ flexDirection: 'column' }}>
+              <Typography variant={'subtitle2'}>내 프로젝트 등록하기</Typography>
+              <Space size={6}/>
+              <Typography variant={'body2'} color={(colors) => colors.palette.gray[500]}>내 농작물 프로젝트를 생성하여{'\n'}더 맞춤형으로
+                콘텐츠를 만들어 보세요!</Typography>
+            </View>
+            <Space/>
+            <ArrowRightIcon
+              width={28}
+              height={28}
+              color={theme.colors.primary.main}
+              style={{ backgroundColor: theme.colors.white.surface, borderRadius: 14, overflow: 'hidden' }}
+            />
+          </Card>
+        </Tap>
         <Space size={24}/>
         <Typography variant={'subtitle1'}>
           효과 좋은 인스타 콘텐츠 만드는 법
@@ -105,7 +130,7 @@ export const HomePage = () => {
           />
           <Space size={12}/>
         </>)}
-        <Space size={12} />
+        <Space size={12}/>
         <Button variant={'secondary'}>더보기</Button>
       </View>
     </AppShell>
