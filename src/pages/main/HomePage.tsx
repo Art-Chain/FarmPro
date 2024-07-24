@@ -11,9 +11,9 @@ import AddIcon from '@/assets/images/add.svg';
 import StrawberryImage from '@/assets/images/strawberry.png';
 import CucumberImage from '@/assets/images/cucumber.png';
 import PaprikaImage from '@/assets/images/paprika.png';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { AppShell } from '@/pages/components';
+import { AppShell, BottomSheetBackground } from '@/pages/components';
 import { View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import { fetchContents } from '@/api/content.ts';
@@ -21,6 +21,10 @@ import { fetchContents } from '@/api/content.ts';
 import ProjectFullIcon from '@/assets/images/project_full.svg';
 import ArrowRightIcon from '@/assets/images/arrow_right.svg';
 import { Tap } from '@/ui/Tap.tsx';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { ProjectCreatedFragment } from '@/pages/project/fragments';
+import { useAtom } from 'jotai';
+import { ProjectFormAtom } from '@/features/store';
 
 const gradientStyle = createStyle({
   position: 'absolute',
@@ -30,10 +34,30 @@ export const HomePage = () => {
   const theme = useTheme();
   const navigation = useNavigation();
 
+  const modalRef = useRef<BottomSheetModal>(null);
+  const [projectForm, setProjectForm] = useAtom(ProjectFormAtom);
+  const [name, setName] = useState('');
+
   const { data } = useQuery({
     queryKey: ['feed'],
     queryFn: fetchContents,
   });
+
+  const onAddProject = useCallback(() => {
+    navigation.navigate('projectEdit');
+  }, [navigation]);
+  const onSubmitProject = useCallback(() => {
+    setProjectForm(null);
+    modalRef.current?.dismiss();
+    navigation.navigate('contentCreate');
+  }, [navigation, setProjectForm]);
+
+  useEffect(() => {
+    if (projectForm) {
+      setName(projectForm.name);
+      modalRef.current?.present();
+    }
+  }, [projectForm]);
 
   return (
     <AppShell footer={<Space size={62}/>}>
@@ -98,7 +122,7 @@ export const HomePage = () => {
           </Button>
         </Card>
         <Space size={16}/>
-        <Tap>
+        <Tap onPress={onAddProject}>
           <Card style={{ flexDirection: 'row' }}>
             <ProjectFullIcon color={theme.colors.primary.main}/>
             <Space size={12}/>
@@ -133,6 +157,19 @@ export const HomePage = () => {
         <Space size={12}/>
         <Button variant={'secondary'}>더보기</Button>
       </View>
+      <BottomSheetModal
+        enableDynamicSizing
+        ref={modalRef}
+        index={0}
+        backgroundComponent={BottomSheetBackground}
+      >
+        <ProjectCreatedFragment
+          name={name}
+          onNameChange={setName}
+          onSkip={() => modalRef.current?.dismiss()}
+          onSubmit={onSubmitProject}
+        />
+      </BottomSheetModal>
     </AppShell>
   );
 };
