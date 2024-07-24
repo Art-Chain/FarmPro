@@ -94,17 +94,19 @@ export const HomePage = () => {
         </Card>
         <Space size={24}/>
         <Typography variant={'subtitle1'}>
-          딸기로 인스타 콘텐츠 만드는 법
+          효과 좋은 인스타 콘텐츠 만드는 법
         </Typography>
         <Space size={4}/>
         {data?.contents?.map((content) => <>
-          <Space size={12}/>
           <ContentCard
             tags={[content.contentPurpose]}
             title={content.mainText}
             description={content.textStyle}
           />
+          <Space size={12}/>
         </>)}
+        <Space size={12} />
+        <Button variant={'secondary'}>더보기</Button>
       </View>
     </AppShell>
   );
