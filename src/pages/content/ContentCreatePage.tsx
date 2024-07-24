@@ -1,17 +1,14 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useNavigation } from '@react-navigation/native';
+import Animated, { SlideInLeft, SlideInRight, SlideOutLeft, SlideOutRight } from 'react-native-reanimated';
 
 import { Button, Space } from '@/ui/common';
 import { createStyle } from '@/features/utils';
+import { AppShell, BottomSheetBackground } from '@/pages/components';
 
 import { AIConfigFragment, ContentCreateFragment, ContentCreateInfoFragment } from './fragments';
-
-import { Shadow } from '@/ui/Shadow';
-import { useTheme } from '@/features/themes';
-import { AppShell } from '@/pages/components';
-import { useNavigation } from '@react-navigation/native';
-import Animated, { SlideInLeft, SlideInRight, SlideOutLeft, SlideOutRight } from 'react-native-reanimated';
 
 const useButtonContainerStyle = createStyle((_, bottom = 0) => ({
   flexDirection: 'row',
@@ -21,7 +18,6 @@ const useButtonContainerStyle = createStyle((_, bottom = 0) => ({
 }));
 
 export const ContentCreatePage = () => {
-  const theme = useTheme();
   const navigation = useNavigation();
 
   const configRef = useRef<BottomSheetModal>(null);
@@ -62,12 +58,14 @@ export const ContentCreatePage = () => {
       }
     >
       {position === 0 && (
-        <Animated.View entering={SlideInLeft} exiting={SlideOutLeft} collapsable={false} style={{ paddingHorizontal: 20, paddingTop: 24, flex: 1 }}>
+        <Animated.View entering={SlideInLeft} exiting={SlideOutLeft} collapsable={false}
+                       style={{ paddingHorizontal: 20, paddingTop: 24, flex: 1 }}>
           <ContentCreateInfoFragment/>
         </Animated.View>
       )}
       {position === 1 && (
-        <Animated.View entering={SlideInRight} exiting={SlideOutRight} collapsable={false} style={{ paddingHorizontal: 20, paddingTop: 24, flex: 1 }}>
+        <Animated.View entering={SlideInRight} exiting={SlideOutRight} collapsable={false}
+                       style={{ paddingHorizontal: 20, paddingTop: 24, flex: 1 }}>
           <ContentCreateFragment onConfigPress={configRef.current?.present}/>
         </Animated.View>
       )}
@@ -75,17 +73,7 @@ export const ContentCreatePage = () => {
         ref={configRef}
         index={0}
         snapPoints={['80%']}
-        backgroundComponent={({ style, ...props }) => (
-          <Shadow
-            key={0}
-            {...props}
-            shadowRadius={128}
-            shadowColor={'rgba(0, 0, 0, 0.4)'}
-            borderTopLeftRadius={16}
-            borderTopRightRadius={16}
-            style={[style, { backgroundColor: theme.colors.white.main }]}
-          />
-        )}
+        backgroundComponent={BottomSheetBackground}
       >
         <AIConfigFragment
           key={0}

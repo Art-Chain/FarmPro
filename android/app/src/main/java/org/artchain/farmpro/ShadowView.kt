@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.view.ViewGroup
+import androidx.core.view.children
 
 class ShadowView(context: Context?) : ViewGroup(context) {
     private val paint: Paint
@@ -178,10 +179,10 @@ class ShadowView(context: Context?) : ViewGroup(context) {
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         this.measureChildren(widthMeasureSpec, heightMeasureSpec)
 
-        val child = this.getChildAt(0)
+        val size = getChildSize()
 
-        this.childWidth = child?.measuredWidth ?: 0
-        this.childHeight = child?.measuredHeight ?: 0
+        this.childWidth = size.first
+        this.childHeight = size.second
 
         this.setMeasuredDimension(
             this.childWidth + (this.spreadRadius * 2) + this.shadowRadius,
@@ -211,5 +212,17 @@ class ShadowView(context: Context?) : ViewGroup(context) {
         this.getChildAt(0)?.let {
             it.layout(0, 0, it.measuredWidth, it.measuredHeight)
         }
+    }
+
+    private fun getChildSize(): Pair<Int, Int> {
+        var width = 0
+        var height = 0
+
+        this.children.forEach {
+            if (width < it.measuredWidth) width = it.measuredWidth
+            if (height < it.measuredHeight) height = it.measuredHeight
+        }
+
+        return Pair(width, height)
     }
 }
