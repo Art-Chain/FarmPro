@@ -1,17 +1,21 @@
 import React, { useEffect, useRef } from 'react';
+import { AppState } from 'react-native';
 
 import BootSplash from 'react-native-bootsplash';
-import { NavigationContainer, DefaultTheme, NavigationContainerRef, StackActions } from '@react-navigation/native';
+import NetInfo from '@react-native-community/netinfo';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { KeyboardProvider } from 'react-native-keyboard-controller';
+import { focusManager, onlineManager, QueryClientProvider } from '@tanstack/react-query';
+import { DefaultTheme, NavigationContainer, NavigationContainerRef, StackActions } from '@react-navigation/native';
 
 import { ThemeProvider, useTheme } from '@/features/themes';
 import { DebugPage, MainPage, OnBoardingPage } from '@/pages';
 import { ContentCreatePage, ContentLoadingPage, ContentSharePage } from '@/pages/content';
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { queryClient } from '@/api';
 
 // import { LogBox } from 'react-native';
 // LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
@@ -19,19 +23,35 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createNativeStackNavigator();
 
+onlineManager.setEventListener((setOnline) => {
+  return NetInfo.addEventListener((state) => {
+    setOnline(!!state.isConnected);
+  });
+});
+
 export const App = () => {
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', (status) => {
+      focusManager.setFocused(status === 'active');
+    });
+
+    return () => subscription.remove();
+  }, []);
+
   return (
-    <SafeAreaProvider>
-      <ThemeProvider>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <KeyboardProvider>
-            <BottomSheetModalProvider>
-              <Route/>
-            </BottomSheetModalProvider>
-          </KeyboardProvider>
-        </GestureHandlerRootView>
-      </ThemeProvider>
-    </SafeAreaProvider>
+    <QueryClientProvider client={queryClient}>
+      <SafeAreaProvider>
+        <ThemeProvider>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <KeyboardProvider>
+              <BottomSheetModalProvider>
+                <Route/>
+              </BottomSheetModalProvider>
+            </KeyboardProvider>
+          </GestureHandlerRootView>
+        </ThemeProvider>
+      </SafeAreaProvider>
+    </QueryClientProvider>
   );
 };
 
