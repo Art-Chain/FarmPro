@@ -1,4 +1,4 @@
-import { Dimensions, Image, ImageStyle, View } from 'react-native';
+import { Dimensions, Image, ImageStyle, Platform, View } from 'react-native';
 import { Button, Space, Typography } from '@/ui/common';
 import React, { useCallback, useMemo, useRef } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -22,7 +22,7 @@ import image2 from '@/assets/images/mock/image2.png';
 import image3 from '@/assets/images/mock/image3.png';
 import image4 from '@/assets/images/mock/image4.png';
 import image5 from '@/assets/images/mock/image5.png';
-import { ContentPagination } from '@/pages/content/components';
+import { ContentPagination, ImageRenderer } from '@/pages/content/components';
 import { Easing, useSharedValue } from 'react-native-reanimated';
 import { Shadow } from '@/ui/Shadow.tsx';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
@@ -155,11 +155,25 @@ export const ContentSharePage = () => {
             height={size}
             style={{ width: size, height: size }}
             data={imageList}
-            renderItem={({ item }) => (
-              <Image
+            renderItem={({ item, index }) => (
+              <ImageRenderer
+                templateType={(
+                  index === 0 ? 'calm' :
+                    index === 1 ? 'fancy' :
+                      index === 2 ? 'modern' :
+                        index === 3 ? 'emotional' :
+                          'humorous'
+                )}
                 source={item}
-                resizeMode={'cover'}
                 style={{ width: '100%', height: '100%' }}
+                content={'당도 200% 딸기의 계절, 그린팜입니다.'}
+                fontFamily={(
+                  index === 0 ? (Platform.OS === 'ios' ? 'ONEMobilePOPRegular' : 'ONE-Mobile-POP') :
+                    index === 1 ? 'VITRO-CORE-TTF' :
+                      index === 2 ? 'YANGJIN' :
+                        index === 3 ? (Platform.OS === 'ios' ? 'HSSaemaul' : 'HSSaemaul-Regular') :
+                          'Ownglyph_noocar-Rg'
+                )}
               />
             )}
             onProgressChange={useCallback((_: number, progress: number) => position.value = progress, [])}
