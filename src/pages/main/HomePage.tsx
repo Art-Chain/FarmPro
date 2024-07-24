@@ -15,6 +15,8 @@ import { useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { AppShell } from '@/pages/components';
 import { View } from 'react-native';
+import { useQuery } from '@tanstack/react-query';
+import { fetchContents } from '@/api/content.ts';
 
 const gradientStyle = createStyle({
   position: 'absolute',
@@ -24,8 +26,13 @@ export const HomePage = () => {
   const theme = useTheme();
   const navigation = useNavigation();
 
+  const { data } = useQuery({
+    queryKey: ['feed'],
+    queryFn: fetchContents,
+  });
+
   return (
-    <AppShell footer={<Space size={62} />}>
+    <AppShell footer={<Space size={62}/>}>
       <View style={{ paddingVertical: 16, paddingHorizontal: 20 }}>
         <Card round={16} padding={0}>
           <Svg width={'100%'} height={'100%'} style={gradientStyle}>
@@ -89,66 +96,15 @@ export const HomePage = () => {
         <Typography variant={'subtitle1'}>
           딸기로 인스타 콘텐츠 만드는 법
         </Typography>
-        <Space size={16}/>
-        <ContentCard
-          tags={['딸기', '홍보목적']}
-          title={'내가 스마트팜 딸기 생산자라면?'}
-          description={'제목: “최첨단 스마트팜에서 자란 최고 품질의 딸기, OO 농장은 소비자를 위해 최고 품질만 취급합니다.”'}
-        />
-        <Space size={12}/>
-        <ContentCard
-          tags={['딸기', '판매목적']}
-          title={'내가 친환경 유기농 농사를 짓는다면?'}
-          description={'제목: "자연의 맛 그대로, 무농약 스마트팜 딸기! 지금 바로 OOO팜에서 만나보세요, 50% 세일 진행 중"'}
-        />
-        <Space size={12}/>
-        <ContentCard
-          tags={['딸기', '판매목적']}
-          title={'내가 친환경 유기농 농사를 짓는다면?'}
-          description={'제목: "자연의 맛 그대로, 무농약 스마트팜 딸기! 지금 바로 OOO팜에서 만나보세요, 50% 세일 진행 중"'}
-        />
-        <Space size={12}/>
-        <ContentCard
-          tags={['딸기', '판매목적']}
-          title={'내가 친환경 유기농 농사를 짓는다면?'}
-          description={'제목: "자연의 맛 그대로, 무농약 스마트팜 딸기! 지금 바로 OOO팜에서 만나보세요, 50% 세일 진행 중"'}
-        />
-        <Space size={12}/>
-        <ContentCard
-          tags={['딸기', '판매목적']}
-          title={'내가 친환경 유기농 농사를 짓는다면?'}
-          description={'제목: "자연의 맛 그대로, 무농약 스마트팜 딸기! 지금 바로 OOO팜에서 만나보세요, 50% 세일 진행 중"'}
-        />
-        <Space size={12}/>
-        <ContentCard
-          tags={['딸기', '판매목적']}
-          title={'내가 친환경 유기농 농사를 짓는다면?'}
-          description={'제목: "자연의 맛 그대로, 무농약 스마트팜 딸기! 지금 바로 OOO팜에서 만나보세요, 50% 세일 진행 중"'}
-        />
-        <Space size={12}/>
-        <ContentCard
-          tags={['딸기', '판매목적']}
-          title={'내가 친환경 유기농 농사를 짓는다면?'}
-          description={'제목: "자연의 맛 그대로, 무농약 스마트팜 딸기! 지금 바로 OOO팜에서 만나보세요, 50% 세일 진행 중"'}
-        />
-        <Space size={12}/>
-        <ContentCard
-          tags={['딸기', '판매목적']}
-          title={'내가 친환경 유기농 농사를 짓는다면?'}
-          description={'제목: "자연의 맛 그대로, 무농약 스마트팜 딸기! 지금 바로 OOO팜에서 만나보세요, 50% 세일 진행 중"'}
-        />
-        <Space size={12}/>
-        <ContentCard
-          tags={['딸기', '판매목적']}
-          title={'내가 친환경 유기농 농사를 짓는다면?'}
-          description={'제목: "자연의 맛 그대로, 무농약 스마트팜 딸기! 지금 바로 OOO팜에서 만나보세요, 50% 세일 진행 중"'}
-        />
-        <Space size={12}/>
-        <ContentCard
-          tags={['딸기', '판매목적']}
-          title={'내가 친환경 유기농 농사를 짓는다면?'}
-          description={'제목: "자연의 맛 그대로, 무농약 스마트팜 딸기! 지금 바로 OOO팜에서 만나보세요, 50% 세일 진행 중"'}
-        />
+        <Space size={4}/>
+        {data?.contents?.map((content) => <>
+          <Space size={12}/>
+          <ContentCard
+            tags={[content.contentPurpose]}
+            title={content.mainText}
+            description={content.textStyle}
+          />
+        </>)}
       </View>
     </AppShell>
   );

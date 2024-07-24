@@ -12,10 +12,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { focusManager, onlineManager, QueryClientProvider } from '@tanstack/react-query';
 import { DefaultTheme, NavigationContainer, NavigationContainerRef, StackActions } from '@react-navigation/native';
 
+import { queryClient } from '@/features/config';
 import { ThemeProvider, useTheme } from '@/features/themes';
 import { DebugPage, MainPage, OnBoardingPage } from '@/pages';
 import { ContentCreatePage, ContentLoadingPage, ContentSharePage } from '@/pages/content';
-import { queryClient } from '@/api';
 
 // import { LogBox } from 'react-native';
 // LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
@@ -90,7 +90,6 @@ export const Route = () => {
           gestureEnabled: true,
           fullScreenGestureEnabled: false,
           animation: 'none',
-          statusBarStyle: 'auto'
         }}
       >
         <Stack.Screen
