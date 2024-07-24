@@ -31,7 +31,7 @@ const useTextInputViewStyle = createStyle((theme) => ({
   paddingVertical: 12,
   borderRadius: 8,
   borderColor: theme.colors.palette.gray[300],
-  borderWidth: 2,
+  borderWidth: 1,
 
   overflow: 'hidden',
 }));

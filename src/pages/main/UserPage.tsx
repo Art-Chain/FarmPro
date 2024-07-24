@@ -71,6 +71,7 @@ export const UserPage = () => {
         <CardButton
           icon={ClipboardIcon}
           name={'내 프로젝트'}
+          onPress={() => navigation.navigate('projectList')}
         />
         <CardButton
           icon={AIIcon}

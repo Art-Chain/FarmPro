@@ -6,6 +6,9 @@ export type RootStackParamList = {
   contentCreate: undefined;
   contentLoading: undefined;
   contentShare: undefined;
+  projectList: undefined;
+  project: { project?: Record<string, string> } | undefined;
+  projectEdit: { project?: Record<string, string> } | undefined;
   debug: undefined;
 };
 export type MainTabParamList = {

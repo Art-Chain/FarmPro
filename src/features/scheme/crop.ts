@@ -6,7 +6,7 @@ export const CropSchema = z.object({
   name: z.string(),
 });
 
-export type Crops = z.infer<typeof CropsSchema>;
-export const CropsSchema = z.object({
+export type CropResponse = z.infer<typeof CropResponseSchema>;
+export const CropResponseSchema = z.object({
   crops: CropSchema.array(),
 });

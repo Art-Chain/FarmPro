@@ -45,7 +45,7 @@ const useHeaderStyle = createStyle((_, top = 0) => ({
 }));
 const useBorderStyle = createStyle((theme, top = 0) => ({
   position: 'absolute',
-  top: 56 + top,
+  top: 56 + top - 1,
   width: '100%',
   height: 1,
   backgroundColor: theme.colors.palette.gray[200],
@@ -55,12 +55,6 @@ const useBlurStyle = createStyle((_, top = 0) => ({
   top: 0,
   width: '100%',
   height: 56 + top,
-}));
-const useFooterBlurStyle = createStyle((_, height = 0) => ({
-  position: 'absolute',
-  top: 0,
-  width: '100%',
-  height,
 }));
 const useTitleStyle = createStyle((theme, showLogo = false) => ({
   ...theme.typography.subtitle1,
@@ -118,7 +112,6 @@ export const AppShellIOS = ({
   const headerStyle = useHeaderStyle(insets.top);
   const headerSizeStyle = useHeaderSizeStyle(insets.top);
   const blurStyle = useBlurStyle(insets.top);
-  const footerBlurStyle = useFooterBlurStyle(height + insets.bottom);
   const borderStyle = useBorderStyle(insets.top);
   const titleContainerStyle = useTitleContainerStyle(insets.top, align, showBack);
   const leftButtonStyle = useButtonStyle(20);
@@ -170,11 +163,6 @@ export const AppShellIOS = ({
             setHeight(event.nativeEvent.layout.height);
           }}
         >
-          <BlurView
-            style={[footerBlurStyle]}
-            blurType={'transparent'}
-            blurAmount={16}
-          />
           {footer}
           <Space size={insets.bottom}/>
         </Animated.View>
@@ -205,10 +193,12 @@ export const AppShellIOS = ({
             </BorderlessButton>
           )}
         </View>
+        <Space/>
         {icons?.map((icon) => <>
           <Space size={16}/>
           {icon}
         </>)}
+        <Space size={20} />
         {header}
       </Animated.View>
     </AnimatedScrollView>

@@ -16,6 +16,7 @@ import { queryClient } from '@/features/config';
 import { ThemeProvider, useTheme } from '@/features/themes';
 import { DebugPage, MainPage, OnBoardingPage } from '@/pages';
 import { ContentCreatePage, ContentLoadingPage, ContentSharePage } from '@/pages/content';
+import { ProjectEditPage, ProjectListPage, ProjectPage } from '@/pages/project';
 
 // import { LogBox } from 'react-native';
 // LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
@@ -116,6 +117,18 @@ export const Route = () => {
         <Stack.Screen
           name={'onBoarding'}
           component={OnBoardingPage}
+        />
+        <Stack.Screen
+          name={'projectList'}
+          component={ProjectListPage}
+        />
+        <Stack.Screen
+          name={'project'}
+          component={ProjectPage}
+        />
+        <Stack.Screen
+          name={'projectEdit'}
+          component={ProjectEditPage}
         />
         <Stack.Screen
           name={'debug'}
