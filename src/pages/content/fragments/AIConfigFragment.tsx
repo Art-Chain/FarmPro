@@ -140,13 +140,15 @@ const buttonContainerStyle = createStyle({
 interface AIConfigFragmentProps {
   defaultArticleType?: string;
   defaultImageStyle?: string;
+  defaultFontFamily?: string;
   onCancel?: () => void;
-  onSubmit?: (articleType: string, imageStyle: string) => void;
+  onSubmit?: (articleType: string, imageStyle: string, fontFamily: string) => void;
 }
 
 export const AIConfigFragment = ({
   defaultArticleType = articleTypes[0].id,
   defaultImageStyle = imageStyles[0].id,
+  defaultFontFamily = fontList[0].id,
   onCancel,
   onSubmit,
 }: AIConfigFragmentProps) => {
@@ -156,7 +158,7 @@ export const AIConfigFragment = ({
 
   const [articleType, setArticleType] = useState(defaultArticleType);
   const [imageStyle, setImageStyle] = useState(defaultImageStyle);
-  const [font, setFont] = useState(fontList[0].id);
+  const [font, setFont] = useState(defaultFontFamily);
 
   return (
     <BottomSheetScrollView contentContainerStyle={{ padding: 16 }}>
@@ -297,8 +299,8 @@ export const AIConfigFragment = ({
           취소
         </Button>
         <Space size={10}/>
-        <Button style={{ flex: 1 }} onPress={() => onSubmit?.(articleType, imageStyle)}>
-          저장
+        <Button style={{ flex: 1 }} onPress={() => onSubmit?.(articleType, imageStyle, font)}>
+          생성
         </Button>
       </View>
     </BottomSheetScrollView>

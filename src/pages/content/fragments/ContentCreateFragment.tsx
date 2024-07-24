@@ -34,11 +34,7 @@ const useAddCardStyle = createStyle((theme) => ({
   backgroundColor: theme.colors.palette.gray[200],
 }));
 
-interface ContentCreateFragmentProps {
-  onConfigPress?: () => void;
-}
-
-export const ContentCreateFragment = ({ onConfigPress }: ContentCreateFragmentProps) => {
+export const ContentCreateFragment = () => {
   const theme = useTheme();
   const size = useMemo(() => Dimensions.get('window').width, []);
 
@@ -55,7 +51,7 @@ export const ContentCreateFragment = ({ onConfigPress }: ContentCreateFragmentPr
     });
   const tapConfig = Gesture.Tap()
     .onEnd(() => {
-      if (onConfigPress) runOnJS(onConfigPress)();
+      // TODO: AI gen
     });
 
   const addCardStyle = useAddCardStyle();

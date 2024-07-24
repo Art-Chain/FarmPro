@@ -31,8 +31,8 @@ export const ContentCreatePage = () => {
 
   const onNext = useCallback(() => {
     if (position === 0) setPosition(1);
-    else navigation.navigate('contentLoading');
-
+    // else navigation.navigate('contentLoading');
+    else configRef.current?.present();
   }, [navigation, position]);
   const onPrev = useCallback(() => {
     setPosition(0);
@@ -58,15 +58,23 @@ export const ContentCreatePage = () => {
       }
     >
       {position === 0 && (
-        <Animated.View entering={SlideInLeft} exiting={SlideOutLeft} collapsable={false}
-                       style={{ paddingHorizontal: 20, paddingTop: 24, flex: 1 }}>
+        <Animated.View
+          entering={SlideInLeft}
+          exiting={SlideOutLeft}
+          collapsable={false}
+          style={{ paddingHorizontal: 20, paddingTop: 24, flex: 1 }}
+        >
           <ContentCreateInfoFragment/>
         </Animated.View>
       )}
       {position === 1 && (
-        <Animated.View entering={SlideInRight} exiting={SlideOutRight} collapsable={false}
-                       style={{ paddingHorizontal: 20, paddingTop: 24, flex: 1 }}>
-          <ContentCreateFragment onConfigPress={configRef.current?.present}/>
+        <Animated.View
+          entering={SlideInRight}
+          exiting={SlideOutRight}
+          collapsable={false}
+          style={{ paddingHorizontal: 20, paddingTop: 24, flex: 1 }}
+        >
+          <ContentCreateFragment />
         </Animated.View>
       )}
       <BottomSheetModal
