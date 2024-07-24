@@ -25,7 +25,7 @@ export const HomePage = () => {
   const navigation = useNavigation();
 
   return (
-    <AppShell>
+    <AppShell footer={<Space size={62} />}>
       <View style={{ paddingVertical: 16, paddingHorizontal: 20 }}>
         <Card round={16} padding={0}>
           <Svg width={'100%'} height={'100%'} style={gradientStyle}>

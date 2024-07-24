@@ -1,17 +1,10 @@
-import { BottomSheetView } from '@gorhom/bottom-sheet';
-
-import { Button, Card, Space, Typography, CheckBox } from '@/ui/common';
-import { SelectCard } from '@/ui/SelectCard';
-
-import ExpandMore from '@/assets/images/expand_more.svg';
-import { createStyle } from '@/features/utils';
-import { useTheme } from '@/features/themes';
-import ShareIcon from '@/assets/images/share.svg';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Image, ImageStyle } from 'react-native';
 import Animated, {
-  Easing, FadeInUp, FadeOutUp,
+  Easing,
+  FadeInUp,
+  FadeOutUp,
   LinearTransition,
   useAnimatedStyle,
   useSharedValue,
@@ -19,6 +12,18 @@ import Animated, {
 } from 'react-native-reanimated';
 import Share, { Social } from 'react-native-share';
 import RNFetchBlob from 'rn-fetch-blob';
+import { ScrollView } from 'react-native-gesture-handler';
+import { BottomSheetView } from '@gorhom/bottom-sheet';
+
+import { Button, Card, CheckBox, Space, Typography } from '@/ui/common';
+import { SelectCard } from '@/ui/SelectCard';
+import { createStyle } from '@/features/utils';
+import { useTheme } from '@/features/themes';
+
+import ExpandMore from '@/assets/images/expand_more.svg';
+import ShareIcon from '@/assets/images/share.svg';
+
+const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
 const useContainerStyle = createStyle((_, expand = false, bottom = 0) => ({
   width: '100%',
@@ -122,7 +127,7 @@ export const ExportConfigFragment = ({ data = [], onExpand }: ExportConfigFragme
       </SelectCard>
       <Space size={24}/>
       {expand && <>
-        <Animated.View entering={FadeInUp} exiting={FadeOutUp}>
+        <AnimatedScrollView entering={FadeInUp} exiting={FadeOutUp} style={{ flex: 1 }}>
           <Card>
             <CheckBox
               value={selected.every(Boolean)}
@@ -154,13 +159,16 @@ export const ExportConfigFragment = ({ data = [], onExpand }: ExportConfigFragme
               </React.Fragment>
             ))}
           </Card>
-        </Animated.View>
-        <Space/>
+          <Space size={24}/>
+        </AnimatedScrollView>
       </>}
-      <Button layout={LinearTransition.duration(300).easing(Easing.elastic(0.5))} onPress={onShare}>
+      <Button
+        layout={LinearTransition.duration(300).easing(Easing.elastic(0.5))}
+        onPress={onShare}
+        icon={<ShareIcon color={theme.colors.white.main}/>}
+      >
         공유하기
         <Space size={10}/>
-        <ShareIcon color={theme.colors.white.main}/>
       </Button>
     </BottomSheetView>
   );

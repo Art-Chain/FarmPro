@@ -10,8 +10,12 @@ import Animated, {
   FadeInDown,
   FadeOutDown,
   LinearTransition,
-  runOnJS, useAnimatedStyle,
-  useSharedValue, withTiming, ZoomIn, ZoomOut
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+  ZoomIn,
+  ZoomOut
 } from 'react-native-reanimated';
 
 import { createStyle } from '@/features/utils';

@@ -21,26 +21,24 @@ export const UserPage = () => {
   const navigation = useNavigation();
 
   return (
-    <AppShell>
-      <View>
-        <Space size={32}/>
-        <Typography variant={'subtitle1'} style={{ paddingHorizontal: 20 }}>고객 지원</Typography>
-        <Space size={8}/>
-        <RectButton>
-          <View accessible accessibilityRole={'button'} style={itemStyle}>
-            <Typography>공지사항</Typography>
-            <Space/>
-            <ChevronRight width={16} height={16} color={theme.colors.black.main}/>
-          </View>
-        </RectButton>
-        <RectButton onPress={() => navigation.navigate('debug')}>
-          <View accessible accessibilityRole={'button'} style={itemStyle}>
-            <Typography>Debug</Typography>
-            <Space/>
-            <ChevronRight width={16} height={16} color={theme.colors.black.main}/>
-          </View>
-        </RectButton>
-      </View>
+    <AppShell footer={<Space size={62}/>}>
+      <Space size={32}/>
+      <Typography variant={'subtitle1'} style={{ paddingHorizontal: 20 }}>고객 지원</Typography>
+      <Space size={8}/>
+      <RectButton>
+        <View accessible accessibilityRole={'button'} style={itemStyle}>
+          <Typography>공지사항</Typography>
+          <Space/>
+          <ChevronRight width={16} height={16} color={theme.colors.black.main}/>
+        </View>
+      </RectButton>
+      <RectButton onPress={() => navigation.navigate('debug')}>
+        <View accessible accessibilityRole={'button'} style={itemStyle}>
+          <Typography>Debug</Typography>
+          <Space/>
+          <ChevronRight width={16} height={16} color={theme.colors.black.main}/>
+        </View>
+      </RectButton>
     </AppShell>
   );
 };

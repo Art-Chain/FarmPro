@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { Platform, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { BlurView } from '@react-native-community/blur';
 import { BorderlessButton } from 'react-native-gesture-handler';
@@ -172,7 +172,7 @@ export const AppShellIOS = ({
         >
           <BlurView
             style={[footerBlurStyle]}
-            blurType={Platform.OS === 'ios' ? 'transparent' : 'light'}
+            blurType={'transparent'}
             blurAmount={16}
           />
           {footer}
@@ -180,7 +180,7 @@ export const AppShellIOS = ({
         </Animated.View>
       )}
       <Animated.View style={[headerStyle, animatedHeaderStyle]}>
-        <BlurView style={[blurStyle]} blurType={Platform.OS === 'ios' ? 'transparent' : 'light'} blurAmount={16}/>
+        <BlurView style={[blurStyle]} blurType={'transparent'} blurAmount={16}/>
         {showBorder && (
           <Animated.View
             style={showBorder === 'auto' ? [borderStyle, animatedBorderStyle] : borderStyle}
