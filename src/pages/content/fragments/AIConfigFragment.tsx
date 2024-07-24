@@ -14,7 +14,7 @@ import CalmStyle from '@/assets/images/style/style_calm.png';
 import ModernStyle from '@/assets/images/style/style_modern.png';
 import EmotionalStyle from '@/assets/images/style/style_emotional.png';
 import HumorousStyle from '@/assets/images/style/style_humorous.png';
-import { Image, ImageStyle, Text, View } from 'react-native';
+import { Image, ImageStyle, Platform, Text, View } from 'react-native';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 
 const articleTypes = [
@@ -80,19 +80,19 @@ const imageStyles = [
 
 const fontList = [
   {
-    id: 'ONE-Mobile-POP',
+    id: Platform.OS === 'ios' ? 'ONEMobilePOPRegular' : 'ONE-Mobile-POP',
     name: '원스토어 모바일 POP체',
   },
   {
-    id: 'VITRO-CORE',
+    id: 'VITRO-CORE-TTF',
     name: '비트로 코어체',
   },
   {
-    id: '양진체',
+    id: 'YANGJIN',
     name: '양진체',
   },
   {
-    id: 'HSSaemaul-Regular',
+    id: Platform.OS === 'ios' ? 'HSSaemaul' : 'HSSaemaul-Regular',
     name: 'HS새마을체',
   },
   {
@@ -267,11 +267,11 @@ export const AIConfigFragment = ({
             style={cardStyle}
             onPress={() => setFont(item.id)}
           >
-            <Text style={{ color: theme.colors.primary.main, fontFamily: item.id }}>
+            <Text style={{ color: theme.colors.primary.main, fontFamily: item.id, fontSize: theme.typography.head2.fontSize }}>
               {item.name}
             </Text>
             <Space size={16}/>
-            <Text style={{ fontFamily: item.id }}>
+            <Text style={{ fontFamily: item.id, fontSize: theme.typography.subtitle2.fontSize }}>
               "카드뉴스 텍스트 예시 입니다."
             </Text>
             {item.id === font && (

@@ -55,6 +55,12 @@
 		<string>Zocial.ttf</string>
 		<string>Fontisto.ttf</string>
 		<string>PretendardVariable.ttf</string>
+		<string>ONE-Mobile-POP.ttf</string>
+		<string>VITRO-CORE-TTF.ttf</string>
+		<string>YANGJIN.otf</string>
+		<string>HSSaemaul-Regular.ttf</string>
+		<string>PyeongChangPeace-Bold.ttf</string>
+		<string>Ownglyph_noocar-Rg.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>BootSplash</string>
@@ -76,10 +82,10 @@
 	<string>이 앱은 마이크 권한을 요구하지 않습니다.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>이 앱은 카메라 권한을 요구하지 않습니다.</string>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-        <string>instagram</string>
-        <string>instagram-stories</string>
-    </array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>instagram</string>
+		<string>instagram-stories</string>
+	</array>
 </dict>
 </plist>
