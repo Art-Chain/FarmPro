@@ -14,7 +14,7 @@ import CalmStyle from '@/assets/images/style/style_calm.png';
 import ModernStyle from '@/assets/images/style/style_modern.png';
 import EmotionalStyle from '@/assets/images/style/style_emotional.png';
 import HumorousStyle from '@/assets/images/style/style_humorous.png';
-import { Image, ImageStyle, View } from 'react-native';
+import { Image, ImageStyle, Text, View } from 'react-native';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 
 const articleTypes = [
@@ -78,6 +78,33 @@ const imageStyles = [
   },
 ];
 
+const fontList = [
+  {
+    id: 'ONE-Mobile-POP',
+    name: '원스토어 모바일 POP체',
+  },
+  {
+    id: 'VITRO-CORE',
+    name: '비트로 코어체',
+  },
+  {
+    id: '양진체',
+    name: '양진체',
+  },
+  {
+    id: 'HSSaemaul-Regular',
+    name: 'HS새마을체',
+  },
+  {
+    id: 'PyeongChangPeace-Bold',
+    name: '평창평화체',
+  },
+  {
+    id: 'Ownglyph_noocar-Rg',
+    name: '온글잎 누카',
+  },
+] satisfies { id: string; name: string; }[];
+
 const cardStyle = createStyle({
   width: 215,
   aspectRatio: 1,
@@ -86,6 +113,7 @@ const cardStyle = createStyle({
   alignItems: 'center',
   paddingVertical: 0,
   paddingHorizontal: 0,
+  padding: 16,
 
   overflow: 'hidden',
 });
@@ -115,6 +143,7 @@ interface AIConfigFragmentProps {
   onCancel?: () => void;
   onSubmit?: (articleType: string, imageStyle: string) => void;
 }
+
 export const AIConfigFragment = ({
   defaultArticleType = articleTypes[0].id,
   defaultImageStyle = imageStyles[0].id,
@@ -127,6 +156,7 @@ export const AIConfigFragment = ({
 
   const [articleType, setArticleType] = useState(defaultArticleType);
   const [imageStyle, setImageStyle] = useState(defaultImageStyle);
+  const [font, setFont] = useState(fontList[0].id);
 
   return (
     <BottomSheetScrollView contentContainerStyle={{ padding: 16 }}>
@@ -171,7 +201,7 @@ export const AIConfigFragment = ({
           </SelectCard>
         </React.Fragment>)}
       </ScrollView>
-      <Space size={36} />
+      <Space size={36}/>
       <Typography variant={'subtitle1'}>
         게시물 이미지 스타일 선택
       </Typography>
@@ -197,7 +227,7 @@ export const AIConfigFragment = ({
                   <Stop offset={'0.8'} stopColor={theme.colors.black.main} stopOpacity={'0.5'}/>
                 </LinearGradient>
               </Defs>
-              <Rect x={'0'} y={'0'} width={'100%'} height={'100%'} fill={'url(#gradient)'} />
+              <Rect x={'0'} y={'0'} width={'100%'} height={'100%'} fill={'url(#gradient)'}/>
             </Svg>
             <Typography variant={'head2'} color={(colors) => colors.white.main}>
               {item.name}
@@ -219,7 +249,49 @@ export const AIConfigFragment = ({
           </SelectCard>
         </React.Fragment>)}
       </ScrollView>
-      <Space size={24} />
+      <Space size={36}/>
+      <Typography variant={'subtitle1'}>
+        폰트 선택
+      </Typography>
+      <Space size={12}/>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={{ marginHorizontal: -16 }}
+        contentContainerStyle={{ paddingHorizontal: 16 }}
+      >
+        {fontList.map((item, index) => <React.Fragment key={item.id}>
+          {index > 0 && <Space size={12}/>}
+          <SelectCard
+            selected={item.id === font}
+            style={cardStyle}
+            onPress={() => setFont(item.id)}
+          >
+            <Text style={{ color: theme.colors.primary.main, fontFamily: item.id }}>
+              {item.name}
+            </Text>
+            <Space size={16}/>
+            <Text style={{ fontFamily: item.id }}>
+              "카드뉴스 텍스트 예시 입니다."
+            </Text>
+            {item.id === font && (
+              <Animated.View
+                entering={ZoomIn.easing(Easing.elastic(0.5))}
+                exiting={ZoomOut.easing(Easing.elastic(0.5))}
+                style={checkContainerStyle}
+              >
+                <CheckIcon
+                  width={20}
+                  height={20}
+                  color={theme.colors.white.main}
+                  style={checkStyle}
+                />
+              </Animated.View>
+            )}
+          </SelectCard>
+        </React.Fragment>)}
+      </ScrollView>
+      <Space size={24}/>
       <View style={buttonContainerStyle}>
         <Button variant={'secondary'} style={{ flex: 1 }} onPress={onCancel}>
           취소

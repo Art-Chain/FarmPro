@@ -21,6 +21,12 @@
 		2B1332692C47E00700160984 /* Pretendard-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B1332602C47E00700160984 /* Pretendard-Regular.ttf */; };
 		2B13326A2C47E00700160984 /* Pretendard-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B13325F2C47E00700160984 /* Pretendard-Medium.ttf */; };
 		2B13326B2C47E00700160984 /* Pretendard-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B1332622C47E00700160984 /* Pretendard-Thin.ttf */; };
+		2B3E3D2C2C51569600407C01 /* ONE-Mobile-POP.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B3E3D272C51569600407C01 /* ONE-Mobile-POP.ttf */; };
+		2B3E3D2D2C51569600407C01 /* Ownglyph-noocar.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B3E3D282C51569600407C01 /* Ownglyph-noocar.ttf */; };
+		2B3E3D2E2C51569600407C01 /* yang-jin-che.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2B3E3D2B2C51569600407C01 /* yang-jin-che.otf */; };
+		2B3E3D2F2C51569600407C01 /* PyeongChangPeace-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B3E3D292C51569600407C01 /* PyeongChangPeace-Bold.ttf */; };
+		2B3E3D302C51569600407C01 /* HSSaemaul-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B3E3D262C51569600407C01 /* HSSaemaul-Regular.ttf */; };
+		2B3E3D312C51569600407C01 /* VITRO-CORE.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B3E3D2A2C51569600407C01 /* VITRO-CORE.ttf */; };
 		7699B88040F8A987B510C191 /* libPods-FarmPro-FarmProTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-FarmPro-FarmProTests.a */; };
 		7DB7A114D2FF43A280919DE4 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED815F6F56C24E3595E3CEC2 /* BootSplash.storyboard */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -59,6 +65,12 @@
 		2B1332602C47E00700160984 /* Pretendard-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.ttf"; sourceTree = "<group>"; };
 		2B1332612C47E00700160984 /* Pretendard-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.ttf"; sourceTree = "<group>"; };
 		2B1332622C47E00700160984 /* Pretendard-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Thin.ttf"; sourceTree = "<group>"; };
+		2B3E3D262C51569600407C01 /* HSSaemaul-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "HSSaemaul-Regular.ttf"; sourceTree = "<group>"; };
+		2B3E3D272C51569600407C01 /* ONE-Mobile-POP.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ONE-Mobile-POP.ttf"; sourceTree = "<group>"; };
+		2B3E3D282C51569600407C01 /* Ownglyph-noocar.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Ownglyph-noocar.ttf"; sourceTree = "<group>"; };
+		2B3E3D292C51569600407C01 /* PyeongChangPeace-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PyeongChangPeace-Bold.ttf"; sourceTree = "<group>"; };
+		2B3E3D2A2C51569600407C01 /* VITRO-CORE.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "VITRO-CORE.ttf"; sourceTree = "<group>"; };
+		2B3E3D2B2C51569600407C01 /* yang-jin-che.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "yang-jin-che.otf"; sourceTree = "<group>"; };
 		2B93378A2C42BDE500EF7274 /* AntDesign.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AntDesign.ttf; sourceTree = "<group>"; };
 		2B93378B2C42BDE500EF7274 /* Entypo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Entypo.ttf; sourceTree = "<group>"; };
 		2B93378C2C42BDE500EF7274 /* EvilIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = EvilIcons.ttf; sourceTree = "<group>"; };
@@ -173,6 +185,12 @@
 				2B1332602C47E00700160984 /* Pretendard-Regular.ttf */,
 				2B1332612C47E00700160984 /* Pretendard-SemiBold.ttf */,
 				2B1332622C47E00700160984 /* Pretendard-Thin.ttf */,
+				2B3E3D262C51569600407C01 /* HSSaemaul-Regular.ttf */,
+				2B3E3D272C51569600407C01 /* ONE-Mobile-POP.ttf */,
+				2B3E3D282C51569600407C01 /* Ownglyph-noocar.ttf */,
+				2B3E3D292C51569600407C01 /* PyeongChangPeace-Bold.ttf */,
+				2B3E3D2A2C51569600407C01 /* VITRO-CORE.ttf */,
+				2B3E3D2B2C51569600407C01 /* yang-jin-che.otf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -333,6 +351,12 @@
 				2B1332692C47E00700160984 /* Pretendard-Regular.ttf in Resources */,
 				2B13326A2C47E00700160984 /* Pretendard-Medium.ttf in Resources */,
 				2B13326B2C47E00700160984 /* Pretendard-Thin.ttf in Resources */,
+				2B3E3D2C2C51569600407C01 /* ONE-Mobile-POP.ttf in Resources */,
+				2B3E3D2D2C51569600407C01 /* Ownglyph-noocar.ttf in Resources */,
+				2B3E3D2E2C51569600407C01 /* yang-jin-che.otf in Resources */,
+				2B3E3D2F2C51569600407C01 /* PyeongChangPeace-Bold.ttf in Resources */,
+				2B3E3D302C51569600407C01 /* HSSaemaul-Regular.ttf in Resources */,
+				2B3E3D312C51569600407C01 /* VITRO-CORE.ttf in Resources */,
 				B5EA212B90A494D22960F670 /* PrivacyInfo.xcprivacy in Resources */,
 				7DB7A114D2FF43A280919DE4 /* BootSplash.storyboard in Resources */,
 			);

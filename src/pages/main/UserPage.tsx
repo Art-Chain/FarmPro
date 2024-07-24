@@ -1,7 +1,7 @@
 import { Card, Space, Typography } from '@/ui/common';
 import { RectButton } from 'react-native-gesture-handler';
 import { AppShell } from '@/pages/components';
-import { Clipboard, View } from 'react-native';
+import { View } from 'react-native';
 import { createStyle } from '@/features/utils';
 
 import { useTheme } from '@/features/themes';
@@ -52,21 +52,21 @@ export const UserPage = () => {
 
   return (
     <AppShell footer={<Space size={62}/>}>
-      <Space size={16} />
+      <Space size={16}/>
       <View style={toolbarStyle}>
         <View style={profileStyle}>
-          <ProfileIcon color={theme.colors.primary.text} />
+          <ProfileIcon color={theme.colors.primary.text}/>
         </View>
         <Space size={12}/>
         <Typography variant={'subtitle1'}>
           게스트
         </Typography>
-        <Space />
+        <Space/>
         <Typography>
           @Guest
         </Typography>
       </View>
-      <Space size={20} />
+      <Space size={20}/>
       <Card style={cardStyle}>
         <CardButton
           icon={ClipboardIcon}
@@ -82,8 +82,8 @@ export const UserPage = () => {
       <Space size={8}/>
       <RectButton>
         <View accessible accessibilityRole={'button'} style={itemStyle}>
-          <UserCircleIcon color={theme.colors.palette.gray[500]} />
-          <Space size={8} />
+          <UserCircleIcon color={theme.colors.palette.gray[500]}/>
+          <Space size={8}/>
           <Typography>개인정보 처리방침</Typography>
           <Space/>
           <ChevronRight width={16} height={16} color={theme.colors.black.main}/>
@@ -91,8 +91,8 @@ export const UserPage = () => {
       </RectButton>
       <RectButton>
         <View accessible accessibilityRole={'button'} style={itemStyle}>
-          <DocumentsIcon color={theme.colors.palette.gray[500]} />
-          <Space size={8} />
+          <DocumentsIcon color={theme.colors.palette.gray[500]}/>
+          <Space size={8}/>
           <Typography>서비스 이용약관</Typography>
           <Space/>
           <ChevronRight width={16} height={16} color={theme.colors.black.main}/>
