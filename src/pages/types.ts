@@ -1,14 +1,15 @@
 import { NavigatorScreenParams } from '@react-navigation/native';
+import { Project } from '@/features/scheme';
 
 export type RootStackParamList = {
   main: NavigatorScreenParams<MainTabParamList> | undefined;
   onBoarding: undefined;
-  contentCreate: undefined;
+  contentCreate: { projectId?: number } | undefined;
   contentLoading: undefined;
   contentShare: undefined;
   projectList: undefined;
-  project: { project?: Record<string, string> } | undefined;
-  projectEdit: { project?: Record<string, string> } | undefined;
+  project: { projectId?: number } | undefined;
+  projectEdit: { project?: Project } | undefined;
   debug: undefined;
 };
 export type MainTabParamList = {

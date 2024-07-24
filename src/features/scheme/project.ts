@@ -5,6 +5,12 @@ export type Project = z.infer<typeof ProjectSchema>;
 export const ProjectSchema = z.object({
   id: z.number(),
   name: z.string(),
+  crop: CropSchema,
+  variety: z.string(),
+  method: z.string(),
+  description: z.string(),
+  price: z.string(),
+  outlink: z.string(),
 });
 
 export type ProjectForm = z.infer<typeof ProjectFormSchema>;

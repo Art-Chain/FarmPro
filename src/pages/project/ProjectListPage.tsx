@@ -7,6 +7,9 @@ import AddIcon from '@/assets/images/add.svg';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { ProjectCard } from './components';
+import { useQuery } from '@tanstack/react-query';
+import { fetchProjects } from '@/api/local';
+import React from 'react';
 
 const buttonStyle = createStyle({
   position: 'absolute',
@@ -25,6 +28,11 @@ export const ProjectListPage = () => {
   const theme = useTheme();
   const navigation = useNavigation();
 
+  const { data: projects } = useQuery({
+    queryKey: ['projects'],
+    queryFn: fetchProjects,
+  });
+
   return (
     <AppShell
       showBorder
@@ -41,19 +49,22 @@ export const ProjectListPage = () => {
           <Button
             style={buttonStyle}
             icon={<AddIcon width={24} height={24} color={theme.colors.primary.text}/>}
+            onPress={() => navigation.navigate('projectEdit')}
           />
           <Space size={24}/>
         </View>
       )}
     >
-      <ProjectCard
-        color={theme.colors.primary.main}
-        title={'딸기 프로젝트'}
-        description={'딸기'}
-        onPress={() => navigation.navigate('project', {
-          project: { name: '딸기 프로젝트' },
-        })}
-      />
+      {projects?.map((project) => (<React.Fragment key={project.id}>
+          <ProjectCard
+            color={theme.colors.primary.main}
+            title={project.name}
+            description={project.crop.name}
+            onPress={() => navigation.navigate('project', { projectId: project.id })}
+          />
+          <Space size={16}/>
+        </React.Fragment>
+      ))}
     </AppShell>
   );
 };

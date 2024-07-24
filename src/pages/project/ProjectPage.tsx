@@ -6,13 +6,33 @@ import { Button, Typography } from '@/ui/common';
 import AddIcon from '@/assets/images/add.svg';
 import { ContentCard } from '@/pages/main/components';
 import { Tap } from '@/ui/Tap';
+import { RootStackParamList } from '@/pages/types';
+import { useQuery } from '@tanstack/react-query';
+import { fetchProject } from '@/api/local';
+import { useCallback, useEffect } from 'react';
 
 export const ProjectPage = () => {
   const theme = useTheme();
   const route = useRoute();
   const navigation = useNavigation();
 
-  const project = (route.params as { project?: Record<string, string> })?.project;
+  const projectId = (route.params as RootStackParamList['project'])?.projectId;
+  const { data: project, status } = useQuery({
+    queryKey: ['projects', projectId ?? 'empty'],
+    queryFn: async () => typeof projectId === 'number' ? await fetchProject(projectId) : null,
+  });
+
+  const onEdit = useCallback(() => {
+    if (!project) return;
+
+    navigation.navigate('projectEdit', { project });
+  }, [navigation, project]);
+
+  useEffect(() => {
+    if (status === 'success' && projectId && !project) {
+      navigation.goBack();
+    }
+  }, [projectId, project, status]);
 
   return (
     <AppShell
@@ -26,7 +46,7 @@ export const ProjectPage = () => {
         paddingVertical: 24,
       }}
       icons={[
-        <Tap onPress={() => navigation.navigate('projectEdit', { project })}>
+        <Tap onPress={onEdit}>
           <Typography color={(colors) => colors.primary.main}>
             수정
           </Typography>

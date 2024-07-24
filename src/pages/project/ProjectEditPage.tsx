@@ -2,32 +2,45 @@ import { Button, Space, TextInput, Typography } from '@/ui/common';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Chip } from '@/ui/Chip.tsx';
 import { AppShell } from '@/pages/components';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchCrops } from '@/api';
-import { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import NoticeIcon from '@/assets/images/notice.svg';
 import { View } from 'react-native';
 import { useTheme } from '@/features/themes';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useSetAtom } from 'jotai';
-import { ProjectFormAtom } from '@/features/store';
-import { Crop, Project } from '@/features/scheme';
+import { ProjectAtom } from '@/features/store';
+import { Crop, ProjectForm } from '@/features/scheme';
+import { createProject, deleteProject, updateProject } from '@/api/local';
+import { RootStackParamList } from '@/pages/types';
+import { Tap } from '@/ui/Tap.tsx';
 
 export const ProjectEditPage = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const route = useRoute();
+  const queryClient = useQueryClient();
+  const project = (route.params as RootStackParamList['projectEdit'])?.project;
 
-  const project = (route.params as { project?: Project })?.project;
+  const setProject = useSetAtom(ProjectAtom);
+  const [name, setName] = useState(project?.name ?? '');
+  const [selectedCrop, setSelectedCrop] = useState<Crop | null>(project?.crop ?? null);
+  const [variety, setVariety] = useState(project?.variety ?? '');
+  const [method, setMethod] = useState(project?.method ?? '');
+  const [description, setDescription] = useState(project?.description ?? '');
+  const [price, setPrice] = useState(project?.price ?? '');
+  const [outlink, setOutlink] = useState(project?.outlink ?? '');
 
-  const setProjectForm = useSetAtom(ProjectFormAtom);
-  const [selectedCrop, setSelectedCrop] = useState<Crop | null>(null);
-  const [variety, setVariety] = useState('');
-  const [method, setMethod] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
-  const [outlink, setOutlink] = useState('');
+  const { mutate, data } = useMutation({
+    mutationFn: project ? async (form: ProjectForm) => updateProject(project.id, form) : createProject,
+  });
+  const deleteMutation = useMutation({
+    mutationFn: async () => {
+      if (project) await deleteProject(project.id);
+    },
+  });
 
   const { data: crops } = useQuery({
     queryKey: ['crops'],
@@ -37,7 +50,8 @@ export const ProjectEditPage = () => {
   const onSubmit = useCallback(() => {
     if (!selectedCrop) return;
 
-    setProjectForm({
+    mutate({
+      name,
       crop: selectedCrop,
       variety,
       method,
@@ -45,8 +59,28 @@ export const ProjectEditPage = () => {
       price,
       outlink,
     });
+  }, [description, method, mutate, name, outlink, price, selectedCrop, variety]);
+  const onDelete = useCallback(async () => {
+    if (!project) return;
+
+    await deleteMutation.mutateAsync();
+    await queryClient.invalidateQueries({
+      queryKey: ['projects'],
+    });
+    setProject(null);
     navigation.goBack();
-  }, [description, method, navigation, outlink, price, selectedCrop, setProjectForm, variety]);
+  }, [deleteMutation, navigation, project, queryClient, setProject]);
+
+  useEffect(() => {
+    if (data) {
+      if (!project) setProject(data);
+      void queryClient.invalidateQueries({
+        queryKey: ['projects'],
+      }).then(() => {
+        navigation.goBack();
+      });
+    }
+  }, [project, data, navigation, setProject, queryClient]);
 
   return (
     <AppShell
@@ -54,7 +88,7 @@ export const ProjectEditPage = () => {
       showBack
       showLogo={false}
       align={'center'}
-      title={project ? `"${project.name}" 수정하기` : '내 프로젝트 등록하기'}
+      title={project ? `"${name}" 수정하기` : '내 프로젝트 등록하기'}
       contentContainerStyle={{
         paddingHorizontal: 20,
         paddingVertical: 24,
@@ -67,7 +101,25 @@ export const ProjectEditPage = () => {
           {project ? '수정하기' : '등록하기'}
         </Button>
       )}
+      icons={project ? [
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        <Tap key={0} onPress={onDelete}>
+          <Typography color={(colors) => colors.white.text}>
+            삭제
+          </Typography>
+        </Tap>
+      ] : []}
     >
+      <Typography variant={'subtitle1'}>
+        프로젝트의 이름이 뭔가요?
+      </Typography>
+      <Space size={8}/>
+      <TextInput
+        value={name}
+        onChangeText={setName}
+        placeholder={'예) 설향 딸기, 대추 토마토 등'}
+      />
+      <Space size={26}/>
       <Typography variant={'subtitle1'}>
         재배하시는 농산물 종류가 무엇인가요?
       </Typography>
@@ -78,16 +130,15 @@ export const ProjectEditPage = () => {
         style={{ marginHorizontal: -16, flexGrow: 0 }}
         contentContainerStyle={{ paddingHorizontal: 16 }}
       >
-        {crops?.crops?.map((crop) => (<>
+        {crops?.crops?.map((crop) => (<React.Fragment key={crop.id}>
             <Chip
-              key={crop.id}
               active={selectedCrop?.id === crop.id}
               onPress={() => setSelectedCrop(crop)}
             >
               {crop.name}
             </Chip>
             <Space size={8}/>
-          </>
+          </React.Fragment>
         ))}
       </ScrollView>
       <Space size={8}/>

@@ -4,68 +4,74 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { Chip } from '@/ui/Chip';
 import { SelectCard } from '@/ui/SelectCard';
 import { Space, Typography } from '@/ui/common';
+import { useQuery } from '@tanstack/react-query';
+import { fetchCrops } from '@/api';
+import { Crop } from '@/features/scheme';
+import { View } from 'react-native';
+import NoticeIcon from '@/assets/images/notice.svg';
+import { useTheme } from '@/features/themes';
+import { fetchProjects } from '@/api/local';
 
 export const ContentCreateInfoFragment = () => {
-  const [selectedCrop, setSelectedCrop] = useState<string | null>(null);
+  const theme = useTheme();
+
+  const [selectedCrop, setSelectedCrop] = useState<Crop | null>(null);
   const [contentType, setContentType] = useState('instagram');
   const [contentPurpose, setContentPurpose] = useState('advertise');
+
+  const { data: crops } = useQuery({
+    queryKey: ['crops'],
+    queryFn: fetchCrops,
+  });
+  const { data: projects } = useQuery({
+    queryKey: ['projects'],
+    queryFn: fetchProjects,
+  });
 
   return (
     <>
       <Typography variant={'subtitle1'}>
+        프로젝트 선택
+      </Typography>
+      <Space size={12}/>
+      {projects?.map((project) => (
+        <SelectCard>
+          <Typography variant={'body1'}>
+            {project.name}
+          </Typography>
+        </SelectCard>
+      ))}
+      <Space size={26}/>
+      <Typography variant={'subtitle1'}>
         농작물 종류 선택
       </Typography>
       <Space size={12}/>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginHorizontal: -16, flexGrow: 0 }} contentContainerStyle={{ paddingHorizontal: 16 }}>
-        <Chip
-          active={selectedCrop === 'strawberry'}
-          onPress={() => setSelectedCrop('strawberry')}
-        >
-          딸기
-        </Chip>
-        <Space size={8}/>
-        <Chip
-          active={selectedCrop === 'cucumber'}
-          onPress={() => setSelectedCrop('cucumber')}
-        >
-          오이
-        </Chip>
-        <Space size={8}/>
-        <Chip
-          active={selectedCrop === 'mandarin'}
-          onPress={() => setSelectedCrop('mandarin')}
-        >
-          감귤
-        </Chip>
-        <Space size={8}/>
-        <Chip
-          active={selectedCrop === 'grape'}
-          onPress={() => setSelectedCrop('grape')}
-        >
-          포도
-        </Chip>
-        <Space size={8}/>
-        <Chip
-          active={selectedCrop === 'pepper'}
-          onPress={() => setSelectedCrop('pepper')}
-        >
-          고추
-        </Chip>
-        <Space size={8}/>
-        <Chip
-          active={selectedCrop === 'koreanMelon'}
-          onPress={() => setSelectedCrop('koreanMelon')}
-        >
-          참외
-        </Chip>
-        <Space size={8}/>
-        <Chip
-          active={selectedCrop === 'watermelon'}
-          onPress={() => setSelectedCrop('watermelon')}
-        >
-          수박
-        </Chip>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={{ marginHorizontal: -16, flexGrow: 0 }}
+        contentContainerStyle={{ paddingHorizontal: 16 }}
+      >
+        {crops?.crops?.map((crop) => (<>
+            <Chip
+              key={crop.id}
+              active={selectedCrop?.id === crop.id}
+              onPress={() => setSelectedCrop(crop)}
+            >
+              {crop.name}
+            </Chip>
+            <Space size={8}/>
+          </>
+        ))}
       </ScrollView>
+      <Space size={8}/>
+      <View style={{ flexDirection: 'row' }}>
+        <NoticeIcon color={theme.colors.palette.gray[500]}/>
+        <Space size={4}/>
+        <Typography variant={'caption'} color={(colors) => colors.palette.gray[500]}>
+          다른 과일은 아직 준비중이에요 :)
+        </Typography>
+      </View>
       <Space size={26}/>
       <Typography variant={'subtitle1'}>
         콘텐츠 형식 선택

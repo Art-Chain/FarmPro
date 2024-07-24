@@ -15,7 +15,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { AppShell, BottomSheetBackground } from '@/pages/components';
 import { View } from 'react-native';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { fetchContents } from '@/api/content.ts';
 
 import ProjectFullIcon from '@/assets/images/project_full.svg';
@@ -24,7 +24,8 @@ import { Tap } from '@/ui/Tap.tsx';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { ProjectCreatedFragment } from '@/pages/project/fragments';
 import { useAtom } from 'jotai';
-import { ProjectFormAtom } from '@/features/store';
+import { ProjectAtom } from '@/features/store';
+import { updateProject } from '@/api/local';
 
 const gradientStyle = createStyle({
   position: 'absolute',
@@ -35,29 +36,38 @@ export const HomePage = () => {
   const navigation = useNavigation();
 
   const modalRef = useRef<BottomSheetModal>(null);
-  const [projectForm, setProjectForm] = useAtom(ProjectFormAtom);
+  const [project, setProject] = useAtom(ProjectAtom);
   const [name, setName] = useState('');
 
   const { data } = useQuery({
     queryKey: ['feed'],
     queryFn: fetchContents,
   });
+  const { mutate } = useMutation({
+    mutationFn: async ({ id, name }: { id: number; name: string; }) => updateProject(id, { name }),
+  });
 
   const onAddProject = useCallback(() => {
     navigation.navigate('projectEdit');
   }, [navigation]);
   const onSubmitProject = useCallback(() => {
-    setProjectForm(null);
+    setProject(null);
     modalRef.current?.dismiss();
     navigation.navigate('contentCreate');
-  }, [navigation, setProjectForm]);
+  }, [navigation, setProject]);
+  const onNameChange = useCallback((value: string) => {
+    if (!project) return;
+
+    setName(value);
+    mutate({ id: project.id, name: value });
+  }, [mutate, project]);
 
   useEffect(() => {
-    if (projectForm) {
-      setName(projectForm.name);
+    if (project) {
+      setName(project.name);
       modalRef.current?.present();
     }
-  }, [projectForm]);
+  }, [project]);
 
   return (
     <AppShell footer={<Space size={62}/>}>
@@ -165,7 +175,7 @@ export const HomePage = () => {
       >
         <ProjectCreatedFragment
           name={name}
-          onNameChange={setName}
+          onNameChange={onNameChange}
           onSkip={() => modalRef.current?.dismiss()}
           onSubmit={onSubmitProject}
         />
