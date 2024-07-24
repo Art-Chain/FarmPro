@@ -18,7 +18,7 @@ export const ProjectPage = () => {
 
   const projectId = (route.params as RootStackParamList['project'])?.projectId;
   const { data: project, status } = useQuery({
-    queryKey: ['projects', projectId ?? 'empty'],
+    queryKey: ['projects', projectId],
     queryFn: async () => typeof projectId === 'number' ? await fetchProject(projectId) : null,
   });
 

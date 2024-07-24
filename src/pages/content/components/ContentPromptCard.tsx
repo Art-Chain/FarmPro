@@ -49,7 +49,7 @@ const useCheckPatternStyle = createStyle((_, size = 1000) => ({
 const useImageContainerStyle = createStyle((theme, menuOpen = false) => ({
   width: 'auto',
   margin: 'auto',
-  flexDirection: menuOpen ? 'column' : 'row',
+  flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'stretch',
   paddingHorizontal: menuOpen ? 4 : 16,
@@ -265,7 +265,7 @@ export const ContentPromptCard = ({ showTitle, onChange, onRemove }: ContentProm
               blurType={'xlight'}
               blurAmount={24}
             />
-            {!menuOpen && (
+            {!menuOpen && image && (
               <Animated.View entering={FadeInDown} exiting={FadeOutDown}>
                 <Photo color={theme.colors.palette.gray[400]}/>
               </Animated.View>
@@ -290,12 +290,23 @@ export const ContentPromptCard = ({ showTitle, onChange, onRemove }: ContentProm
                 </Animated.View>
               </GestureDetector>
             </>}
-            {!image && <>
+            {!image && <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+              <Animated.View entering={FadeInDown} exiting={FadeOutDown}>
+                <Photo color={theme.colors.palette.gray[400]}/>
+              </Animated.View>
               <Space size={10}/>
-              <Typography color={(colors) => colors.palette.gray[400]}>
+              <Typography variant={'subtitle1'} color={(colors) => colors.palette.gray[400]}>
                 이미지 업로드
               </Typography>
-            </>}
+            </View>}
+            {!image && (<>
+                <Space size={10}/>
+                <Typography variant={'caption'} align={'center'} color={(colors) => colors.palette.gray[400]}>
+                  이미지를 업로드 하지 않은 장표만{'\n'}
+                  AI 이미지가 생성됩니다.
+                </Typography>
+              </>
+            )}
           </Animated.View>
         </GestureDetector>
         <Space/>

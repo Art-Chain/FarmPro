@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { Chip } from '@/ui/Chip';
@@ -10,11 +10,16 @@ import { Crop } from '@/features/scheme';
 import { View } from 'react-native';
 import NoticeIcon from '@/assets/images/notice.svg';
 import { useTheme } from '@/features/themes';
-import { fetchProjects } from '@/api/local';
+import { fetchProject, fetchProjects } from '@/api/local';
+import { RootStackParamList } from '@/pages/types.ts';
+import { useRoute } from '@react-navigation/native';
 
 export const ContentCreateInfoFragment = () => {
   const theme = useTheme();
+  const route = useRoute();
+  const defaultProjectId = (route.params as RootStackParamList['contentCreate'])?.projectId;
 
+  const [projectId, setProjectId] = useState<number | null>(defaultProjectId ?? null);
   const [selectedCrop, setSelectedCrop] = useState<Crop | null>(null);
   const [contentType, setContentType] = useState('instagram');
   const [contentPurpose, setContentPurpose] = useState('advertise');
@@ -27,6 +32,16 @@ export const ContentCreateInfoFragment = () => {
     queryKey: ['projects'],
     queryFn: fetchProjects,
   });
+  const { data: defaultProject } = useQuery({
+    queryKey: ['projects', defaultProjectId],
+    queryFn: async () => typeof defaultProjectId === 'number' ? await fetchProject(defaultProjectId) : null,
+  });
+
+  useEffect(() => {
+    if (defaultProject) {
+      setSelectedCrop(defaultProject.crop);
+    }
+  }, [defaultProject]);
 
   return (
     <>
@@ -35,7 +50,11 @@ export const ContentCreateInfoFragment = () => {
       </Typography>
       <Space size={12}/>
       {projects?.map((project) => (
-        <SelectCard>
+        <SelectCard
+          key={project.id}
+          selected={project.id === projectId}
+          onPress={() => setProjectId(project.id === projectId ? null : project.id)}
+        >
           <Typography variant={'body1'}>
             {project.name}
           </Typography>

@@ -53,8 +53,8 @@ export const HomePage = () => {
   const onSubmitProject = useCallback(() => {
     setProject(null);
     modalRef.current?.dismiss();
-    navigation.navigate('contentCreate');
-  }, [navigation, setProject]);
+    navigation.navigate('contentCreate', { projectId: project?.id });
+  }, [navigation, project?.id, setProject]);
   const onNameChange = useCallback((value: string) => {
     if (!project) return;
 

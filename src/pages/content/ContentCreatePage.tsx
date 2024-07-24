@@ -1,7 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { useNavigation } from '@react-navigation/native';
 import Animated, { SlideInLeft, SlideInRight, SlideOutLeft, SlideOutRight } from 'react-native-reanimated';
 
 import { Button, Space } from '@/ui/common';
@@ -18,8 +17,6 @@ const useButtonContainerStyle = createStyle((_, bottom = 0) => ({
 }));
 
 export const ContentCreatePage = () => {
-  const navigation = useNavigation();
-
   const configRef = useRef<BottomSheetModal>(null);
   const [position, setPosition] = useState(0);
   const [aiConfig, setAiConfig] = useState({
@@ -31,9 +28,8 @@ export const ContentCreatePage = () => {
 
   const onNext = useCallback(() => {
     if (position === 0) setPosition(1);
-    // else navigation.navigate('contentLoading');
     else configRef.current?.present();
-  }, [navigation, position]);
+  }, [position]);
   const onPrev = useCallback(() => {
     setPosition(0);
   }, []);
@@ -64,7 +60,7 @@ export const ContentCreatePage = () => {
           collapsable={false}
           style={{ paddingHorizontal: 20, paddingTop: 24, flex: 1 }}
         >
-          <ContentCreateInfoFragment/>
+          <ContentCreateInfoFragment />
         </Animated.View>
       )}
       {position === 1 && (
