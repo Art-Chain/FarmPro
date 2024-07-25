@@ -28,10 +28,11 @@ export const ProjectListPage = () => {
   const theme = useTheme();
   const navigation = useNavigation();
 
-  const { data: projects } = useQuery({
+  const { data: projects, error } = useQuery({
     queryKey: ['projects'],
     queryFn: fetchProjects,
   });
+  console.log(error);
 
   return (
     <AppShell

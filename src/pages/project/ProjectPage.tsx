@@ -64,6 +64,7 @@ export const ProjectPage = () => {
         <Button
           icon={<AddIcon width={24} height={24} color={theme.colors.primary.text}/>}
           style={{ marginHorizontal: 20, marginVertical: 8 }}
+          onPress={() => navigation.navigate('contentCreate', { projectId })}
         >
           콘텐츠 만들기
         </Button>
@@ -72,7 +73,7 @@ export const ProjectPage = () => {
       {contents?.map((content) => (<React.Fragment key={content.id}>
         <ContentCard
           tags={[contentPurposeToString(content.contentPurpose), contentTypeToString(content.contentType)]}
-          title={content.title}
+          title={content.title ?? '제목없음'}
           description={content.mainText ?? '내용 없음'}
           onPress={() => navigation.navigate('contentView', { content: content as unknown as Content })}
         />

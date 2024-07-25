@@ -171,7 +171,7 @@ export const ContentSharePage = () => {
                 ref={(ref) => {
                   if (ref) refs.current[index] = ref;
                 }}
-                templateType={content?.cardStyle}
+                templateType={content?.cardStyle ?? 'LAVISH'}
                 source={{ uri: item.imageUrl }}
                 style={{ width: '100%', height: '100%' }}
                 content={item.title ?? ''}

@@ -14,6 +14,7 @@ export const createProject = async (form: ProjectForm) => {
 };
 
 export const fetchProjects = async () => {
+  console.log('fetchProjects', await AsyncStorage.getItem('projects'));
   return ProjectSchema.array().parseAsync(JSON.parse(await AsyncStorage.getItem('projects') ?? '[]'));
 };
 
