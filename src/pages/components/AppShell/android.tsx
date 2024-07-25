@@ -193,7 +193,7 @@ export const AppShellAndroid = ({
           <Space size={16}/>
           {icon}
         </React.Fragment>)}
-        <Space size={20} />
+        <Space size={20}/>
         {header}
       </Animated.View>
       <View style={headerSizeStyle}/>

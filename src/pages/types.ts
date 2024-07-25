@@ -1,12 +1,13 @@
 import { NavigatorScreenParams } from '@react-navigation/native';
-import { ContentForm, Project } from '@/features/scheme';
+import { Content, ContentForm, Project } from '@/features/scheme';
 
 export type RootStackParamList = {
   main: NavigatorScreenParams<MainTabParamList> | undefined;
   onBoarding: undefined;
-  contentCreate: { projectId?: number } | undefined;
-  contentLoading: { form: ContentForm; fontFamily: string; } | undefined;
-  contentShare: undefined;
+  contentCreate: { projectId?: number; } | undefined;
+  contentLoading: { form: ContentForm; fontFamily: string; projectId?: number; } | undefined;
+  contentShare: { content: Content; fontFamily: string; } | undefined;
+  contentView: { content: Content; } | undefined;
   projectList: undefined;
   project: { projectId?: number } | undefined;
   projectEdit: { project?: Project } | undefined;

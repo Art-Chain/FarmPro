@@ -1,5 +1,5 @@
 import React, { useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { Image, ImageSourcePropType, Text, View, ViewProps } from 'react-native';
+import { ActivityIndicator, Image, ImageSourcePropType, Text, View, ViewProps } from 'react-native';
 import ViewShot from 'react-native-view-shot';
 import ImageColors from 'react-native-image-colors';
 
@@ -12,10 +12,13 @@ import TemplateEmotional from '@/assets/images/template/template_emotional.svg';
 import TemplateHumorous from '@/assets/images/template/template_humorous.svg';
 import { useTheme } from '@/features/themes';
 import Color from 'color';
+import { CardStyle } from '@/features/scheme';
+import { BlurView } from '@react-native-community/blur';
 
 export const containerStyle = createStyle({
   position: 'relative',
   aspectRatio: 1,
+  overflow: 'hidden',
 });
 const templateStyle = createStyle({
   position: 'absolute',
@@ -25,6 +28,7 @@ const templateStyle = createStyle({
   bottom: 0,
   width: '100%',
   height: '100%',
+  aspectRatio: 1,
 });
 const useTextStyle = createStyle((_, height: number, color: string, fontFamily?: string) => ({
   position: 'absolute',
@@ -50,7 +54,7 @@ export interface ImageRendererMethods {
 
 export interface ImageRendererProps extends ViewProps {
   source?: ImageSourcePropType;
-  templateType?: 'calm' | 'fancy' | 'modern' | 'emotional' | 'humorous';
+  templateType?: CardStyle;
   fontFamily?: string;
   content?: string;
 }
@@ -67,23 +71,25 @@ export const ImageRenderer = React.forwardRef<ImageRendererMethods, ImageRendere
   const ref = useRef<ViewShot>(null);
   const [color, setColor] = useState(theme.colors.primary.main);
   const [height, setHeight] = useState(0);
+  const [fontSize, setFontSize] = useState(80);
+  const [load, setLoad] = useState(true);
 
   const textColor = useMemo(() => Color(color).isLight() ? theme.colors.white.text : theme.colors.black.text, [color, theme.colors.black.text, theme.colors.white.text]);
   const TemplateComponent = useMemo(() => {
-    if (templateType === 'calm') return TemplateCalm;
-    if (templateType === 'fancy') return TemplateFancy;
-    if (templateType === 'modern') return TemplateModern;
-    if (templateType === 'emotional') return TemplateEmotional;
-    if (templateType === 'humorous') return TemplateHumorous;
+    if (templateType === 'SERENE') return TemplateCalm;
+    if (templateType === 'LAVISH') return TemplateFancy;
+    if (templateType === 'MODERN') return TemplateModern;
+    if (templateType === 'EMOTIVE') return TemplateEmotional;
+    if (templateType === 'HUMOROUS') return TemplateHumorous;
 
     return View;
   }, [templateType]);
   const templateTop = useMemo(() => {
-    if (templateType === 'calm') return '82%';
-    if (templateType === 'fancy') return '25%';
-    if (templateType === 'modern') return '36%';
-    if (templateType === 'emotional') return '37%';
-    if (templateType === 'humorous') return '85%';
+    if (templateType === 'SERENE') return '82%';
+    if (templateType === 'LAVISH') return '25%';
+    if (templateType === 'MODERN') return '36%';
+    if (templateType === 'EMOTIVE') return '37%';
+    if (templateType === 'HUMOROUS') return '85%';
 
     return undefined;
   }, [templateType]);
@@ -97,7 +103,7 @@ export const ImageRenderer = React.forwardRef<ImageRendererMethods, ImageRendere
       key: source as string,
     }).then((result) => {
       if (result.platform === 'ios') setColor(result.detail);
-      if (result.platform === 'android') setColor(result.dominant ?? theme.colors.primary.main);
+      if (result.platform === 'android') setColor(result.vibrant ?? theme.colors.primary.main);
     });
   }, [source, theme.colors.primary.main]);
 
@@ -117,11 +123,20 @@ export const ImageRenderer = React.forwardRef<ImageRendererMethods, ImageRendere
         <Text
           adjustsFontSizeToFit
           numberOfLines={2}
-          style={[textStyle, { fontFamily, top: templateTop }]}
+          style={[textStyle, { fontFamily, top: templateTop, fontSize }]}
           onLayout={(event) => setHeight(event.nativeEvent.layout.height)}
+          onTextLayout={(event) => {
+            const { lines } = event.nativeEvent;
+            if (lines.length > 2) setFontSize((it) => it - 1);
+            else setLoad(false);
+          }}
         >
           {content}
         </Text>
+        {load && (<>
+          <BlurView style={templateStyle} blurAmount={16} blurType={'dark'}/>
+          <ActivityIndicator style={templateStyle} size={'large'} color={theme.colors.primary.main}/>
+        </>)}
       </View>
     </ViewShot>
   );

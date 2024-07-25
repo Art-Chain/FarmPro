@@ -19,15 +19,21 @@ export const ContentSchema = z.object({
   projectInfo: ProjectInfoSchema.nullable(),
   contentType: ContentTypeSchema,
   contentPurpose: ContentPurposeSchema,
-  mainText: z.string(),
+  mainText: z.string().nullable(),
+  title: z.string(),
   textStyle: z.string(),
   images: z.object({
     images: z.object({
       id: z.number(),
       imageUrl: z.string(),
-      title: z.string(),
+      title: z.string().nullable(),
     }).array(),
   }),
+});
+
+export type LocalContent = z.infer<typeof LocalContentSchema>;
+export const LocalContentSchema = ContentSchema.omit({ projectInfo: true }).extend({
+  projectId: z.number(),
 });
 
 export type ContentResponse = z.infer<typeof ContentResponseSchema>;
@@ -90,10 +96,9 @@ export type ContentCreationResponse = z.infer<typeof ContentCreationResponseSche
 export const ContentCreationResponseSchema = z.object({
   data: z.object({
     url: z.string(),
-    revisedPrompt: z.string(),
+    revisedPrompt: z.string().nullable(),
   }).array(),
 }).array();
-
 
 export type ContentSuggestion = z.infer<typeof ContentSuggestionSchema>;
 export const ContentSuggestionSchema = z.object({

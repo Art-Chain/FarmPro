@@ -25,6 +25,7 @@ import { ProjectCreatedFragment } from '@/pages/project/fragments';
 import { useAtom } from 'jotai';
 import { ProjectAtom } from '@/features/store';
 import { updateProject } from '@/api/local';
+import React from 'react';
 
 const gradientStyle = createStyle({
   position: 'absolute',
@@ -38,11 +39,11 @@ export const HomePage = () => {
   const [project, setProject] = useAtom(ProjectAtom);
   const [name, setName] = useState('');
 
-  const { data, error } = useQuery({
+  const { data } = useQuery({
     queryKey: ['feeds'],
     queryFn: fetchContentFeeds,
   });
-  console.log(error);
+
   const { mutate } = useMutation({
     mutationFn: async ({ id, name }: { id: number; name: string; }) => updateProject(id, { name }),
   });
@@ -155,17 +156,24 @@ export const HomePage = () => {
         <Typography variant={'subtitle1'}>
           효과 좋은 인스타 콘텐츠 만드는 법
         </Typography>
-        <Space size={4}/>
-        {data?.contents?.map((content) => <>
+        <Space size={12}/>
+        {data?.contents?.map((content) => <React.Fragment key={content.id}>
           <ContentCard
             tags={[contentPurposeToString(content.contentPurpose), contentTypeToString(content.contentType)]}
-            title={content.images.images[0]?.title ?? '제목 없음'}
-            description={content.mainText}
+            title={content.title}
+            description={content.mainText ?? '내용 없음'}
+            source={content.images.images[0] ? { uri: content.images.images[0].imageUrl } : undefined}
+            onPress={() => navigation.navigate('contentView', { content: content })}
           />
           <Space size={12}/>
-        </>)}
+        </React.Fragment>)}
         <Space size={12}/>
-        <Button variant={'secondary'}>더보기</Button>
+        <Button
+          variant={'secondary'}
+          onPress={() => navigation.navigate('main', { screen: 'contentList' })}
+        >
+          더보기
+        </Button>
       </View>
       <BottomSheetModal
         enableDynamicSizing

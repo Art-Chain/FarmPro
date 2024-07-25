@@ -1,5 +1,4 @@
 import {
-  ContentCreationResponseSchema,
   ContentForm,
   ContentPurpose,
   ContentResponseSchema,
@@ -17,9 +16,9 @@ export const createContent = async (form: ContentForm) => {
     body: JSON.stringify(form),
   });
 
-  const json = await response.json();
-  console.log('createContent', json)
-  return ContentCreationResponseSchema.parseAsync(json);
+  const result = await response.json();
+  console.log('createContent', JSON.stringify(result, null, 2));
+  return ContentSchema.parseAsync(result);
 }
 
 export const fetchContent = async (id: number) => {
@@ -31,7 +30,9 @@ export const fetchContent = async (id: number) => {
 export const fetchContents = async () => {
   const response = await fetch(server`/contents/lists`);
 
-  return ContentResponseSchema.parseAsync(await response.json());
+  const list = await response.json();
+  console.log(JSON.stringify(list, null, 2));
+  return ContentResponseSchema.parseAsync(list);
 };
 
 export const fetchContentFeeds = async () => {

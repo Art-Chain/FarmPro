@@ -1,4 +1,4 @@
-import { Dimensions, Image, ImageStyle, Platform, View } from 'react-native';
+import { Dimensions, Image, ImageStyle, View } from 'react-native';
 import { Button, Space, Typography } from '@/ui/common';
 import React, { useCallback, useMemo, useRef } from 'react';
 import Svg, { Path } from 'react-native-svg';
@@ -26,6 +26,8 @@ import { Easing, useSharedValue } from 'react-native-reanimated';
 import { Shadow } from '@/ui/Shadow.tsx';
 import { ExportConfigFragment } from '@/pages/content/fragments';
 import { AppShell, BottomSheetModal } from '@/pages/components';
+import { useRoute } from '@react-navigation/native';
+import { RootStackParamList } from '@/pages/types.ts';
 
 const useButtonContainerStyle = createStyle((_, bottom = 0) => ({
   flexDirection: 'row',
@@ -84,7 +86,11 @@ const imageList = [image1, image2, image3, image4, image5];
 
 export const ContentSharePage = () => {
   const theme = useTheme();
+  const route = useRoute();
   const size = useMemo(() => Dimensions.get('window').width - 64, []);
+
+  // const content = (route.params as RootStackParamList['contentShare'])?.content;
+  const fontFamily = (route.params as RootStackParamList['contentShare'])?.fontFamily;
   const configRef = useRef<BottomSheetModal>(null);
 
   const position = useSharedValue(0);
@@ -99,6 +105,7 @@ export const ContentSharePage = () => {
       showLogo={false}
       align={'center'}
       title={'콘텐츠 생성 완료'}
+      showBack
       footer={
         <View style={buttonContainerStyle}>
           <Button variant={'secondary'} style={{ flex: 1 }}>
@@ -152,25 +159,13 @@ export const ContentSharePage = () => {
             height={size}
             style={{ width: size, height: size }}
             data={imageList}
-            renderItem={({ item, index }) => (
+            renderItem={({ item }) => (
               <ImageRenderer
-                templateType={(
-                  index === 0 ? 'calm' :
-                    index === 1 ? 'fancy' :
-                      index === 2 ? 'modern' :
-                        index === 3 ? 'emotional' :
-                          'humorous'
-                )}
+                templateType={'EMOTIVE'}
                 source={item}
                 style={{ width: '100%', height: '100%' }}
                 content={'그치 그냥 보통 탬플릿 고정하고 이렇게 텍스트만 바꾸니까 ㅇㅇ'}
-                fontFamily={(
-                  index === 0 ? (Platform.OS === 'ios' ? 'ONEMobilePOPRegular' : 'ONE-Mobile-POP') :
-                    index === 1 ? 'VITRO-CORE-TTF' :
-                      index === 2 ? 'YANGJIN' :
-                        index === 3 ? (Platform.OS === 'ios' ? 'HSSaemaul' : 'HSSaemaul-Regular') :
-                          'Ownglyph_noocar-Rg'
-                )}
+                fontFamily={fontFamily}
               />
             )}
             onProgressChange={useCallback((_: number, progress: number) => position.value = progress, [])}

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { AppState, Platform } from 'react-native';
+import { AppState } from 'react-native';
 
 import BootSplash from 'react-native-bootsplash';
 import NetInfo from '@react-native-community/netinfo';
@@ -15,7 +15,7 @@ import { DefaultTheme, NavigationContainer, NavigationContainerRef, StackActions
 import { queryClient } from '@/features/config';
 import { ThemeProvider, useTheme } from '@/features/themes';
 import { DebugPage, MainPage, OnBoardingPage } from '@/pages';
-import { ContentCreatePage, ContentLoadingPage, ContentSharePage } from '@/pages/content';
+import { ContentCreatePage, ContentLoadingPage, ContentSharePage, ContentViewPage } from '@/pages/content';
 import { ProjectEditPage, ProjectListPage, ProjectPage } from '@/pages/project';
 
 // import { LogBox } from 'react-native';
@@ -90,7 +90,7 @@ export const Route = () => {
           headerShown: false,
           gestureEnabled: true,
           fullScreenGestureEnabled: false,
-          animation: Platform.OS === 'android' ? 'none' : undefined,
+          // animation: Platform.OS === 'android' ? 'none' : undefined,
         }}
       >
         <Stack.Screen
@@ -113,6 +113,10 @@ export const Route = () => {
         <Stack.Screen
           name={'contentShare'}
           component={ContentSharePage}
+        />
+        <Stack.Screen
+          name={'contentView'}
+          component={ContentViewPage}
         />
         <Stack.Screen
           name={'onBoarding'}

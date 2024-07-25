@@ -24,7 +24,6 @@ import {
 } from '@/features/scheme';
 import { fetchProject } from '@/api/local';
 import { PromptData } from '@/pages/content/components';
-import RNFetchBlob from 'rn-fetch-blob';
 
 const useButtonContainerStyle = createStyle((_, bottom = 0) => ({
   flexDirection: 'row',
@@ -76,23 +75,23 @@ export const ContentCreatePage = () => {
       contentPurpose,
     }));
   }, []);
-  const onFormChange = useCallback(async (cards: PromptData[], mainText: string) => {
+  const onFormChange = useCallback((cards: PromptData[], mainText: string) => {
     const root: ContentForm['cards']['root'] = {
       title: cards[0]?.title ?? '',
       keywords: cards[0]?.keywords.join(', ') ?? '',
     };
     if (cards[0]?.image) {
-      root.url = await convertToBase64(Image.resolveAssetSource(cards[0].image).uri);
+      root.url = Image.resolveAssetSource(cards[0].image).uri;
     }
-    const others = await Promise.all(cards.slice(1).map(async (it) => {
+    const others = cards.slice(1).map((it) => {
       let url: string | undefined = undefined;
-      if (it.image) url = await convertToBase64(Image.resolveAssetSource(it.image).uri);
+      if (it.image) url = Image.resolveAssetSource(it.image).uri;
 
       return {
         keywords: it.keywords.join(', '),
         url,
       };
-    }));
+    });
 
     setForm((prev) => ({
       ...prev,
@@ -103,16 +102,6 @@ export const ContentCreatePage = () => {
       mainText,
     }));
   }, []);
-
-  const convertToBase64 = async (uri: string) => {
-    const response = await RNFetchBlob.config({ fileCache: true }).fetch('GET', uri);
-    const path = response.path();
-    const data = await response.readFile('base64') as string;
-
-    await RNFetchBlob.fs.unlink(path);
-
-    return `data:image/png;base64,${data}`;
-  };
 
   const onSubmit = useCallback((parlanceStyle: ParlanceStyle, cardStyle: CardStyle, fontFamily: string) => {
     configRef.current?.close();

@@ -1,7 +1,7 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { AppShell } from '@/pages/components';
+import { AppShell, EmptyView } from '@/pages/components';
 import { useTheme } from '@/features/themes';
-import { Button, Typography } from '@/ui/common';
+import { Button, Space, Typography } from '@/ui/common';
 
 import AddIcon from '@/assets/images/add.svg';
 import { ContentCard } from '@/pages/main/components';
@@ -10,6 +10,10 @@ import { RootStackParamList } from '@/pages/types';
 import { useQuery } from '@tanstack/react-query';
 import { fetchProject } from '@/api/local';
 import { useCallback, useEffect } from 'react';
+import { fetchLocalContentsByProjectId } from '@/api/local/content.ts';
+import React from 'react';
+import { contentPurposeToString, contentTypeToString } from '@/api';
+import { Content } from '@/features/scheme';
 
 export const ProjectPage = () => {
   const theme = useTheme();
@@ -20,6 +24,10 @@ export const ProjectPage = () => {
   const { data: project, status } = useQuery({
     queryKey: ['projects', projectId],
     queryFn: async () => typeof projectId === 'number' ? await fetchProject(projectId) : null,
+  });
+  const { data: contents } = useQuery({
+    queryKey: ['contents', 'project', projectId],
+    queryFn: async () => typeof projectId === 'number' ? await fetchLocalContentsByProjectId(projectId) : null,
   });
 
   const onEdit = useCallback(() => {
@@ -32,7 +40,7 @@ export const ProjectPage = () => {
     if (status === 'success' && projectId && !project) {
       navigation.goBack();
     }
-  }, [projectId, project, status]);
+  }, [projectId, project, status, navigation]);
 
   return (
     <AppShell
@@ -61,11 +69,16 @@ export const ProjectPage = () => {
         </Button>
       )}
     >
-      <ContentCard
-        tags={['딸기', '프로젝트']}
-        title={'딸기 프로젝트'}
-        description={'딸기'}
-      />
+      {contents?.map((content) => (<React.Fragment key={content.id}>
+        <ContentCard
+          tags={[contentPurposeToString(content.contentPurpose), contentTypeToString(content.contentType)]}
+          title={content.title}
+          description={content.mainText ?? '내용 없음'}
+          onPress={() => navigation.navigate('contentView', { content: content as unknown as Content })}
+        />
+        <Space size={16}/>
+      </React.Fragment>))}
+      <EmptyView data={contents} />
     </AppShell>
   );
 };

@@ -1,8 +1,8 @@
 import { Image, ImageSourcePropType, ImageStyle, View } from 'react-native';
 
-import { Card, Typography } from '@/ui/common';
+import { Card, Space, Typography } from '@/ui/common';
 import { createStyle } from '@/features/utils';
-import { Tap } from '@/ui/Tap.tsx';
+import { Tap } from '@/ui/Tap';
 
 const containerStyle = createStyle({
   flexDirection: 'row',
@@ -70,7 +70,8 @@ export const ContentCard = ({ tags, title, description, source, timestamp, onPre
             {description}
           </Typography>
         </View>
-        <Image source={source} style={imageStyle as ImageStyle}/>
+        <Space />
+        <Image source={source} style={imageStyle as ImageStyle} resizeMode={'cover'} />
       </Card>
     </Tap>
   );
