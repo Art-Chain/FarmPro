@@ -23,3 +23,11 @@ export const ProjectFormSchema = z.object({
   price: z.string(),
   outlink: z.string(),
 });
+
+export type ProjectInfo = z.infer<typeof ProjectInfoSchema>;
+export const ProjectInfoSchema =  z.object({
+  cropCategoryName: z.object({
+    name: z.string(),
+  }),
+  cropDetailName: z.string(),
+});

@@ -1306,7 +1306,7 @@ PODS:
     - Yoga
   - RNImageColors (1.5.2):
     - React-Core
-  - RNReanimated (3.13.0):
+  - RNReanimated (3.14.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1673,7 +1673,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: ec53e44dc3e75b44aa2a9f37618a49c3bc080a7a
   RNGestureHandler: 8dbcccada4a7e702e7dec9338c251b1cf393c960
   RNImageColors: 9ac05083b52d5c350e6972650ae3ba0e556466c1
-  RNReanimated: 9c213184c27dc4a2ed7e9ff41a4b0b9258bb54f0
+  RNReanimated: f4ff116e33e0afc3d127f70efe928847c7c66355
   RNScreens: 5aeecbb09aa7285379b6e9f3c8a3c859bb16401c
   RNShare: 0fad69ae2d71de9d1f7b9a43acf876886a6cb99c
   RNSVG: a48668fd382115bc89761ce291a81c4ca5f2fd2e

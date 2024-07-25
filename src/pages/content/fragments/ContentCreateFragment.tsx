@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Carousel from 'react-native-reanimated-carousel';
 import { Dimensions, View } from 'react-native';
 
@@ -6,7 +6,7 @@ import { Space, TextInput, Typography } from '@/ui/common';
 import { useTheme } from '@/features/themes';
 import { createStyle } from '@/features/utils';
 
-import { ContentPagination, ContentPromptCard } from '../components';
+import { ContentPagination, ContentPromptCard, PromptData } from '../components';
 
 import AIIcon from '@/assets/images/ai.svg';
 import AddIcon from '@/assets/images/add.svg';
@@ -34,12 +34,18 @@ const useAddCardStyle = createStyle((theme) => ({
   backgroundColor: theme.colors.palette.gray[200],
 }));
 
-export const ContentCreateFragment = () => {
+export interface ContentCreateFragmentProps {
+  onChange?: (cards: PromptData[], mainText: string) => void;
+}
+
+export const ContentCreateFragment = ({ onChange }: ContentCreateFragmentProps) => {
   const theme = useTheme();
   const size = useMemo(() => Dimensions.get('window').width, []);
 
   const [length, setLength] = useState(1);
   const [position, setPosition] = useState(0);
+  const [cards, setCards] = useState<PromptData[]>([]);
+  const [mainText, setMainText] = useState('');
 
   const onAdd = useCallback(() => {
     setLength((size) => size + 1);
@@ -55,6 +61,10 @@ export const ContentCreateFragment = () => {
     });
 
   const addCardStyle = useAddCardStyle();
+
+  useEffect(() => {
+    onChange?.(cards, mainText);
+  }, [cards, mainText, onChange]);
 
   return (
     <View style={{ width: '100%', flex: 1, overflow: 'visible' }}>
@@ -86,6 +96,14 @@ export const ContentCreateFragment = () => {
 
             return <ContentPromptCard
               showTitle={data.index === 0}
+              onChange={(card) => {
+                setCards((it) => {
+                  const newCards = [...it];
+                  newCards[data.index] = card;
+
+                  return newCards;
+                });
+              }}
               onRemove={() => setLength((it) => it > 1 ? it - 1 : it)}
             />;
           }}
@@ -112,6 +130,8 @@ export const ContentCreateFragment = () => {
       </Typography>
       <Space size={8}/>
       <TextInput
+        value={mainText}
+        onChangeText={setMainText}
         variant={'body1'}
         placeholder={'본문의 키워드나 문장를 입력하세요.\n' +
           '예) 새로 수확한 딸기, 당일 수확 딸기, 구매 원하시면 연락'}
