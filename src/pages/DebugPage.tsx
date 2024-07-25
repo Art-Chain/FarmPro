@@ -10,7 +10,7 @@ export const DebugPage = () => {
   const navigation = useNavigation();
 
   return (
-    <AppShell>
+    <AppShell showBack>
       <View style={{ padding: 8 }}>
         <Typography variant={'head1'}>Page</Typography>
         <Button onPress={() => navigation.navigate('onBoarding')}>

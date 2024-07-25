@@ -78,6 +78,7 @@ export const UserPage = () => {
         <CardButton
           icon={AIIcon}
           name={'생성 기록'}
+          onPress={() => navigation.navigate('main', { screen: 'contentList' })}
         />
       </Card>
       <Space size={32}/>

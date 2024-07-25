@@ -12,6 +12,7 @@ import { useMutation } from '@tanstack/react-query';
 import { uploadImage } from '@/api/image.ts';
 import { createContent } from '@/api';
 import { RootStackParamList } from '@/pages/types.ts';
+import { createLocalContent } from '@/api/local/content.ts';
 
 const containerStyle = createStyle({
   width: '100%',
@@ -26,10 +27,11 @@ export const ContentLoadingPage = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const rawForm = (route.params as RootStackParamList['contentLoading'])?.form;
+  const fontFamily = (route.params as RootStackParamList['contentLoading'])?.fontFamily;
+  const projectId = (route.params as RootStackParamList['contentLoading'])?.projectId;
 
   const mutation = useMutation({
     mutationFn: async (form: ContentForm) => {
-      console.log('1', form);
       const uploadedImages = await Promise.all(
         [form.cards.root.url, ...form.cards.others.map((card) => card.url)]
           .map(async (url) => {
@@ -37,7 +39,6 @@ export const ContentLoadingPage = () => {
             return uploadImage(`img-${Date.now()}`, 'jpg', url);
           }),
       );
-      console.log('2', JSON.stringify(uploadedImages, null, 2));
 
       const newForm: ContentForm = {
         ...form,
@@ -52,9 +53,11 @@ export const ContentLoadingPage = () => {
           })),
         },
       };
-      console.log('3', JSON.stringify(newForm, null, 2));
 
-      return createContent(newForm);
+      const result = await createContent(newForm);
+      if (projectId) await createLocalContent(projectId, result);
+
+      return result;
     },
   });
 
@@ -72,25 +75,19 @@ export const ContentLoadingPage = () => {
     }
 
     mutation.mutate(form);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form, mutation.mutate, navigation]);
 
   useEffect(() => {
     if (mutation.data) {
-      console.log('data', mutation.data);
-      navigation.dispatch(StackActions.replace('contentShare', { data: mutation.data }));
+      navigation.dispatch(StackActions.replace('contentShare', { content: mutation.data, fontFamily }));
     }
 
     if (mutation.error) {
       console.log('error', mutation.error, mutation.error?.stack);
       navigation.goBack();
     }
-  }, [mutation.data, mutation.error, navigation]);
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     navigation.dispatch(StackActions.replace('contentShare'));
-  //   }, (5 + 10 * Math.random()) * 1000);
-  // }, [navigation]);
+  }, [fontFamily, mutation.data, mutation.error, navigation]);
 
   return (
     <View style={containerStyle}>

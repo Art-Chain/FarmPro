@@ -1,4 +1,4 @@
-import { AppShell } from '@/pages/components';
+import { AppShell, EmptyView } from '@/pages/components';
 import { useTheme } from '@/features/themes';
 import { Button, Space } from '@/ui/common';
 import { createStyle } from '@/features/utils';
@@ -56,15 +56,15 @@ export const ProjectListPage = () => {
       )}
     >
       {projects?.map((project) => (<React.Fragment key={project.id}>
-          <ProjectCard
-            color={theme.colors.primary.main}
-            title={project.name}
-            description={project.crop.name}
-            onPress={() => navigation.navigate('project', { projectId: project.id })}
-          />
-          <Space size={16}/>
-        </React.Fragment>
-      ))}
+        <ProjectCard
+          color={theme.colors.primary.main}
+          title={project.name}
+          description={project.crop.name}
+          onPress={() => navigation.navigate('project', { projectId: project.id })}
+        />
+        <Space size={16}/>
+      </React.Fragment>))}
+      <EmptyView data={projects} />
     </AppShell>
   );
 };
