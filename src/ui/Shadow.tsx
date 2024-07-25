@@ -21,12 +21,14 @@ export interface ShadowProps extends ViewProps {
   offsetY?: number;
 }
 
-const ShadowAndroid = React.memo(({ children, ...props }: PropsWithChildren<ShadowProps>): JSX.Element => {
+const ShadowAndroid = React.memo(React.forwardRef<View, PropsWithChildren<ShadowProps>>(({ children, ...props }, ref) => {
   const ratio = useMemo(() => PixelRatio.get(), []);
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const computedProps = useMemo(() => {
     const list = Object.entries(props);
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return Object.fromEntries(
       list.map(([key, value]) => {
         if (typeof value === 'number') {
@@ -39,11 +41,11 @@ const ShadowAndroid = React.memo(({ children, ...props }: PropsWithChildren<Shad
   }, [props, ratio]);
 
   return (
-    <NativeShadowView {...computedProps}>
+    <NativeShadowView ref={ref} {...computedProps}>
       {children}
     </NativeShadowView>
   );
-});
+}));
 
 const ShadowIOS = React.memo(React.forwardRef<View, PropsWithChildren<ShadowProps>>(({ children, style, ...props }, ref) => {
   const color = useMemo(() => Color(props.shadowColor), [props.shadowColor]);

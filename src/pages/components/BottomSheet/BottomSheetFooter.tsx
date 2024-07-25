@@ -1,10 +1,13 @@
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
-import { Space } from '@/ui/common';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { BottomSheetFooter as BaseBottomSheetFooter, BottomSheetFooterProps as BaseBottomSheetFooterProps } from '@gorhom/bottom-sheet';
 import { useTheme } from '@/features/themes';
 import { createStyle } from '@/features/utils';
+import { Space } from '@/ui/common';
+import {
+  BottomSheetFooter as BaseBottomSheetFooter,
+  BottomSheetFooterProps as BaseBottomSheetFooterProps
+} from '@gorhom/bottom-sheet';
 
 const footerGradientStyle = createStyle({
   position: 'absolute',
@@ -18,12 +21,16 @@ const footerGradientStyle = createStyle({
 export interface BottomSheetFooterProps extends Omit<BaseBottomSheetFooterProps, 'children'> {
   children?: React.ReactNode;
 }
-export const BottomSheetFooter = ({ children, ...props }: BottomSheetFooterProps) => {
+
+export const BottomSheetFooter = ({
+  children,
+  ...props
+}: BottomSheetFooterProps) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
 
   return (
-    <BaseBottomSheetFooter {...props}>
+    <BaseBottomSheetFooter {...props} bottomInset={0}>
       <Svg width={'100%'} height={'100%'} style={footerGradientStyle}>
         <Defs>
           <LinearGradient id={'gradient'} x1={'0'} y1={'0'} x2={'0'} y2={'1'}>
@@ -37,4 +44,4 @@ export const BottomSheetFooter = ({ children, ...props }: BottomSheetFooterProps
       <Space size={insets.bottom}/>
     </BaseBottomSheetFooter>
   );
-}
+};

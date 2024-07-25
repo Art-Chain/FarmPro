@@ -215,10 +215,10 @@ export const AppShellIOS = ({
           )}
         </View>
         <Space/>
-        {icons?.map((icon) => <>
+        {icons?.map((icon, index) => <React.Fragment key={index}>
           <Space size={16}/>
           {icon}
-        </>)}
+        </React.Fragment>)}
         <Space size={20} />
         {header}
       </Animated.View>

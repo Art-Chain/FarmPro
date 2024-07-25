@@ -8,7 +8,11 @@ import Animated, { useAnimatedProps } from 'react-native-reanimated';
 
 const AnimatedShadow = Animated.createAnimatedComponent(Shadow);
 
-export const BottomSheetBackground = ({ style, animatedIndex, ...props }: BottomSheetBackgroundProps) => {
+export const BottomSheetBackground = React.forwardRef<View, BottomSheetBackgroundProps>(({
+  style,
+  animatedIndex,
+  ...props
+}, ref) => {
   const theme = useTheme();
 
   const animatedProps = useAnimatedProps(() => ({
@@ -17,17 +21,17 @@ export const BottomSheetBackground = ({ style, animatedIndex, ...props }: Bottom
 
   return (
     <AnimatedShadow
-      key={0}
-      shadowColor={'rgba(0, 0, 0, 0.4)'}
+      {...props}
+      ref={ref}
       borderTopLeftRadius={16}
+      shadowColor={'rgba(0, 0, 0, 0.4)'}
       borderTopRightRadius={16}
       style={style}
       animatedProps={animatedProps}
     >
       <View
-        {...props}
         style={[style, { backgroundColor: theme.colors.white.main, borderRadius: 16 }]}
       />
     </AnimatedShadow>
   );
-};
+});

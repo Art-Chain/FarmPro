@@ -163,7 +163,7 @@ export const ContentSharePage = () => {
                 )}
                 source={item}
                 style={{ width: '100%', height: '100%' }}
-                content={'당도 200% 딸기의 계절, 그린팜입니다.'}
+                content={'그치 그냥 보통 탬플릿 고정하고 이렇게 텍스트만 바꾸니까 ㅇㅇ'}
                 fontFamily={(
                   index === 0 ? (Platform.OS === 'ios' ? 'ONEMobilePOPRegular' : 'ONE-Mobile-POP') :
                     index === 1 ? 'VITRO-CORE-TTF' :

@@ -21,6 +21,7 @@ import BackIcon from '@/assets/images/back.svg';
 
 import type { AppShellProps } from './types';
 import Color from 'color';
+import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 
 const AnimatedScrollView = Animated.createAnimatedComponent(KeyboardAwareScrollView);
 
@@ -44,7 +45,7 @@ const useHeaderStyle = createStyle((_, __ = 0) => ({
 }));
 const useBorderStyle = createStyle((theme, top = 0) => ({
   position: 'absolute',
-  top: 56 + top,
+  top: 56 + top - 1,
   width: '100%',
   height: 1,
   backgroundColor: theme.colors.palette.gray[200],
@@ -54,13 +55,6 @@ const useBlurStyle = createStyle((_, top = 0) => ({
   top: 0,
   width: '100%',
   height: 56 + top,
-  zIndex: 0,
-}));
-const useFooterBlurStyle = createStyle((_, height = 0) => ({
-  position: 'absolute',
-  top: 0,
-  width: '100%',
-  height,
   zIndex: 0,
 }));
 const useTitleStyle = createStyle((theme, showLogo = false) => ({
@@ -94,6 +88,13 @@ const footerStyle = createStyle({
   zIndex: 100,
   overflow: 'hidden',
 });
+const useFooterGradientStyle = createStyle((_, height = 0) => ({
+  position: 'absolute',
+  top: 0,
+  width: '100%',
+  height,
+  zIndex: 0,
+}));
 
 export const AppShellAndroid = ({
   showLogo = true,
@@ -121,11 +122,11 @@ export const AppShellAndroid = ({
   const headerStyle = useHeaderStyle(insets.top);
   const headerSizeStyle = useHeaderSizeStyle(insets.top);
   const blurStyle = useBlurStyle(insets.top);
-  const footerBlurStyle = useFooterBlurStyle(height + insets.bottom);
   const borderStyle = useBorderStyle(insets.top);
   const titleContainerStyle = useTitleContainerStyle(insets.top, align, showBack);
   const leftButtonStyle = useButtonStyle(20);
   const textStyle = useTitleStyle(showLogo);
+  const gradientStyle = useFooterGradientStyle(height);
 
   const animatedFooterStyle = useAnimatedStyle(() => ({
     position: 'absolute',
@@ -187,10 +188,12 @@ export const AppShellAndroid = ({
             </BorderlessButton>
           )}
         </View>
-        {icons?.map((icon) => <>
+        <Space/>
+        {icons?.map((icon, index) => <React.Fragment key={index}>
           <Space size={16}/>
           {icon}
-        </>)}
+        </React.Fragment>)}
+        <Space size={20} />
         {header}
       </Animated.View>
       <View style={headerSizeStyle}/>
@@ -205,11 +208,15 @@ export const AppShellAndroid = ({
             setHeight(event.nativeEvent.layout.height);
           }}
         >
-          <BlurView
-            style={[footerBlurStyle]}
-            blurType={'light'}
-            blurAmount={16}
-          />
+          <Svg width={'100%'} height={'100%'} style={gradientStyle}>
+            <Defs>
+              <LinearGradient id={'gradient'} x1={'0'} y1={'0'} x2={'0'} y2={'1'}>
+                <Stop offset={'0'} stopColor={theme.colors.white.main} stopOpacity={'0'}/>
+                <Stop offset={'0.5'} stopColor={theme.colors.white.main} stopOpacity={'1'}/>
+              </LinearGradient>
+            </Defs>
+            <Rect x={'0'} y={'0'} width={'100%'} height={'100%'} fill={'url(#gradient)'}/>
+          </Svg>
           {footer}
           <Space size={insets.bottom}/>
         </Animated.View>

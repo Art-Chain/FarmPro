@@ -1,3 +1,65 @@
+diff --git a/node_modules/@gorhom/bottom-sheet/.DS_Store b/node_modules/@gorhom/bottom-sheet/.DS_Store
+new file mode 100644
+index 0000000..35736db
+Binary files /dev/null and b/node_modules/@gorhom/bottom-sheet/.DS_Store differ
+diff --git a/node_modules/@gorhom/bottom-sheet/lib/commonjs/utilities/getRefNativeTag.js b/node_modules/@gorhom/bottom-sheet/lib/commonjs/utilities/getRefNativeTag.js
+index 0c1495d..f6f7f5f 100644
+--- a/node_modules/@gorhom/bottom-sheet/lib/commonjs/utilities/getRefNativeTag.js
++++ b/node_modules/@gorhom/bottom-sheet/lib/commonjs/utilities/getRefNativeTag.js
+@@ -30,15 +30,15 @@ function getRefNativeTag(ref) {
+     nativeTag = ref.current._nativeTag;
+   }
+ 
+-  if (!nativeTag || typeof nativeTag !== 'number') {
+-    throw new Error(`Unexpected nativeTag: ${refType}; nativeTag=${nativeTag} 
+-
+-			createBottomSheetScrollableComponent's ScrollableComponent needs to return 
+-			a reference that contains a nativeTag to a Native HostComponent.
+-
+-			ref=${ref}
+-			`);
+-  }
++  // if (!nativeTag || typeof nativeTag !== 'number') {
++  //   throw new Error(`Unexpected nativeTag: ${refType}; nativeTag=${nativeTag}
++  //
++	// 		createBottomSheetScrollableComponent's ScrollableComponent needs to return
++	// 		a reference that contains a nativeTag to a Native HostComponent.
++  //
++	// 		ref=${ref}
++	// 		`);
++  // }
+ 
+   return nativeTag;
+ }
+diff --git a/node_modules/@gorhom/bottom-sheet/lib/module/utilities/getRefNativeTag.js b/node_modules/@gorhom/bottom-sheet/lib/module/utilities/getRefNativeTag.js
+index 5f30f74..e12e16f 100644
+--- a/node_modules/@gorhom/bottom-sheet/lib/module/utilities/getRefNativeTag.js
++++ b/node_modules/@gorhom/bottom-sheet/lib/module/utilities/getRefNativeTag.js
+@@ -23,15 +23,15 @@ export function getRefNativeTag(ref) {
+     nativeTag = ref.current._nativeTag;
+   }
+ 
+-  if (!nativeTag || typeof nativeTag !== 'number') {
+-    throw new Error(`Unexpected nativeTag: ${refType}; nativeTag=${nativeTag} 
+-
+-			createBottomSheetScrollableComponent's ScrollableComponent needs to return 
+-			a reference that contains a nativeTag to a Native HostComponent.
+-
+-			ref=${ref}
+-			`);
+-  }
++  // if (!nativeTag || typeof nativeTag !== 'number') {
++  //   throw new Error(`Unexpected nativeTag: ${refType}; nativeTag=${nativeTag}
++  //
++	// 		createBottomSheetScrollableComponent's ScrollableComponent needs to return
++	// 		a reference that contains a nativeTag to a Native HostComponent.
++  //
++	// 		ref=${ref}
++	// 		`);
++  // }
+ 
+   return nativeTag;
+ }
 diff --git a/node_modules/@gorhom/bottom-sheet/src/components/bottomSheet/BottomSheet.tsx b/node_modules/@gorhom/bottom-sheet/src/components/bottomSheet/BottomSheet.tsx
 index f20e3dc..9d190f5 100644
 --- a/node_modules/@gorhom/bottom-sheet/src/components/bottomSheet/BottomSheet.tsx
@@ -16,13 +78,13 @@ index f20e3dc..9d190f5 100644
        // animations configurations
 -      animationConfigs: _providedAnimationConfigs,
 +      animationConfigs,
-
+ 
        // configurations
        index: _providedIndex = 0,
 @@ -172,6 +173,20 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
      } = props;
      //#endregion
-
+ 
 +    //#region animations configurations
 +    const _providedAnimationConfigs = useMemo(() => {
 +      if (!animationConfigs) {
@@ -58,7 +120,7 @@ index cc8fb9f..6aaa5a3 100644
  import { Dimensions, Platform } from 'react-native';
 -import Animated, { Easing } from 'react-native-reanimated';
 +import Animated, { Easing, ReduceMotion } from 'react-native-reanimated';
-
+ 
  const { height: WINDOW_HEIGHT, width: WINDOW_WIDTH } = Dimensions.get('window');
  const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('screen');
 @@ -72,11 +72,13 @@ const ANIMATION_CONFIGS_IOS = {
@@ -67,13 +129,13 @@ index cc8fb9f..6aaa5a3 100644
    restSpeedThreshold: 10,
 +  ...(ReduceMotion ? { reduceMotion: ReduceMotion.Never } : {}),
  };
-
+ 
  const ANIMATION_CONFIGS_ANDROID = {
    duration: ANIMATION_DURATION,
    easing: ANIMATION_EASING,
 +  ...(ReduceMotion ? { reduceMotion: ReduceMotion.Never } : {}),
  };
-
+ 
  const ANIMATION_CONFIGS =
 diff --git a/node_modules/@gorhom/bottom-sheet/src/utilities/animate.ts b/node_modules/@gorhom/bottom-sheet/src/utilities/animate.ts
 index 81fec5b..0ce4c9a 100644
@@ -87,11 +149,11 @@ index 81fec5b..0ce4c9a 100644
 -  ReduceMotion,
  } from 'react-native-reanimated';
  import { ANIMATION_CONFIGS, ANIMATION_METHOD } from '../constants';
-
+ 
 @@ -28,14 +26,6 @@ export const animate = ({
      configs = ANIMATION_CONFIGS;
    }
-
+ 
 -  // Users might have an accessibililty setting to reduce motion turned on.
 -  // This prevents the animation from running when presenting the sheet, which results in
 -  // the bottom sheet not even appearing so we need to override it to ensure the animation runs.
@@ -103,3 +165,36 @@ index 81fec5b..0ce4c9a 100644
    // detect animation type
    const type =
      'duration' in configs || 'easing' in configs
+diff --git a/node_modules/@gorhom/bottom-sheet/src/utilities/getRefNativeTag.ts b/node_modules/@gorhom/bottom-sheet/src/utilities/getRefNativeTag.ts
+index d4f3cc4..7beba8d 100644
+--- a/node_modules/@gorhom/bottom-sheet/src/utilities/getRefNativeTag.ts
++++ b/node_modules/@gorhom/bottom-sheet/src/utilities/getRefNativeTag.ts
+@@ -27,17 +27,17 @@ export function getRefNativeTag(ref: unknown) {
+     nativeTag = ref.current._nativeTag;
+   }
+ 
+-  if (!nativeTag || typeof nativeTag !== 'number') {
+-    throw new Error(
+-      `Unexpected nativeTag: ${refType}; nativeTag=${nativeTag} 
+-
+-			createBottomSheetScrollableComponent's ScrollableComponent needs to return 
+-			a reference that contains a nativeTag to a Native HostComponent.
+-
+-			ref=${ref}
+-			`
+-    );
+-  }
++  // if (!nativeTag || typeof nativeTag !== 'number') {
++  //   throw new Error(
++  //     `Unexpected nativeTag: ${refType}; nativeTag=${nativeTag}
++  //
++	// 		createBottomSheetScrollableComponent's ScrollableComponent needs to return
++	// 		a reference that contains a nativeTag to a Native HostComponent.
++  //
++	// 		ref=${ref}
++	// 		`
++  //   );
++  // }
+ 
+   return nativeTag;
+ }

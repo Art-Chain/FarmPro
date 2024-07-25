@@ -113,6 +113,7 @@ export const ExportConfigFragment = React.forwardRef<BottomSheetModal, ExportCon
       snapPoints={['80%']}
       enableDynamicSizing
       contentContainerStyle={containerStyle}
+      footerContentStyle={{ padding: 16 }}
       footer={
         <Button
           onPress={onShare}

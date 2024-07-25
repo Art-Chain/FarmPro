@@ -17,6 +17,7 @@ export interface BottomSheetModalProps extends Omit<BaseBottomSheetModalProps, '
   footerContentStyle?: StyleProp<ViewStyle>;
   contentContainerStyle?: StyleProp<ViewStyle>;
 }
+
 export type BottomSheetModal = BaseBottomSheetModal;
 export const BottomSheetModal = React.forwardRef<BaseBottomSheetModal, BottomSheetModalProps>(({
   title,
@@ -32,13 +33,25 @@ export const BottomSheetModal = React.forwardRef<BaseBottomSheetModal, BottomShe
 
   return (
     <BaseBottomSheetModal
-      ref={ref}
       {...props}
+      ref={ref}
       backgroundComponent={BottomSheetBackground}
-      handleComponent={title ? (props) => <BottomSheetHandle {...props} title={title}/> : undefined}
+      handleComponent={(
+        title
+          ? (props) => (
+            <BottomSheetHandle
+              {...props}
+              title={title}
+            />
+          )
+          : undefined
+      )}
       footerComponent={(props) => (
         <BottomSheetFooter {...props}>
-          <View style={footerContentStyle} onLayout={(event) => setHeight(event.nativeEvent.layout.height)}>
+          <View
+            style={footerContentStyle}
+            onLayout={(event) => setHeight(event.nativeEvent.layout.height)}
+          >
             {footer}
           </View>
         </BottomSheetFooter>
@@ -46,8 +59,8 @@ export const BottomSheetModal = React.forwardRef<BaseBottomSheetModal, BottomShe
     >
       <BottomSheetScrollView contentContainerStyle={contentContainerStyle}>
         {children}
-        <Space size={height + insets.bottom} />
+        <Space size={height + insets.bottom}/>
       </BottomSheetScrollView>
     </BaseBottomSheetModal>
-  )
+  );
 });

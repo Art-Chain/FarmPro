@@ -135,7 +135,7 @@ const backgroundStyle = createStyle({
 const buttonContainerStyle = createStyle({
   flexDirection: 'row',
   justifyContent: 'space-between',
-  paddingHorizontal: 16,
+  padding: 16,
 });
 
 interface AIConfigFragmentProps extends Omit<BottomSheetModalProps, 'index' | 'snapPoints' | 'backgroundComponent' | 'handleComponent' | 'footerComponent' | 'children'> {
