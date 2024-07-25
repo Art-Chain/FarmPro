@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { AppState } from 'react-native';
+import { AppState, Platform } from 'react-native';
 
 import BootSplash from 'react-native-bootsplash';
 import NetInfo from '@react-native-community/netinfo';
@@ -90,7 +90,7 @@ export const Route = () => {
           headerShown: false,
           gestureEnabled: true,
           fullScreenGestureEnabled: false,
-          animation: 'none',
+          animation: Platform.OS === 'android' ? 'none' : undefined,
         }}
       >
         <Stack.Screen

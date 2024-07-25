@@ -3,17 +3,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Image, ImageStyle } from 'react-native';
 import Animated, {
   Easing,
-  FadeInUp,
-  FadeOutUp,
-  LinearTransition,
   useAnimatedStyle,
   useSharedValue,
   withTiming
 } from 'react-native-reanimated';
 import Share, { Social } from 'react-native-share';
 import RNFetchBlob from 'rn-fetch-blob';
-import { ScrollView } from 'react-native-gesture-handler';
-import { BottomSheetView } from '@gorhom/bottom-sheet';
 
 import { Button, Card, CheckBox, Space, Typography } from '@/ui/common';
 import { SelectCard } from '@/ui/SelectCard';
@@ -22,8 +17,7 @@ import { useTheme } from '@/features/themes';
 
 import ExpandMore from '@/assets/images/expand_more.svg';
 import ShareIcon from '@/assets/images/share.svg';
-
-const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
+import { BottomSheetModal } from '@/pages/components';
 
 const useContainerStyle = createStyle((_, expand = false, bottom = 0) => ({
   width: '100%',
@@ -55,7 +49,10 @@ interface ExportConfigFragmentProps {
   onExpand?: (expand?: boolean) => void;
 }
 
-export const ExportConfigFragment = ({ data = [], onExpand }: ExportConfigFragmentProps) => {
+export const ExportConfigFragment = React.forwardRef<BottomSheetModal, ExportConfigFragmentProps>(({
+  data = [],
+  onExpand
+}, ref) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
 
@@ -109,7 +106,23 @@ export const ExportConfigFragment = ({ data = [], onExpand }: ExportConfigFragme
   };
 
   return (
-    <BottomSheetView style={containerStyle}>
+    <BottomSheetModal
+      ref={ref}
+      index={0}
+      title={'공유하기'}
+      snapPoints={['80%']}
+      enableDynamicSizing
+      contentContainerStyle={containerStyle}
+      footer={
+        <Button
+          onPress={onShare}
+          icon={<ShareIcon color={theme.colors.white.main}/>}
+          style={{ margin: 16 }}
+        >
+          공유하기
+          <Space size={10}/>
+        </Button>}
+    >
       <Typography variant={'subtitle1'}>
         페이지 선택
       </Typography>
@@ -127,49 +140,38 @@ export const ExportConfigFragment = ({ data = [], onExpand }: ExportConfigFragme
       </SelectCard>
       <Space size={24}/>
       {expand && <>
-        <AnimatedScrollView entering={FadeInUp} exiting={FadeOutUp} style={{ flex: 1 }}>
-          <Card>
-            <CheckBox
-              value={selected.every(Boolean)}
-              onValueChange={() => {
-                const value = !selected.every(Boolean);
-                setSelected(Array.from({ length: data.length }, () => value));
-              }}
-            >
-              <Typography>
-                모든 페이지
-              </Typography>
-            </CheckBox>
-            {data.map((uri, index) => (
-              <React.Fragment key={index}>
-                <Space size={16}/>
-                <CheckBox
-                  align={'right'}
-                  value={selected[index]}
-                  onValueChange={(value) => setSelected((it) => it.map((it, i) => i === index ? value : it))}
-                >
-                  <Animated.View style={itemStyle}>
-                    <Image source={{ uri }} style={imageStyle as ImageStyle}/>
-                    <Space size={16}/>
-                    <Typography>
-                      {index + 1}페이지
-                    </Typography>
-                  </Animated.View>
-                </CheckBox>
-              </React.Fragment>
-            ))}
-          </Card>
-          <Space size={24}/>
-        </AnimatedScrollView>
+        <Card>
+          <CheckBox
+            value={selected.every(Boolean)}
+            onValueChange={() => {
+              const value = !selected.every(Boolean);
+              setSelected(Array.from({ length: data.length }, () => value));
+            }}
+          >
+            <Typography>
+              모든 페이지
+            </Typography>
+          </CheckBox>
+          {data.map((uri, index) => (
+            <React.Fragment key={index}>
+              <Space size={16}/>
+              <CheckBox
+                align={'right'}
+                value={selected[index]}
+                onValueChange={(value) => setSelected((it) => it.map((it, i) => i === index ? value : it))}
+              >
+                <Animated.View style={itemStyle}>
+                  <Image source={{ uri }} style={imageStyle as ImageStyle}/>
+                  <Space size={16}/>
+                  <Typography>
+                    {index + 1}페이지
+                  </Typography>
+                </Animated.View>
+              </CheckBox>
+            </React.Fragment>
+          ))}
+        </Card>
       </>}
-      <Button
-        layout={LinearTransition.duration(300).easing(Easing.elastic(0.5))}
-        onPress={onShare}
-        icon={<ShareIcon color={theme.colors.white.main}/>}
-      >
-        공유하기
-        <Space size={10}/>
-      </Button>
-    </BottomSheetView>
+    </BottomSheetModal>
   );
-};
+});

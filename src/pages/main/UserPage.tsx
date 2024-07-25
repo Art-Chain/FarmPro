@@ -25,8 +25,9 @@ const itemStyle = createStyle({
 
 const cardStyle = createStyle({
   marginHorizontal: 20,
+  paddingHorizontal: 0,
   flexDirection: 'row',
-  justifyContent: 'space-around',
+  justifyContent: 'space-between',
 });
 const toolbarStyle = createStyle({
   flexDirection: 'row',
@@ -73,6 +74,7 @@ export const UserPage = () => {
           name={'내 프로젝트'}
           onPress={() => navigation.navigate('projectList')}
         />
+        <View style={{ width: 1, height: '100%', backgroundColor: theme.colors.palette.gray[200] }} />
         <CardButton
           icon={AIIcon}
           name={'생성 기록'}

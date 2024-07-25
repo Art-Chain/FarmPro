@@ -21,6 +21,7 @@ import LogoIcon from '@/assets/logo.svg';
 import BackIcon from '@/assets/images/back.svg';
 
 import type { AppShellProps } from './types';
+import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 
 const AnimatedScrollView = Animated.createAnimatedComponent(KeyboardAwareScrollView);
 
@@ -85,6 +86,13 @@ const footerStyle = createStyle({
   top: 0,
   width: '100%',
 });
+const useFooterGradientStyle = createStyle((_, height = 0) => ({
+  position: 'absolute',
+  top: 0,
+  width: '100%',
+  height,
+  zIndex: 0,
+}));
 
 export const AppShellIOS = ({
   showLogo = true,
@@ -116,6 +124,7 @@ export const AppShellIOS = ({
   const titleContainerStyle = useTitleContainerStyle(insets.top, align, showBack);
   const leftButtonStyle = useButtonStyle(20);
   const textStyle = useTitleStyle(showLogo);
+  const gradientStyle = useFooterGradientStyle(height);
 
   const animatedFooterStyle = useAnimatedStyle(() => ({
     position: 'absolute',
@@ -152,8 +161,11 @@ export const AppShellIOS = ({
       style={{ minHeight: frame.height }}
     >
       <View style={headerSizeStyle}/>
-      <View style={[contentContainerStyle, { flex: 1, minHeight: frame.height - height - 56, }]}>
+      <View style={[contentContainerStyle, { flex: 1, minHeight: frame.height - height - 56 - insets.top, }]}>
         {children}
+        {!footer && (
+          <Space size={insets.bottom}/>
+        )}
       </View>
       <Space size={height}/>
       {!!footer && (
@@ -163,6 +175,15 @@ export const AppShellIOS = ({
             setHeight(event.nativeEvent.layout.height);
           }}
         >
+          <Svg width={'100%'} height={'100%'} style={gradientStyle}>
+            <Defs>
+              <LinearGradient id={'gradient'} x1={'0'} y1={'0'} x2={'0'} y2={'1'}>
+                <Stop offset={'0'} stopColor={theme.colors.white.main} stopOpacity={'0'}/>
+                <Stop offset={'0.5'} stopColor={theme.colors.white.main} stopOpacity={'1'}/>
+              </LinearGradient>
+            </Defs>
+            <Rect x={'0'} y={'0'} width={'100%'} height={'100%'} fill={'url(#gradient)'}/>
+          </Svg>
           {footer}
           <Space size={insets.bottom}/>
         </Animated.View>

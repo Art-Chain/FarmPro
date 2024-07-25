@@ -13,7 +13,7 @@ import CucumberImage from '@/assets/images/cucumber.png';
 import PaprikaImage from '@/assets/images/paprika.png';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { AppShell, BottomSheetBackground } from '@/pages/components';
+import { AppShell, BottomSheetModal } from '@/pages/components';
 import { View } from 'react-native';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { fetchContents } from '@/api/content.ts';
@@ -21,7 +21,6 @@ import { fetchContents } from '@/api/content.ts';
 import ProjectFullIcon from '@/assets/images/project_full.svg';
 import ArrowRightIcon from '@/assets/images/arrow_right.svg';
 import { Tap } from '@/ui/Tap.tsx';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { ProjectCreatedFragment } from '@/pages/project/fragments';
 import { useAtom } from 'jotai';
 import { ProjectAtom } from '@/features/store';
@@ -171,7 +170,6 @@ export const HomePage = () => {
         enableDynamicSizing
         ref={modalRef}
         index={0}
-        backgroundComponent={BottomSheetBackground}
       >
         <ProjectCreatedFragment
           name={name}

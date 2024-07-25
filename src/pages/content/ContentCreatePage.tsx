@@ -5,9 +5,10 @@ import Animated, { SlideInLeft, SlideInRight, SlideOutLeft, SlideOutRight } from
 
 import { Button, Space } from '@/ui/common';
 import { createStyle } from '@/features/utils';
-import { AppShell, BottomSheetBackground } from '@/pages/components';
+import { AppShell } from '@/pages/components';
 
 import { AIConfigFragment, ContentCreateFragment, ContentCreateInfoFragment } from './fragments';
+import { useNavigation } from '@react-navigation/native';
 
 const useButtonContainerStyle = createStyle((_, bottom = 0) => ({
   flexDirection: 'row',
@@ -17,6 +18,8 @@ const useButtonContainerStyle = createStyle((_, bottom = 0) => ({
 }));
 
 export const ContentCreatePage = () => {
+  const navigation = useNavigation();
+
   const configRef = useRef<BottomSheetModal>(null);
   const [position, setPosition] = useState(0);
   const [aiConfig, setAiConfig] = useState({
@@ -60,7 +63,7 @@ export const ContentCreatePage = () => {
           collapsable={false}
           style={{ paddingHorizontal: 20, paddingTop: 24, flex: 1 }}
         >
-          <ContentCreateInfoFragment />
+          <ContentCreateInfoFragment/>
         </Animated.View>
       )}
       {position === 1 && (
@@ -70,26 +73,21 @@ export const ContentCreatePage = () => {
           collapsable={false}
           style={{ paddingHorizontal: 20, paddingTop: 24, flex: 1 }}
         >
-          <ContentCreateFragment />
+          <ContentCreateFragment/>
         </Animated.View>
       )}
-      <BottomSheetModal
+      <AIConfigFragment
         ref={configRef}
-        index={0}
-        snapPoints={['80%']}
-        backgroundComponent={BottomSheetBackground}
-      >
-        <AIConfigFragment
-          key={0}
-          defaultArticleType={aiConfig.articleType}
-          defaultImageStyle={aiConfig.imageStyle}
-          onCancel={configRef.current?.close}
-          onSubmit={useCallback((articleType: string, imageStyle: string) => {
-            setAiConfig({ articleType, imageStyle });
-            configRef.current?.close();
-          }, [])}
-        />
-      </BottomSheetModal>
+        key={0}
+        defaultArticleType={aiConfig.articleType}
+        defaultImageStyle={aiConfig.imageStyle}
+        onCancel={configRef.current?.close}
+        onSubmit={useCallback((articleType: string, imageStyle: string) => {
+          setAiConfig({ articleType, imageStyle });
+          configRef.current?.close();
+          navigation.navigate('contentLoading');
+        }, [])}
+      />
     </AppShell>
   );
 };

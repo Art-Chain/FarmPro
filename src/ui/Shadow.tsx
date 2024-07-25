@@ -45,7 +45,7 @@ const ShadowAndroid = React.memo(({ children, ...props }: PropsWithChildren<Shad
   );
 });
 
-const ShadowIOS = React.memo(({ children, style, ...props }: PropsWithChildren<ShadowProps>) => {
+const ShadowIOS = React.memo(React.forwardRef<View, PropsWithChildren<ShadowProps>>(({ children, style, ...props }, ref) => {
   const color = useMemo(() => Color(props.shadowColor), [props.shadowColor]);
 
   const shadowStyle: ViewStyle = useMemo(() => ({
@@ -59,10 +59,10 @@ const ShadowIOS = React.memo(({ children, style, ...props }: PropsWithChildren<S
   }), [color, props.offsetX, props.offsetY, props.shadowRadius]);
 
   return (
-    <View style={StyleSheet.compose(style, shadowStyle)} {...props}>
+    <View {...props} ref={ref} style={StyleSheet.compose(style, shadowStyle)}>
       {children}
     </View>
   );
-});
+}));
 
 export const Shadow = Platform.OS === 'android' ? ShadowAndroid : ShadowIOS;

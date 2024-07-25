@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { ScrollView } from 'react-native-gesture-handler';
 import Animated, { Easing, ZoomIn, ZoomOut } from 'react-native-reanimated';
 
@@ -16,6 +15,7 @@ import EmotionalStyle from '@/assets/images/style/style_emotional.png';
 import HumorousStyle from '@/assets/images/style/style_humorous.png';
 import { Image, ImageStyle, Platform, Text, View } from 'react-native';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
+import { BottomSheetModal, BottomSheetModalProps } from '@/pages/components';
 
 const articleTypes = [
   {
@@ -135,9 +135,10 @@ const backgroundStyle = createStyle({
 const buttonContainerStyle = createStyle({
   flexDirection: 'row',
   justifyContent: 'space-between',
+  paddingHorizontal: 16,
 });
 
-interface AIConfigFragmentProps {
+interface AIConfigFragmentProps extends Omit<BottomSheetModalProps, 'index' | 'snapPoints' | 'backgroundComponent' | 'handleComponent' | 'footerComponent' | 'children'> {
   defaultArticleType?: string;
   defaultImageStyle?: string;
   defaultFontFamily?: string;
@@ -145,13 +146,14 @@ interface AIConfigFragmentProps {
   onSubmit?: (articleType: string, imageStyle: string, fontFamily: string) => void;
 }
 
-export const AIConfigFragment = ({
+export const AIConfigFragment = React.forwardRef<BottomSheetModal, AIConfigFragmentProps>(({
   defaultArticleType = articleTypes[0].id,
   defaultImageStyle = imageStyles[0].id,
   defaultFontFamily = fontList[0].id,
   onCancel,
   onSubmit,
-}: AIConfigFragmentProps) => {
+  ...props
+}, ref) => {
   const theme = useTheme();
 
   const checkStyle = useCheckStyle();
@@ -161,7 +163,25 @@ export const AIConfigFragment = ({
   const [font, setFont] = useState(defaultFontFamily);
 
   return (
-    <BottomSheetScrollView contentContainerStyle={{ padding: 16 }}>
+    <BottomSheetModal
+      ref={ref}
+      {...props}
+      index={0}
+      snapPoints={['80%']}
+      contentContainerStyle={{ padding: 16 }}
+      title={'생성하기'}
+      footer={(
+        <View style={buttonContainerStyle}>
+          <Button variant={'secondary'} style={{ flex: 1 }} onPress={onCancel}>
+            취소
+          </Button>
+          <Space size={10}/>
+          <Button style={{ flex: 1 }} onPress={() => onSubmit?.(articleType, imageStyle, font)}>
+            생성
+          </Button>
+        </View>
+      )}
+    >
       <Typography variant={'subtitle1'}>
         게시물 문체 선택
       </Typography>
@@ -269,7 +289,11 @@ export const AIConfigFragment = ({
             style={cardStyle}
             onPress={() => setFont(item.id)}
           >
-            <Text style={{ color: theme.colors.primary.main, fontFamily: item.id, fontSize: theme.typography.head2.fontSize }}>
+            <Text style={{
+              color: theme.colors.primary.main,
+              fontFamily: item.id,
+              fontSize: theme.typography.head2.fontSize
+            }}>
               {item.name}
             </Text>
             <Space size={16}/>
@@ -293,16 +317,6 @@ export const AIConfigFragment = ({
           </SelectCard>
         </React.Fragment>)}
       </ScrollView>
-      <Space size={24}/>
-      <View style={buttonContainerStyle}>
-        <Button variant={'secondary'} style={{ flex: 1 }} onPress={onCancel}>
-          취소
-        </Button>
-        <Space size={10}/>
-        <Button style={{ flex: 1 }} onPress={() => onSubmit?.(articleType, imageStyle, font)}>
-          생성
-        </Button>
-      </View>
-    </BottomSheetScrollView>
+    </BottomSheetModal>
   );
-};
+});

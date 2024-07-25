@@ -1,7 +1,6 @@
 import { Dimensions, Image, ImageStyle, Platform, View } from 'react-native';
 import { Button, Space, Typography } from '@/ui/common';
 import React, { useCallback, useMemo, useRef } from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
 import Carousel from 'react-native-reanimated-carousel';
 import ReadMore from '@fawazahmed/react-native-read-more';
@@ -25,9 +24,8 @@ import image5 from '@/assets/images/mock/image5.png';
 import { ContentPagination, ImageRenderer } from '@/pages/content/components';
 import { Easing, useSharedValue } from 'react-native-reanimated';
 import { Shadow } from '@/ui/Shadow.tsx';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { ExportConfigFragment } from '@/pages/content/fragments';
-import { AppShell, BottomSheetBackground } from '@/pages/components';
+import { AppShell, BottomSheetModal } from '@/pages/components';
 
 const useButtonContainerStyle = createStyle((_, bottom = 0) => ({
   flexDirection: 'row',
@@ -86,7 +84,6 @@ const imageList = [image1, image2, image3, image4, image5];
 
 export const ContentSharePage = () => {
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
   const size = useMemo(() => Dimensions.get('window').width - 64, []);
   const configRef = useRef<BottomSheetModal>(null);
 
@@ -226,19 +223,13 @@ export const ContentSharePage = () => {
         </View>
       </Shadow>
       <Space size={20}/>
-      <BottomSheetModal
+      <ExportConfigFragment
         ref={configRef}
-        index={0}
-        snapPoints={[224 + insets.bottom, '80%']}
-        backgroundComponent={BottomSheetBackground}
-      >
-        <ExportConfigFragment
-          data={imageList.map((source) => Image.resolveAssetSource(source).uri)}
-          onExpand={(expand) => {
-            configRef.current?.snapToIndex(expand ? 1 : 0, { easing: Easing.elastic(0.5) });
-          }}
-        />
-      </BottomSheetModal>
+        data={imageList.map((source) => Image.resolveAssetSource(source).uri)}
+        onExpand={(expand) => {
+          configRef.current?.snapToIndex(expand ? 1 : 0, { easing: Easing.elastic(0.5) });
+        }}
+      />
     </AppShell>
   );
 };

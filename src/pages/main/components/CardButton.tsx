@@ -12,6 +12,8 @@ const containerStyle = createStyle({
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
+
+  flex: 1,
 });
 
 const useIconFrameStyle = createStyle((theme) => ({

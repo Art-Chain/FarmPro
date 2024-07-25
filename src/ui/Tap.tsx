@@ -14,13 +14,25 @@ import { ReactNativeStyle } from '@/features/utils';
 
 export type TabAnimation = (value: SharedValue<number>) => ReactNativeStyle;
 export const Animation = {
+  default: (value) => {
+    'worklet';
+
+    return {
+      transform: [
+        {
+          scale: 1 - value.value * 0.05,
+        },
+      ],
+      opacity: 1 - value.value * 0.25,
+    };
+  },
   scale: (value) => {
     'worklet';
 
     return {
       transform: [
         {
-          scale: 1 - value.value * 0.1,
+          scale: 1 - value.value * 0.05,
         },
       ]
     };
@@ -40,7 +52,7 @@ export interface TabProps extends ViewProps {
   animation?: TabAnimation;
 }
 export const Tap = React.memo(({
-  animation = Animation.scale,
+  animation = Animation.default,
   onPress,
   children,
   ...props

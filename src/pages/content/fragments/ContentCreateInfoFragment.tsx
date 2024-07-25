@@ -13,6 +13,7 @@ import { useTheme } from '@/features/themes';
 import { fetchProject, fetchProjects } from '@/api/local';
 import { RootStackParamList } from '@/pages/types.ts';
 import { useRoute } from '@react-navigation/native';
+import React from 'react';
 
 export const ContentCreateInfoFragment = () => {
   const theme = useTheme();
@@ -49,16 +50,17 @@ export const ContentCreateInfoFragment = () => {
         프로젝트 선택
       </Typography>
       <Space size={12}/>
-      {projects?.map((project) => (
-        <SelectCard
-          key={project.id}
-          selected={project.id === projectId}
-          onPress={() => setProjectId(project.id === projectId ? null : project.id)}
-        >
-          <Typography variant={'body1'}>
-            {project.name}
-          </Typography>
-        </SelectCard>
+      {projects?.map((project) => (<React.Fragment key={project.id}>
+          <SelectCard
+            selected={project.id === projectId}
+            onPress={() => setProjectId(project.id === projectId ? null : project.id)}
+          >
+            <Typography variant={'body1'}>
+              {project.name}
+            </Typography>
+          </SelectCard>
+          <Space size={8}/>
+        </React.Fragment>
       ))}
       <Space size={26}/>
       <Typography variant={'subtitle1'}>
