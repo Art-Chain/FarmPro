@@ -37,7 +37,6 @@ export const ContentSchema = z.object({
   contentPurpose: ContentPurposeSchema,
   mainText: z.string().nullable(),
   title: z.string().nullable(),
-  textStyle: z.string(),
   images: z.object({
     images: z.object({
       id: z.number().nullable(),
@@ -45,8 +44,8 @@ export const ContentSchema = z.object({
       title: z.string().nullable(),
     }).array(),
   }),
-  parlanceStyle: ParlanceStyleSchema,
-  cardStyle: CardStyleSchema,
+  parlanceStyle: ParlanceStyleSchema.nullable().optional(),
+  cardStyle: CardStyleSchema.nullable().optional(),
 });
 
 export type ContentCreation = z.infer<typeof ContentCreationSchema>;

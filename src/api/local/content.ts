@@ -10,7 +10,7 @@ export const createLocalContent = async (projectId: number, content: Content) =>
   };
 
   contents.push(localContent);
-  await AsyncStorage.setItem('projects', JSON.stringify(contents));
+  await AsyncStorage.setItem('contents', JSON.stringify(contents));
   return localContent;
 };
 
