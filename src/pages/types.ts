@@ -1,11 +1,11 @@
 import { NavigatorScreenParams } from '@react-navigation/native';
-import { Project } from '@/features/scheme';
+import { ContentForm, Project } from '@/features/scheme';
 
 export type RootStackParamList = {
   main: NavigatorScreenParams<MainTabParamList> | undefined;
   onBoarding: undefined;
   contentCreate: { projectId?: number } | undefined;
-  contentLoading: undefined;
+  contentLoading: { form: ContentForm; fontFamily: string; } | undefined;
   contentShare: undefined;
   projectList: undefined;
   project: { projectId?: number } | undefined;
@@ -21,6 +21,7 @@ export type MainTabParamList = {
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace ReactNavigation {
-    interface RootParamList extends RootStackParamList {}
+    interface RootParamList extends RootStackParamList {
+    }
   }
 }

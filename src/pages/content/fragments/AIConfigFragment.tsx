@@ -16,67 +16,68 @@ import HumorousStyle from '@/assets/images/style/style_humorous.png';
 import { Image, ImageStyle, Platform, Text, View } from 'react-native';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import { BottomSheetModal, BottomSheetModalProps } from '@/pages/components';
+import { CardStyle, ParlanceStyle } from '@/features/scheme';
 
 const articleTypes = [
   {
-    id: 'info',
+    id: 'INFORMATIVE',
     name: '정보성',
     description: '"우리 농산물의 영양 성분과\n' + '효능을 알려드립니다."',
   },
   {
-    id: 'humorous',
+    id: 'HUMOROUS',
     name: '유머러스한',
     description: '"이 농산물, 먹으면 기분 좋아져요!\n' + '농담 아니에요!"'
   },
   {
-    id: 'touching',
+    id: 'EMOTIONAL',
     name: '감동적인',
     description: '"한 알 한 알 정성으로 키워낸 농산물,\n' + '여러분의 식탁에 감동을 더합니다."',
   },
   {
-    id: 'convincing',
+    id: 'ATTRACTIVE',
     name: '설득력 있는',
     description: '"건강을 지키는 최고의 선택, \n' + '우리 농산물을 지금 바로 구매하세요!"',
   },
   {
-    id: 'storytelling',
+    id: 'STORYTELLER',
     name: '이야기 형식',
     description: '"이 농산물이 자라기까지의\n' + '이야기를 들려드릴게요."',
   },
-  {
-    id: 'professional',
-    name: '전문적인',
-    description: '"최신 농업 기술로 재배된 농산물, \n' + '품질과 신뢰를 보장합니다."'
-  },
-] satisfies { id: string; name: string; description: string }[];
+  // {
+  //   id: 'professional',
+  //   name: '전문적인',
+  //   description: '"최신 농업 기술로 재배된 농산물, \n' + '품질과 신뢰를 보장합니다."'
+  // },
+] satisfies { id: ParlanceStyle; name: string; description: string }[];
 
 const imageStyles = [
   {
-    id: 'fancy',
+    id: 'LAVISH',
     name: '화려한',
     source: FancyStyle,
   },
   {
-    id: 'calm',
+    id: 'SERENE',
     name: '차분한',
     source: CalmStyle,
   },
   {
-    id: 'modern',
+    id: 'MODERN',
     name: '모던한',
     source: ModernStyle,
   },
   {
-    id: 'emotional',
+    id: 'EMOTIVE',
     name: '감성적인',
     source: EmotionalStyle,
   },
   {
-    id: 'humorous',
+    id: 'HUMOROUS',
     name: '유머러스한',
     source: HumorousStyle,
   },
-];
+] satisfies { id: CardStyle; name: string; source: number }[]
 
 const fontList = [
   {
@@ -139,11 +140,11 @@ const buttonContainerStyle = createStyle({
 });
 
 interface AIConfigFragmentProps extends Omit<BottomSheetModalProps, 'index' | 'snapPoints' | 'backgroundComponent' | 'handleComponent' | 'footerComponent' | 'children'> {
-  defaultArticleType?: string;
-  defaultImageStyle?: string;
+  defaultArticleType?: ParlanceStyle;
+  defaultImageStyle?: CardStyle;
   defaultFontFamily?: string;
   onCancel?: () => void;
-  onSubmit?: (articleType: string, imageStyle: string, fontFamily: string) => void;
+  onSubmit?: (articleType: ParlanceStyle, imageStyle: CardStyle, fontFamily: string) => void;
 }
 
 export const AIConfigFragment = React.forwardRef<BottomSheetModal, AIConfigFragmentProps>(({
