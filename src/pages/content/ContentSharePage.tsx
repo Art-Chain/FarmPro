@@ -1,6 +1,6 @@
 import { Dimensions, Image, ImageStyle, View } from 'react-native';
 import { Button, Space, Typography } from '@/ui/common';
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import Svg, { Path } from 'react-native-svg';
 import Carousel from 'react-native-reanimated-carousel';
 import ReadMore from '@fawazahmed/react-native-read-more';
@@ -16,18 +16,13 @@ import DocumentIcon from '@/assets/images/document.svg';
 import ShareIcon from '@/assets/images/share.svg';
 import StarEffect from '@/assets/images/star_effect.svg';
 
-import image1 from '@/assets/images/mock/image1.png';
-import image2 from '@/assets/images/mock/image2.png';
-import image3 from '@/assets/images/mock/image3.png';
-import image4 from '@/assets/images/mock/image4.png';
-import image5 from '@/assets/images/mock/image5.png';
-import { ContentPagination, ImageRenderer } from '@/pages/content/components';
+import { ContentPagination, ImageRenderer, ImageRendererMethods } from '@/pages/content/components';
 import { Easing, useSharedValue } from 'react-native-reanimated';
 import { Shadow } from '@/ui/Shadow.tsx';
 import { ExportConfigFragment } from '@/pages/content/fragments';
-import { AppShell, BottomSheetModal } from '@/pages/components';
+import { AppShell, BottomSheetModal, LoadingView } from '@/pages/components';
 import { useRoute } from '@react-navigation/native';
-import { RootStackParamList } from '@/pages/types.ts';
+import { RootStackParamList } from '@/pages/types';
 
 const useButtonContainerStyle = createStyle((_, bottom = 0) => ({
   flexDirection: 'row',
@@ -82,22 +77,34 @@ const profileStyle = createStyle({
   resizeMode: 'cover',
 });
 
-const imageList = [image1, image2, image3, image4, image5];
-
 export const ContentSharePage = () => {
   const theme = useTheme();
   const route = useRoute();
   const size = useMemo(() => Dimensions.get('window').width - 64, []);
 
-  // const content = (route.params as RootStackParamList['contentShare'])?.content;
+  const content = (route.params as RootStackParamList['contentShare'])?.content;
   const fontFamily = (route.params as RootStackParamList['contentShare'])?.fontFamily;
   const configRef = useRef<BottomSheetModal>(null);
 
   const position = useSharedValue(0);
+  const refs = useRef<ImageRendererMethods[]>([]);
+  const [images, setImages] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const buttonContainerStyle = useButtonContainerStyle(0);
   const commentStyle = useCommentStyle();
   const containerStyle = useContainerStyle();
+
+  const onShare = async () => {
+    setLoading(true);
+    const newImages = await Promise.all(refs.current.map(async (ref) => {
+      return await ref.getImage();
+    }));
+    setLoading(false);
+
+    setImages(newImages);
+    configRef.current?.present();
+  };
 
   return (
     <AppShell
@@ -114,7 +121,7 @@ export const ContentSharePage = () => {
           <Space size={10}/>
           <Button
             style={{ flex: 1 }}
-            onPress={() => configRef.current?.present()}
+            onPress={onShare}
             icon={<ShareIcon color={theme.colors.white.main}/>}
           >
             <Typography>
@@ -147,7 +154,7 @@ export const ContentSharePage = () => {
       >
         <View style={containerStyle}>
           <View style={rowStyle}>
-            <Image source={imageList[0]} style={profileStyle as ImageStyle}/>
+            <Image source={{ uri: content?.images?.images?.[0].imageUrl }} style={profileStyle as ImageStyle}/>
             <Space size={8}/>
             <Typography variant={'subtitle2'}>
               FarmPro
@@ -158,13 +165,16 @@ export const ContentSharePage = () => {
             width={size}
             height={size}
             style={{ width: size, height: size }}
-            data={imageList}
-            renderItem={({ item }) => (
+            data={content?.images?.images ?? []}
+            renderItem={({ item, index }) => (
               <ImageRenderer
-                templateType={'EMOTIVE'}
-                source={item}
+                ref={(ref) => {
+                  if (ref) refs.current[index] = ref;
+                }}
+                templateType={content?.cardStyle}
+                source={{ uri: item.imageUrl }}
                 style={{ width: '100%', height: '100%' }}
-                content={'그치 그냥 보통 탬플릿 고정하고 이렇게 텍스트만 바꾸니까 ㅇㅇ'}
+                content={item.title ?? ''}
                 fontFamily={fontFamily}
               />
             )}
@@ -172,7 +182,7 @@ export const ContentSharePage = () => {
           />
           <View style={rowStyle}>
             <View style={paginationStyle}>
-              <ContentPagination length={imageList.length} value={position}/>
+              <ContentPagination length={content?.images?.images?.length ?? 0} value={position}/>
             </View>
             <HeartIcon color={theme.colors.black.main} width={18} height={18}/>
             <Space size={12}/>
@@ -195,18 +205,7 @@ export const ContentSharePage = () => {
               seeMoreOverlapCount={3}
               customTextComponent={Typography as unknown as React.ReactNode}
             >
-              {`제주 감귤의 상큼함을 팜프로농장에서 직접 느껴보세요! 🍊 저희 농장에서 자란 고당도의 제주 감귤은 오렌지 품종 중에서도 특히 맛있답니다. 여러분의 입맛을 사로잡을 감귤, 지금 만나보세요!
-
-팜프로농장에서는 직배송 서비스를 제공하고 있어요. 신선한 감귤을 집 앞까지 빠르게 배송해 드립니다. 🍊📦 또한, 처음 구매하시는 분들을 위해 맛보기 서비스도 준비했답니다. 감귤의 풍미를 직접 경험해보세요!
-
-이 게시글을 보고 연락해주시는 분들께는 특별 할인 쿠폰을 드려요! 🎟️ 감귤의 달콤한 맛과 함께 더 큰 혜택을 누리세요. 뿐만 아니라, 저희 감귤은 비타민 C가 풍부해 건강에도 아주 좋아요. 🍊💪
-
-주말엔 농장으로 놀러 오셔서 직접 감귤을 따는 체험도 해보세요! 여러분의 방문을 기다리고 있답니다. 늘 함께 해주셔서 감사합니다. 앞으로도 팜프로농장과 함께 해주세요! 이번 한 해도 모두 파이팅! 💪🍊✨
-
-팜프로농장 : (+82) 064-XXX-XXXX
-- 평일 09:00 ~ 19:00 (주말, 공휴일 휴무)
-
-이 게시글은 FarmPro의 AI 지원으로 작성되었어요. `}
+              {content?.mainText ?? `내용 없음`}
             </ReadMore>
           </View>
           <Space size={8}/>
@@ -220,11 +219,13 @@ export const ContentSharePage = () => {
       <Space size={20}/>
       <ExportConfigFragment
         ref={configRef}
-        data={imageList.map((source) => Image.resolveAssetSource(source).uri)}
+        message={content?.mainText ?? ''}
+        data={images}
         onExpand={(expand) => {
           configRef.current?.snapToIndex(expand ? 1 : 0, { easing: Easing.elastic(0.5) });
         }}
       />
+      <LoadingView loading={loading} />
     </AppShell>
   );
 };

@@ -8,7 +8,6 @@ import Animated, {
   withTiming
 } from 'react-native-reanimated';
 import Share, { Social } from 'react-native-share';
-import RNFetchBlob from 'rn-fetch-blob';
 
 import { Button, Card, CheckBox, Space, Typography } from '@/ui/common';
 import { SelectCard } from '@/ui/SelectCard';
@@ -45,6 +44,7 @@ const itemStyle = createStyle({
 });
 
 interface ExportConfigFragmentProps {
+  message?: string;
   data?: string[];
   onExpand?: (expand?: boolean) => void;
 }
@@ -76,10 +76,9 @@ export const ExportConfigFragment = React.forwardRef<BottomSheetModal, ExportCon
   }, [expand, onExpand, value]);
 
   const onShare = async () => {
-    const targets = data.filter((_, index) => selected[index]);
-    const urls = await Promise.all(targets.map(convertToBase64));
+    const urls = data.filter((_, index) => selected[index]);
 
-    if (targets.length === 1) {
+    if (urls.length === 1) {
       await Share.shareSingle({
         title: '콘텐츠 공유하기',
         // type: 'image/*',
@@ -93,16 +92,6 @@ export const ExportConfigFragment = React.forwardRef<BottomSheetModal, ExportCon
         urls,
       }).catch(() => null);
     }
-  };
-
-  const convertToBase64 = async (uri: string) => {
-    const response = await RNFetchBlob.config({ fileCache: true }).fetch('GET', uri);
-    const path = response.path();
-    const data = await response.readFile('base64') as string;
-
-    await RNFetchBlob.fs.unlink(path);
-
-    return `data:image/png;base64,${data}`;
   };
 
   return (

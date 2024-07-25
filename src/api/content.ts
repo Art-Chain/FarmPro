@@ -1,4 +1,6 @@
 import {
+  Content,
+  ContentCreationSchema,
   ContentForm,
   ContentPurpose,
   ContentResponseSchema,
@@ -16,9 +18,15 @@ export const createContent = async (form: ContentForm) => {
     body: JSON.stringify(form),
   });
 
-  const result = await response.json();
-  console.log('createContent', JSON.stringify(result, null, 2));
-  return ContentSchema.parseAsync(result);
+  const result = await ContentCreationSchema.parseAsync(await response.json());
+  const content: Content = {
+    ...result
+  };
+
+  content.title = result.generatedTitle;
+  content.images = result.userUploadImages;
+
+  return content;
 }
 
 export const fetchContent = async (id: number) => {
