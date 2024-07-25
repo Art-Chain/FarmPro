@@ -12,6 +12,22 @@ export const ContentTypeSchema = z.union([
   z.literal('INSTAGRAM'),
   z.literal('BLOG'),
 ]);
+export type ParlanceStyle = z.infer<typeof ParlanceStyleSchema>;
+export const ParlanceStyleSchema = z.union([
+  z.literal('INFORMATIVE'),
+  z.literal('HUMOROUS'),
+  z.literal('EMOTIONAL'),
+  z.literal('ATTRACTIVE'),
+  z.literal('STORYTELLER'),
+]);
+export type CardStyle = z.infer<typeof CardStyleSchema>;
+export const CardStyleSchema = z.union([
+  z.literal('LAVISH'),
+  z.literal('SERENE'),
+  z.literal('EMOTIVE'),
+  z.literal('MODERN'),
+  z.literal('HUMOROUS'),
+]);
 
 export type Content = z.infer<typeof ContentSchema>;
 export const ContentSchema = z.object({
@@ -20,16 +36,38 @@ export const ContentSchema = z.object({
   contentType: ContentTypeSchema,
   contentPurpose: ContentPurposeSchema,
   mainText: z.string().nullable(),
-  title: z.string(),
+  title: z.string().nullable(),
   textStyle: z.string(),
   images: z.object({
     images: z.object({
-      id: z.number(),
+      id: z.number().nullable(),
       imageUrl: z.string(),
       title: z.string().nullable(),
     }).array(),
   }),
+  parlanceStyle: ParlanceStyleSchema,
+  cardStyle: CardStyleSchema,
 });
+
+export type ContentCreation = z.infer<typeof ContentCreationSchema>;
+export const ContentCreationSchema = ContentSchema
+  .omit({ images: true  })
+  .extend({
+    generatedTitle: z.string(),
+    userUploadImages: z.object({
+      images: z.object({
+        id: z.number().nullable(),
+        imageUrl: z.string(),
+        title: z.string().nullable(),
+      }).array(),
+    }),
+    chatGptResponses: z.object({
+      data: z.object({
+        url: z.string(),
+        revisedPrompt: z.string().nullable(),
+      }).array(),
+    }).array(),
+  });
 
 export type LocalContent = z.infer<typeof LocalContentSchema>;
 export const LocalContentSchema = ContentSchema.omit({ projectInfo: true }).extend({
@@ -40,24 +78,6 @@ export type ContentResponse = z.infer<typeof ContentResponseSchema>;
 export const ContentResponseSchema = z.object({
   contents: ContentSchema.array(),
 });
-
-export type ParlanceStyle = z.infer<typeof ParlanceStyleSchema>;
-export const ParlanceStyleSchema = z.union([
-  z.literal('INFORMATIVE'),
-  z.literal('HUMOROUS'),
-  z.literal('EMOTIONAL'),
-  z.literal('ATTRACTIVE'),
-  z.literal('STORYTELLER'),
-]);
-
-export type CardStyle = z.infer<typeof CardStyleSchema>;
-export const CardStyleSchema = z.union([
-  z.literal('LAVISH'),
-  z.literal('SERENE'),
-  z.literal('EMOTIVE'),
-  z.literal('MODERN'),
-  z.literal('HUMOROUS'),
-]);
 
 export type ContentForm = z.infer<typeof ContentFormSchema>;
 export const ContentFormSchema = z.object({

@@ -20,7 +20,7 @@ import {
   ContentPurpose,
   ContentType,
   Crop,
-  ParlanceStyle
+  ParlanceStyle, Project
 } from '@/features/scheme';
 import { fetchProject } from '@/api/local';
 import { PromptData } from '@/pages/content/components';
@@ -38,6 +38,7 @@ export const ContentCreatePage = () => {
   const configRef = useRef<BottomSheetModal>(null);
   const [position, setPosition] = useState(0);
   const [form, setForm] = useState<Partial<ContentForm>>({});
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   const buttonContainerStyle = useButtonContainerStyle(0);
 
@@ -54,6 +55,7 @@ export const ContentCreatePage = () => {
 
     if (projectId) {
       const project = await fetchProject(projectId);
+      setSelectedProject(project);
 
       if (project) {
         projectInfo = {
@@ -65,6 +67,8 @@ export const ContentCreatePage = () => {
           plantContactInfo: project.outlink,
         };
       }
+    } else {
+      setSelectedProject(null);
     }
 
     setForm((prev) => ({
@@ -113,9 +117,9 @@ export const ContentCreatePage = () => {
     const parsed = ContentFormSchema.safeParse(body);
     console.log('submit', parsed, JSON.stringify(body, null, 2));
     if (parsed.success) {
-      navigation.navigate('contentLoading', { form: parsed.data, fontFamily });
+      navigation.navigate('contentLoading', { form: parsed.data, fontFamily, projectId: selectedProject?.id });
     }
-  }, [form, navigation]);
+  }, [form, navigation, selectedProject?.id]);
 
   return (
     <AppShell
