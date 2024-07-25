@@ -16,7 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 import { AppShell, BottomSheetModal } from '@/pages/components';
 import { View } from 'react-native';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { fetchContents } from '@/api/content.ts';
+import { fetchContentFeeds } from '@/api';
 
 import ProjectFullIcon from '@/assets/images/project_full.svg';
 import ArrowRightIcon from '@/assets/images/arrow_right.svg';
@@ -39,8 +39,8 @@ export const HomePage = () => {
   const [name, setName] = useState('');
 
   const { data } = useQuery({
-    queryKey: ['feed'],
-    queryFn: fetchContents,
+    queryKey: ['feeds'],
+    queryFn: fetchContentFeeds,
   });
   const { mutate } = useMutation({
     mutationFn: async ({ id, name }: { id: number; name: string; }) => updateProject(id, { name }),
