@@ -21,3 +21,6 @@ npm run ios
 ```
 > [!IMPORTANT]
 > Do not use `pnpm` or `yarn`. Those are not working in this project.
+
+## External Dependencies
+- check `dependencies` and `devDependecies` field in [this file](./package.json)
